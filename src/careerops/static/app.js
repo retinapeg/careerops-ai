@@ -3,7 +3,7 @@
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
-const state = {data: null, token: '', page: 'recommended', workflowJobId: null, returnToJobs: null, restoreInventory: false, selectedJob: null, skipJob: null, loading: false, poll: null};
+const state = {data: null, token: '', page: 'all', workflowJobId: null, returnToJobs: null, restoreInventory: false, selectedJob: null, skipJob: null, loading: false, poll: null};
 const laneNames = {mediterranean: 'Mediterranean', overseas_quant: 'Overseas quant', london: 'London professional', exceptional: 'Exceptional upside', cashflow: 'Immediate income', overseas_quant_worldwide: 'Overseas quant worldwide'};
 const statusNames = {new: 'New discovery', saved: 'Saved', materials_ready: 'Materials ready', applied: 'Applied', interview: 'Interview', offer: 'Offer', closed: 'Closed', dismissed: 'Skipped'};
 const countryNames = {IL: 'Israel', GR: 'Greece', FR: 'France', CY: 'Cyprus', MT: 'Malta', ES: 'Spain', IT: 'Italy', GB: 'United Kingdom'};
@@ -13,12 +13,11 @@ let settingsDraft = {};
 let profileDirty = false;
 let settingsDirty = false;
 let modelConnectionsDirty = false;
-const inventoryState = {view: 'all', region: 'all', page: 1, perPage: 50, response: null, request: 0, selected: new Map(), preview: null, searchTimer: null, location: ''};
+const inventoryState = {view: 'all', region: 'london', page: 1, perPage: 50, response: null, request: 0, selected: new Map(), preview: null, searchTimer: null, location: ''};
 const fitNames = {strong: 'Strong match', plausible: 'Plausible match', stretch: 'Stretch', low: 'Not suitable / lower fit', not_suitable: 'Not suitable', 'not_suitable,low': 'Not suitable / lower fit'};
 const applicationStages = {not_started: 'Not started', in_progress: 'In progress', applied: 'Applied', screening: 'Screening', interview: 'Interview', offer: 'Offer', rejected: 'Rejected', withdrawn: 'Withdrawn'};
 const bookmarkPending = new Set();
 let importPreview = null;
-let todayRequest = 0;
 let applicationDirty = false;
 const preparationNames = {draft_generated: 'Draft generated', reviewed_ready: 'Reviewed / ready'};
 const batchActiveStatuses = ['pending', 'queued', 'running', 'cancelling'];
@@ -116,10 +115,10 @@ function getJobs() { return array(state.data?.jobs); }
 function getShortlist(type) { return array(state.data?.shortlist?.[type]).map(job => typeof job === 'object' ? job : getJobs().find(item => String(item.id) === String(job))).filter(Boolean); }
 function normalPage(page) {
   if (/^cv\/\d+$/.test(page)) return 'cv-workflow';
-  if (['today', 'jobs', ''].includes(page)) return 'recommended';
+  if (['today', 'jobs', ''].includes(page)) return 'all';
   return ['pipeline', 'search', 'all-jobs'].includes(page) ? 'all' : page;
 }
-function pageName(page) { return {'all': 'All Jobs', 'needs_checking': 'Needs Checking', 'your-cv': 'Your CV', 'cv-workflow': 'Create & review CV'}[page] || human(page); }
+function pageName(page) { return {'all': 'Discover', 'needs_checking': 'Needs checking', 'your-cv': 'Your profile', 'cv-workflow': 'Prepare application'}[page] || human(page); }
 function changePage(page, focus = false) {
   page = normalPage(page);
   if (!['recommended', 'all', 'needs_checking', 'saved', 'applications', 'settings', 'your-cv', 'cv-workflow'].includes(page)) return;
@@ -131,12 +130,12 @@ function changePage(page, focus = false) {
   $('.jobs-view-switch').hidden = !['recommended', 'all', 'needs_checking'].includes(page);
   $('#breadcrumb-page').textContent = pageName(page); document.title = `CareerOps AI — ${pageName(page)}`;
   if (inventoryPage) {
-    if (inventoryState.view !== page) { inventoryState.view = page; inventoryState.region = 'all'; resetInventoryFilters(false); }
+    if (inventoryState.view !== page) { inventoryState.view = page; inventoryState.region = ['saved', 'applications'].includes(page) ? 'all' : $('#search-scope').value || 'london'; resetInventoryFilters(false); }
     if (!state.restoreInventory) renderPipeline();
     state.restoreInventory = false;
   }
   if (page === 'settings' && state.data) renderSettings();
-  if (page === 'your-cv' && state.data) renderBaseCV();
+  if (page === 'your-cv' && state.data) { renderProfile(); renderBaseCV(); }
   if (page === 'cv-workflow') {
     const match = location.hash.match(/^#cv\/(\d+)$/); if (match) state.workflowJobId = Number(match[1]);
     if (state.data && state.workflowJobId) loadCVWorkflow(state.workflowJobId);
@@ -154,7 +153,7 @@ async function refreshState({renderForms = false} = {}) {
   renderNavigationCounts();
   if (['recommended', 'all', 'needs_checking', 'saved', 'applications'].includes(state.page)) renderPipeline(); renderRuns(); renderProviders(); renderPreparationBatches(); renderDiscoveryStatus();
   if (state.page === 'settings') renderSettings();
-  if (renderForms && state.page === 'your-cv') renderBaseCV();
+  if (state.page === 'your-cv') { renderProfile(); if (renderForms) renderBaseCV(); }
   if (renderForms && state.page === 'cv-workflow' && state.workflowJobId) loadCVWorkflow(state.workflowJobId);
   const activeRun = array(data.runs).some(run => ['pending', 'queued', 'running', 'cancelling'].includes(run.status)) || array(data.preparation_batches).some(batch => batchActiveStatuses.includes(batch.status));
   clearTimeout(state.poll);
@@ -199,31 +198,6 @@ function openApplicationLink(job, small = false) {
   const url = safeURL(job.url); if (!url) return null;
   return el('a', {class: `button button-quiet${small ? ' button-small' : ''}`, href: url, target: '_blank', rel: 'noopener noreferrer', onclick: () => { api(`/api/jobs/${encodeURIComponent(job.id)}/action`, {action: 'open'}).then(() => { announce('Application page opened. It has not been marked Applied.'); refreshState().catch(() => {}); }).catch(error => announce(`Page opened, but the visit could not be recorded: ${error.message}`, true)); }}, 'Open application ↗');
 }
-async function renderToday() {
-  if (!state.data) return;
-  const request = ++todayRequest, jobs = getJobs();
-  $('#direction-summary').textContent = 'London professional roles first · suitable Mediterranean opportunities · candidacy based on your evidence';
-  const progress = jobs.filter(job => ['in_progress', 'applied', 'screening', 'interview'].includes(applicationStage(job)));
-  const due = jobs.filter(job => job.application?.follow_up_date && job.application.follow_up_date.slice(0, 10) <= new Date().toISOString().slice(0, 10) && !['rejected', 'withdrawn'].includes(applicationStage(job)));
-  const stats = [[jobs.filter(job => job.bookmarked).length, 'Saved jobs', 'independent bookmarks'], [progress.length, 'Applications in progress', 'your current work'], [due.length, 'Follow-ups due', 'recorded dates'], [jobs.filter(job => job.preparation_status === 'reviewed_ready').length, 'Reviewed packs', 'ready for your next step']];
-  $('#overview').replaceChildren(...stats.map(([count, label, note]) => el('div', {class: 'overview-stat'}, el('span', {class: 'stat-label'}, label), el('span', {class: 'stat-number'}, count), el('span', {class: 'stat-note'}, note))));
-  try {
-    const data = await api('/api/today'); if (request !== todayRequest) return;
-    $('#today-error').hidden = true;
-    const sections = [['london', '#today-london', '#london-count', 'No strong or plausible London matches are ready to show.', 'Fetch professional London vacancies or search the stored inventory. Sparse results do not activate an unrelated fallback feed.'], ['mediterranean', '#today-mediterranean', '#mediterranean-count', 'No suitable Mediterranean matches are ready to show.', 'The full secondary-location inventory stays searchable. International work permission remains an explicit check.'], ['stretch', '#stretch-jobs', '#stretch-count', 'No additional stretches selected.', 'Substantial candidacy gaps stay separate from the main recommendations.']];
-    for (const [key, target, count, title, description] of sections) { const list = array(data[key]); $(count).textContent = list.length; $(target).replaceChildren(...(list.length ? list.map(job => jobCard(job, key === 'stretch')) : [empty(title, description, button('Search stored jobs →', () => openInventory(key === 'london' ? 'london' : key === 'mediterranean' ? 'overseas' : 'all'), 'button-quiet button-small'), true)])); }
-    $('#today-count').textContent = array(data.london).length + array(data.mediterranean).length + array(data.stretch).length;
-    $('#today-applications').replaceChildren(...(array(data.in_progress).length ? data.in_progress.map(job => workCard(job)) : [empty('Your next application starts here.', 'Update a saved job to In progress when you begin working on it.', null, true)]));
-    $('#today-follow-ups').replaceChildren(...(array(data.follow_ups).length ? data.follow_ups.map(job => workCard(job, true)) : [empty('No follow-ups due.', 'Add a follow-up date and next action in an application record.', null, true)]));
-  } catch (error) { if (request === todayRequest) { showError($('#today-error'), error); $('#today-london').replaceChildren(empty('Today could not load.', 'Saved jobs and applications remain in their dedicated pages. Retry when the local app is ready.', button('Retry Today', renderToday), true)); } }
-  const running = array(state.data.runs).find(run => ['pending', 'queued', 'running', 'cancelling'].includes(run.status));
-  const banner = $('#today-run'); banner.hidden = !running;
-  if (running) banner.replaceChildren(el('span', {class: 'spinner', 'aria-hidden': 'true'}), el('div', {class: 'run-content'}, el('strong', {}, `Fetching ${running.scope === 'overseas' ? 'Mediterranean' : 'London'} vacancies`), el('p', {}, runProgress(running))), button('View search', () => navigate('search'), 'button-quiet button-small'));
-}
-function workCard(job, followUp = false) {
-  const app = job.application || {};
-  return el('article', {class: 'work-card'}, el('div', {}, el('h3', {}, displayTitle(job)), el('p', {class: 'muted'}, job.company || 'Employer unknown')), badge(applicationStages[applicationStage(job)] || 'Not started', 'neutral'), el('p', {}, app.next_action || 'Choose your next action in the application record.'), followUp ? el('p', {class: 'follow-up-date'}, `Follow-up due ${date(app.follow_up_date)}`) : app.application_date ? el('p', {class: 'muted'}, `Applied ${date(app.application_date)}`) : null, el('div', {class: 'work-actions'}, generateCVButton(job, true), bookmarkButton(job, true), button('Update status', () => openApplicationTracker(job.id), 'button-primary button-small'), button('Details', () => openJob(job.id), 'button-quiet button-small')));
-}
 function hiddenButton(job, small = false) {
   return button(job.hidden ? 'Unhide' : 'Hide', event => busy(event.currentTarget, async () => {
     await api(`/api/jobs/${encodeURIComponent(job.id)}/action`, {action: 'hidden', hidden: !job.hidden});
@@ -233,10 +207,11 @@ function hiddenButton(job, small = false) {
   }), `button-quiet${small ? ' button-small' : ''}`, {'aria-label': `${job.hidden ? 'Unhide' : 'Hide'} ${job.title || 'job'}`});
 }
 function generateCVButton(job, small = false) {
-  return button('Create & review CV', () => showCVWorkflow(job.id, true), `button-primary${small ? ' button-small' : ''}`);
+  return button('Prepare application', () => showCVWorkflow(job.id, true), `button-primary${small ? ' button-small' : ''}`);
 }
 function jobCard(job, stretch = false) {
   const match = candidacy(job), gaps = candidacyGaps(job), band = candidacyBand(job), blocked = job.evaluation?.eligibility === 'blocked';
+  const profileMissing = state.data?.evidence_ready !== true;
   const strength = array(match.why)[0] || whyFits(job), languages = languageLabels(job);
   const remainingGaps = languages.length ? gaps.filter(gap => !/^Mandatory language\s*:/i.test(String(gap).trim())) : gaps;
   const gap = remainingGaps[0] || (job.evaluation?.eligibility !== 'clear' ? `${workAuthorisation(job)}. ${sponsorship(job)}.` : '');
@@ -244,12 +219,12 @@ function jobCard(job, stretch = false) {
     el('div', {class: 'card-top'}, el('div', {class: 'company-name'}, job.company || 'Employer not recorded'), inventoryState.view === 'all' ? el('label', {class: 'bulk-card-select'}, inventoryCheckbox(job), 'Select for batch') : null),
     el('button', {type: 'button', class: 'card-title', onclick: () => openJob(job.id)}, displayTitle(job)),
     jobNotices(job),
-    badge(fitNames[band] || human(band), blocked || band === 'not_suitable' || band === 'low' ? 'red' : stretch || band === 'stretch' ? 'amber' : ''),
+    badge(profileMissing ? 'Fit not assessed' : fitNames[band] || human(band), profileMissing ? 'neutral' : blocked || band === 'not_suitable' || band === 'low' ? 'red' : stretch || band === 'stretch' ? 'amber' : ''),
     el('p', {class: 'card-location'}, `${job.location || countryNames[job.country] || 'Location not established'} · ${office(job)}`),
     el('p', {class: 'compact-job-pay'}, `Salary: ${salary(job)}`),
     blocked ? badge('Known eligibility blocker', 'red') : job.sample ? badge('Sample / fixture', 'amber') : null,
-    el('dl', {class: 'recommendation-reasons'}, el('div', {}, el('dt', {}, 'Strongest fit'), el('dd', {}, cardWarning(strength))), gap ? el('div', {class: blocked ? 'important-gap' : ''}, el('dt', {}, blocked ? 'Needs attention' : 'Important gap / question'), el('dd', {}, cardWarning(gap))) : null),
-    el('div', {class: 'card-footer dashboard-card-footer'}, bookmarkButton(job, true), button('View job', () => openJob(job.id), 'button-quiet button-small'), generateCVButton(job, true)));
+    el('dl', {class: 'recommendation-reasons'}, profileMissing ? null : el('div', {}, el('dt', {}, 'Why it could fit'), el('dd', {}, cardWarning(strength))), gap ? el('div', {class: blocked ? 'important-gap' : ''}, el('dt', {}, blocked ? 'Needs attention' : 'Worth checking'), el('dd', {}, cardWarning(gap))) : null),
+    el('div', {class: 'card-footer dashboard-card-footer'}, bookmarkButton(job, true), generateCVButton(job, true)));
 }
 function renderUniverseCounts(counts) {
   const root = $('#universe-summary');
@@ -267,10 +242,21 @@ function renderUniverseCounts(counts) {
   const preferred = ['GB', 'IL', 'GR', 'CY', 'FR'];
   root.replaceChildren(countCard(inventoryState.region === 'all' ? 'All indexed locations' : `${human(inventoryState.region)} inventory`, counts), ...preferred.filter(code => locations[code]).map(code => countCard(countryNames[code] || code, locations[code], code)), el('p', {class: 'coverage-caption'}, 'Indexed means collected canonical records, including preserved hidden and closed adverts. Recommended is the selected subset; the band counts describe that subset. Filters below narrow the displayed list.'));
 }
+function continuableSearch(scope = $('#search-scope').value) {
+  const latest = array(state.data?.runs).find(run => run.mode === 'normal' && run.scope === scope);
+  return latest && !latest.resumed_by && !batchActiveStatuses.includes(latest.status) && !['completed', 'complete', 'succeeded'].includes(latest.status)
+    && (latest.status === 'time_limit' || latest.stop_reason === 'time_limit') && array(latest.checkpoint?.pending).length ? latest : null;
+}
 function renderDiscoveryStatus() {
-  const latest = array(state.data?.runs)[0], active = array(state.data?.runs).some(run => batchActiveStatuses.includes(run.status));
-  $('#discovery-last-run').textContent = latest ? `Last fetch: ${date(latest.finished_at || latest.created_at, true)} · ${human(latest.scope || 'location not recorded')} · ${human(latest.status)}${latest.stop_reason ? ` · ${human(latest.stop_reason)}` : ''}${latest.message ? ` — ${latest.message}` : ''}` : 'No vacancy fetch recorded. Searching stored jobs does not start discovery.';
-  $('#search-button').disabled = active; $('#deep-search-button').disabled = active; $('#bootstrap-search-button').disabled = active;
+  const latest = array(state.data?.runs)[0], active = array(state.data?.runs).some(run => batchActiveStatuses.includes(run.status)), continuation = continuableSearch();
+  $('#discovery-last-run').textContent = active ? `Checking employer sources${latest?.found ? ` · ${Number(latest.found).toLocaleString('en-GB')} roles found so far` : '…'}` : continuation ? 'Some sources are still waiting. Continue from where the last search stopped.' : latest ? `Last search ${date(latest.finished_at || latest.created_at, true)} · ${human(latest.status)}${latest.message ? ` — ${latest.message}` : ''}` : 'Search public employer sources, then choose what is worth your time.';
+  $('#search-button').disabled = active; $('#search-button').textContent = active ? 'Finding jobs…' : continuation ? 'Continue finding jobs' : 'Find jobs ↗';
+  $('#deep-search-button').disabled = active; $('#bootstrap-search-button').disabled = active;
+}
+function renderOnboarding() {
+  const ready = state.data?.evidence_ready === true;
+  $('#onboarding-next-step').replaceChildren(...(ready ? [] : [el('div', {}, el('strong', {}, 'Make your applications personal'), el('p', {}, 'You can discover jobs now. Add your CV and verified experience when you are ready to apply.')), el('a', {href: '#your-cv', class: 'text-link'}, 'Set up your profile →')]));
+  $('#onboarding-next-step').hidden = ready || !['all', 'recommended', 'needs_checking'].includes(inventoryState.view);
 }
 function inventoryFilters() {
   return {work_authorisation: $('#inventory-work-authorisation').value, location: inventoryState.location, seniority: $('#inventory-seniority').value, source: $('#inventory-source').value, saved: $('#inventory-saved').value, hidden: $('#inventory-hidden').value, date_field: $('#inventory-date-field').value, date_from: $('#inventory-date-from').value, date_to: $('#inventory-date-to').value, view: inventoryState.view, region: inventoryState.region, salary: $('#inventory-salary').value, work_pattern: $('#inventory-work-pattern').value, sponsorship: $('#inventory-sponsorship').value, relocation: $('#inventory-relocation').value, application_stage: $('#inventory-application-stage').value, country: $('#inventory-country').value, role_family: $('#inventory-family').value, fit: $('#inventory-fit').value, eligibility: $('#inventory-eligibility').value, verification: $('#inventory-verification').value, status: $('#inventory-status').value, q: $('#inventory-search').value.trim(), include_stretch: $('#inventory-stretches').checked, include_excluded: $('#inventory-excluded').checked};
@@ -321,14 +307,14 @@ async function renderPipeline() {
   if (!state.data) return;
   const view = inventoryState.view, filters = inventoryFilters(), request = ++inventoryState.request;
   const copy = {
-    all: ['DISCOVER BROADLY', 'All Jobs.', 'The full collected list. A weak match, unknown salary or visa question does not remove a job.', 'Search every indexed vacancy. Confirmed closed, duplicate and hidden records remain preserved for inspection.'],
-    recommended: ['YOUR JOBS WORKSPACE', 'Find your next good fit.', 'London first, with suitable Mediterranean opportunities alongside.', ''],
+    all: ['YOUR NEXT CHAPTER', 'Discover your next move.', 'Find opportunities. Save the promising ones. Make each application count.', 'All collected vacancies stay available here, including jobs that need a closer look.'],
+    recommended: ['A CLOSER MATCH', 'Recommended for you.', 'A focused view based on the experience you have shared.', ''],
     needs_checking: ['KEEP THE UNCERTAINTY VISIBLE', 'Needs checking.', 'Jobs with language, work permission, sponsorship or other requirements to clarify.', 'Unknown does not mean unsuitable. Confirmed blockers stay clearly labelled.'],
     saved: ['YOUR SHORTLIST, YOUR CHOICE', 'Saved jobs.', 'Every job you have bookmarked, independent of its application stage.', 'Saved jobs remain here when an advert closes or your application progresses. Remove a bookmark with Saved on its card.'],
     applications: ['KEEP YOUR NEXT STEP CLEAR', 'Applications.', 'Track the work you have started, the conversations ahead and the outcomes.', 'Your application records remain visible across all locations and advert states. Opening an application page never marks it Applied.']
   }[view];
   $('#inventory-eyebrow').textContent = copy[0]; $('#pipeline-heading').textContent = copy[1]; $('#inventory-page-description').textContent = copy[2]; $('#inventory-description').textContent = copy[3];
-  $('#discovery-toolbar').hidden = view !== 'all'; $('#inventory-status').closest('label').hidden = view !== 'all';
+  $('#discovery-toolbar').hidden = !['all', 'recommended', 'needs_checking'].includes(view); renderOnboarding(); $('#inventory-status').closest('label').hidden = view !== 'all';
   $('#inventory-excluded').closest('label').hidden = true; $('#exclusion-diagnostics').hidden = view !== 'all';
   $('#inventory-stretches').closest('label').hidden = view !== 'recommended'; $('#inventory-density').closest('label').hidden = !['saved', 'applications'].includes(view);
   $('.companies-section').hidden = view !== 'saved';
@@ -355,10 +341,11 @@ async function renderPipeline() {
     syncFacet($('#inventory-seniority'), result.counts?.seniority || result.counts?.seniorities || {entry: '', mid: '', senior: '', lead: '', unknown: ''}, 'All seniority levels');
     renderUniverseCounts(result.counts || {});
     const matchedJobs = array(result.jobs), total = Number(result.total) || 0;
-    $('#inventory-count').textContent = `${total.toLocaleString('en-GB')} ${view === 'recommended' ? `recommendation${total === 1 ? '' : 's'} matching these filters` : view === 'applications' ? `matching application record${total === 1 ? '' : 's'}` : `job${total === 1 ? '' : 's'} matching these filters`} · ${inventoryState.perPage} per page`;
-    const noRecords = view === 'saved' ? ['No saved jobs match this view.', 'Use Save on any job card to keep it here, or reset your filters.'] : view === 'applications' ? ['No application records match this view.', 'Choose Update status on a job when you start an application. Use Applied only after submitting it yourself.'] : ['No jobs match these filters.', 'Reset filters, browse All Jobs or fetch more vacancies to expand source coverage.'];
-    $('#inventory-list').replaceChildren(...(matchedJobs.length ? matchedJobs.map(job => ['recommended', 'all', 'needs_checking'].includes(view) ? jobCard(job, candidacyBand(job) === 'stretch') : inventoryRow(job)) : [empty(...noRecords, button('Reset filters', () => resetInventoryFilters()))]));
-    $('#inventory-list').classList.toggle('recommendation-feed', ['recommended', 'all', 'needs_checking'].includes(view));
+    $('#inventory-count').textContent = `${total.toLocaleString('en-GB')} ${view === 'applications' ? `application${total === 1 ? '' : 's'}` : total === 1 ? 'opportunity' : 'opportunities'}${['saved', 'applications'].includes(view) ? '' : ` · ${inventoryState.region === 'all' ? 'All locations' : inventoryState.region === 'london' ? 'London' : 'Other locations'}`}`;
+    const noRecords = view === 'saved' ? ['No saved jobs match this view.', 'Use Save on any job card to keep it here, or reset your filters.'] : view === 'applications' ? ['No application records match this view.', 'Choose Update status on a job when you start an application. Use Applied only after submitting it yourself.'] : Number(result.counts?.indexed || 0) === 0 ? ['Your next opportunity starts here.', 'Find jobs to collect current vacancies. You can also add a role you have already found.'] : ['No jobs match this view.', 'Try a different keyword or reset your filters to see more opportunities.'];
+    $('#inventory-list').replaceChildren(...(matchedJobs.length ? matchedJobs.map(job => ['recommended', 'all', 'needs_checking'].includes(view) ? jobCard(job, candidacyBand(job) === 'stretch') : inventoryRow(job)) : [empty(...noRecords, Number(result.counts?.indexed || 0) === 0 && ['all', 'recommended', 'needs_checking'].includes(view) ? button('Find jobs', event => startSearch('normal', event.currentTarget), 'button-primary') : button('Reset filters', () => resetInventoryFilters()))]));
+    $('#inventory-list').classList.toggle('recommendation-feed', true);
+    $('#inventory-list').classList.toggle('batch-selection', $('#bulk-preparation-tools').open);
     $('#inventory-list').classList.toggle('compact-density', $('#inventory-density').value === 'compact');
     renderPagination(result); renderSelection(); renderExclusionSummary(result.counts || {});
     $$('[data-prepare-next]').forEach(control => { control.disabled = !total; });
@@ -380,14 +367,9 @@ function inventoryCheckbox(job) {
   checkbox.disabled = !selectable; return checkbox;
 }
 function inventoryRow(job) {
-  const annotation = job.inventory || {}, app = job.application || {}, band = candidacyBand(job), checkbox = inventoryCheckbox(job);
-  const uncertainty = annotation.reason_not_recommended || job.reason_not_recommended || candidacyGaps(job)[0] || sponsorship(job);
-  const role = el('div', {class: 'volume-role'}, el('button', {type: 'button', class: 'role-title-link', onclick: () => openJob(job.id)}, displayTitle(job)), el('div', {class: 'subtext'}, job.company || 'Employer unknown'), jobNotices(job), el('p', {class: 'row-why'}, cardWarning(whyFits(job))), el('div', {class: 'badges'}, job.sample ? badge('Sample / fixture', 'amber') : null, job.hidden ? badge('Hidden by you', 'neutral') : (job.recommendation_status || annotation.recommendation_status) === 'not_recommended' ? badge('Not recommended · retained in All Jobs', 'neutral') : null));
-  const fit = el('div', {class: 'volume-fit'}, badge(fitNames[band] || human(band), band === 'stretch' ? 'amber' : band === 'not_suitable' || band === 'low' ? 'red' : 'neutral'), el('div', {class: 'subtext'}, eligibility(job)), el('p', {class: 'row-uncertainty'}, cardWarning(uncertainty)));
-  const preparation = el('div', {class: 'volume-preparation'}, badge(applicationStages[applicationStage(job)], 'neutral'), el('div', {class: 'subtext'}, jobPreparationLabel(job)), app.next_action ? el('p', {class: 'row-next-step'}, cardWarning(app.next_action)) : null, app.follow_up_date ? el('div', {class: 'follow-up-date'}, `Follow up ${date(app.follow_up_date)}`) : null, app.application_date ? el('div', {class: 'subtext'}, `Applied ${date(app.application_date)}`) : job.application_opened_at ? el('div', {class: 'subtext'}, 'Application page opened') : null);
-  const actions = el('div', {class: 'volume-actions'}, generateCVButton(job, true), bookmarkButton(job, true), hiddenButton(job, true), button('View details', () => openJob(job.id), 'button-quiet button-small'), openApplicationLink(job, true), button('Update status', () => openApplicationTracker(job.id), 'button-quiet button-small'));
-  if (job.preparation_status || job.status === 'materials_ready') actions.append(button('Preview pack', () => openJob(job.id, 'materials'), 'button-quiet button-small'));
-  return el('article', {class: 'volume-row'}, el('div', {class: 'volume-select'}, checkbox), role, el('div', {class: 'volume-location'}, job.location || countryNames[job.country] || 'Location unknown', el('div', {class: 'subtext'}, human(annotation.role_family || 'unclassified')), el('div', {class: 'subtext'}, human(annotation.verification || 'pending'))), el('div', {class: 'volume-pay'}, salary(job), el('div', {class: 'subtext'}, office(job))), fit, preparation, actions);
+  const card = jobCard(job), app = job.application || {};
+  card.append(el('div', {class: 'application-card-status'}, badge(applicationStages[applicationStage(job)], 'neutral'), app.next_action ? el('p', {}, app.next_action) : null, app.follow_up_date ? el('p', {class: 'follow-up-date'}, `Follow up ${date(app.follow_up_date)}`) : null, button('Update status', () => openApplicationTracker(job.id), 'text-link')));
+  return card;
 }
 function renderPagination(result) {
   const total = Number(result.total) || 0, pageSize = Number(result.per_page) || 50, pages = Math.max(1, Math.ceil(total / pageSize)), page = Number(result.page) || 1;
@@ -447,9 +429,7 @@ function preparationBatchCard(batch, compact = false) {
 function renderPreparationBatches() {
   const batches = array(state.data?.preparation_batches);
   $('#preparation-batches').replaceChildren(...(batches.length ? batches.map(batch => preparationBatchCard(batch)) : [empty('Select opportunities and prepare them together.', 'Choose individual roles across pages, or the next 10, 25 or 50 from your filtered view. Confirm the exact scope before a batch starts.', null, true)]));
-  const active = batches.filter(batch => batchActiveStatuses.includes(batch.status));
-  const recent = active.length ? active : batches.slice(0, 1);
-  $('#today-preparation').replaceChildren(...(recent.length ? recent.map(batch => preparationBatchCard(batch, true)) : [empty('Ready to prepare more applications.', 'Open the overseas inventory, select plausible roles and prepare a batch. Every draft remains subject to your review.', button('Choose opportunities →', () => openInventory('all'), 'button-quiet button-small'), true)]));
+
 }
 async function openJob(id, section) {
   state.selectedJob = id;
@@ -573,7 +553,7 @@ async function renderBaseCV(response) {
     const uploader = el('section', {class: 'base-cv-upload'}, el('h2', {}, selected ? 'Update your source CV' : 'Start with the CV you already have'), el('p', {class: 'muted'}, 'PDF or DOCX, up to 8 MB. Supported facts are reconciled with your existing evidence.'), el('label', {class: 'field'}, selected ? 'Replacement file' : 'Your CV file', upload), submit, error);
     const content = [];
     if (selected) {
-      content.push(el('section', {class: 'settings-card base-cv-selected'}, el('div', {class: 'section-heading'}, el('div', {}, badge('Selected base CV', ''), el('h2', {class: 'spaced-top'}, selected.filename), el('p', {class: 'muted'}, `${selected.source === 'existing' ? 'Existing source reused' : 'Uploaded'} · ${date(selected.uploaded_at, true)}`)), button(state.workflowJobId ? 'Return to this job →' : 'Choose a job →', () => state.workflowJobId ? showCVWorkflow(state.workflowJobId) : navigate('recommended'), 'button-primary')), array(selected.conflicts).length ? el('div', {class: 'banner banner-warning'}, el('strong', {}, 'A few facts need checking'), list(selected.conflicts.map(item => item.message || `${human(item.field)}: ${item.source_quote || 'New source'} differs from ${stringify(item.verified_value)}`), ''), el('p', {class: 'field-help'}, 'Your existing verified facts remain authoritative. This upload has not overwritten them.'), button('Review evidence in Settings', () => navigate('settings'), 'button-quiet button-small')) : el('p', {class: 'field-help'}, 'This source is reused across applications. Tailored versions never replace the original file.'), el('div', {class: 'material-preview base-cv-preview', tabindex: 0, 'aria-label': 'Selected base CV preview'}, selected.preview || selected.text || 'No readable preview is available.')));
+      content.push(el('section', {class: 'settings-card base-cv-selected'}, el('div', {class: 'section-heading'}, el('div', {}, badge('Selected base CV', ''), el('h2', {class: 'spaced-top'}, selected.filename), el('p', {class: 'muted'}, `${selected.source === 'existing' ? 'Existing source reused' : 'Uploaded'} · ${date(selected.uploaded_at, true)}`)), button(state.workflowJobId ? 'Return to this job →' : 'Choose a job →', () => state.workflowJobId ? showCVWorkflow(state.workflowJobId) : navigate('all'), 'button-primary')), array(selected.conflicts).length ? el('div', {class: 'banner banner-warning'}, el('strong', {}, 'A few facts need checking'), list(selected.conflicts.map(item => item.message || `${human(item.field)}: ${item.source_quote || 'New source'} differs from ${stringify(item.verified_value)}`), ''), el('p', {class: 'field-help'}, 'Your existing verified facts remain authoritative. This upload has not overwritten them.'), button('Review your evidence', () => $('#profile-settings').scrollIntoView({behavior: 'smooth'}), 'button-quiet button-small')) : el('p', {class: 'field-help'}, 'This source is reused across applications. Tailored versions never replace the original file.'), el('div', {class: 'material-preview base-cv-preview', tabindex: 0, 'aria-label': 'Selected base CV preview'}, selected.preview || selected.text || 'No readable preview is available.')));
       content.push(details('Replace base CV', uploader));
     } else content.push(uploader);
     const versions = array(data.versions);
@@ -594,7 +574,7 @@ async function renderModelConnections() {
     const data = await api('/api/model-connections'); if (request !== modelConnectionsRequest) return;
     const roles = data.roles || {}, draft = structuredClone(data.configuration || data.config || state.data?.settings?.model_connections || {}), error = el('div', {class: 'banner banner-error', role: 'alert', hidden: true});
     const form = el('form', {class: 'model-connections-form'}), controls = {};
-    for (const [key, title] of [['generator', 'Generator'], ['red', 'Critical reviewer / red team'], ['blue', 'Independent reviewer / blue team']]) {
+    for (const [key, title] of [['generator', 'Generator'], ['red', 'Critical reviewer / red team'], ['blue', 'Independent reviewer / blue team'], ['purple', 'Final synthesis / purple team']]) {
       const role = roles[key] || {}, current = draft[key] || role;
       const provider = el('select', {'aria-label': `${title} connection`}, el('option', {value: ''}, 'Choose a connection'), el('option', {value: 'codex_cli'}, 'Authenticated Codex CLI'), el('option', {value: 'claude_cli'}, 'Authenticated Claude CLI'));
       provider.value = current.provider || '';
@@ -644,7 +624,7 @@ function showCVWorkflow(jobId, autoStart = false) {
 }
 function backToJobs() {
   clearTimeout(cvProduct.poll); cvProduct.autoStart = null;
-  const previous = state.returnToJobs || {page: 'recommended', hash: '#recommended', scroll: 0};
+  const previous = state.returnToJobs || {page: 'all', hash: '#all', scroll: 0};
   state.restoreInventory = !!inventoryState.response && inventoryState.view === previous.page;
   navigate(previous.page);
   requestAnimationFrame(() => requestAnimationFrame(() => window.scrollTo({top: previous.scroll || 0, behavior: 'auto'})));
@@ -659,9 +639,9 @@ async function loadCVWorkflow(jobId) {
   const request = ++cvProduct.request; clearTimeout(cvProduct.poll);
   if (cvProduct.jobId !== Number(jobId)) { cvProduct.jobId = Number(jobId); cvProduct.signature = ''; }
   const known = getJobs().find(job => String(job.id) === String(jobId));
-  $('#cv-workflow-heading').textContent = known ? displayTitle(known) : 'Create & review CV.';
+  $('#cv-workflow-heading').textContent = known ? displayTitle(known) : 'Prepare your application.';
   $('#cv-workflow-company').textContent = known ? `${known.company || 'Employer'} · ${known.location || 'Location not recorded'}` : 'A separate, versioned CV for this opportunity.';
-  if (!cvProduct.signature) $('#cv-workflow-body').replaceChildren(el('p', {class: 'loading-state', role: 'status'}, 'Loading your CV workspace…'));
+  if (!cvProduct.signature) $('#cv-workflow-body').replaceChildren(el('p', {class: 'loading-state', role: 'status'}, 'Loading your application workspace…'));
   try {
     const workflow = await api(`/api/jobs/${encodeURIComponent(jobId)}/cv-workflow`);
     if (request !== cvProduct.request || state.page !== 'cv-workflow') return;
@@ -674,7 +654,7 @@ async function loadCVWorkflow(jobId) {
     const intent = cvProduct.autoStart;
     if (intent?.jobId === Number(jobId)) {
       cvProduct.autoStart = null;
-      if (!array(workflow.runs).length && workflow.base_cv_ready && workflow.connections_ready) { await cvProductAction('start', {}, null, intent.key); return; }
+      if (!array(workflow.runs).length && workflow.base_cv_ready && workflow.connections_ready && !array(workflow.setup_blockers).length) { await cvProductAction('start', {}, null, intent.key); return; }
     }
     if (run && ['queued', 'running'].includes(run.status)) cvProduct.poll = setTimeout(() => loadCVWorkflow(jobId), 1800);
   } catch (error) {
@@ -721,6 +701,24 @@ function resultCheck(label, data) {
   const checks = array(metric.checks);
   return el('section', {class: 'result-check'}, el('h3', {}, label), badge(incomplete ? 'Needs checking' : metric.status ? human(metric.status) : 'Not assessed', warning ? 'amber' : 'neutral'), el('p', {}, text), metric.coverage ? el('p', {class: 'field-help'}, `${metric.coverage.assessed ?? '—'} of ${metric.coverage.total ?? '—'} requirements assessed`) : null, checks.length ? details('Inspect checks', list(checks.map(check => typeof check === 'string' ? check : `${check.passed ? 'Pass' : 'Needs attention'} · ${check.name || check.label || check.text || 'Check'}`), '')) : null);
 }
+function applicationProgress(run, workflow) {
+  const receipts = Object.values(run?.receipts || {}), steps = [['generator', 'Draft'], ['red', 'Red team'], ['blue', 'Blue team']];
+  if (array(workflow.workflow_roles).includes('purple') || array(run?.workflow_roles).includes('purple') || receipts.some(item => item.role === 'purple') || run?.application_packs) steps.push(['purple', 'Purple team']);
+  return el('ol', {class: 'application-progress', 'aria-label': 'Application preparation stages'}, steps.map(([role, label]) => {
+    const records = receipts.filter(item => item.role === role), done = records.length > 0 && records.every(item => item.status === 'completed');
+    const failed = records.some(item => ['failed', 'uncertain'].includes(item.status));
+    const running = records.some(item => item.status === 'dispatching');
+    return el('li', {class: `${role}${done ? ' complete' : running ? ' active' : failed ? ' failed' : ''}`}, el('span', {'aria-hidden': 'true'}, done ? '✓' : running ? '◌' : '○'), label, el('span', {class: 'sr-only'}, done ? ' complete' : failed ? ' needs attention' : running ? ' working' : ' not started'));
+  }));
+}
+function applicationPack(run, version) {
+  const pack = run?.application_packs?.[String(version.id)];
+  if (!pack || String(pack.material_id) !== String(version.id)) return null;
+  const mocked = pack.mocked === true || isMockedCVRun(run), letter = pack.cover_letter?.text || array(pack.cover_letter?.paragraphs).join('\n\n');
+  const downloads = el('div', {class: 'cv-download-actions'}, button(`Copy ${mocked ? 'test ' : ''}cover letter`, event => busy(event.currentTarget, async () => { await navigator.clipboard.writeText(letter); announce('Cover letter copied. Review it before sending.'); }), 'button-quiet'));
+  for (const format of array(pack.formats).filter(item => ['txt', 'docx', 'pdf'].includes(item))) downloads.append(el('a', {class: 'button button-quiet', href: `/api/cv-runs/${encodeURIComponent(run.id)}/application-pack/${encodeURIComponent(version.id)}/${format}`, download: ''}, `Download ${mocked ? 'test ' : ''}cover letter ${format.toUpperCase()}`));
+  return el('section', {class: 'cv-finished-document cover-letter-document'}, el('div', {class: 'section-heading'}, el('div', {}, el('p', {class: 'eyebrow'}, 'PURPLE TEAM SYNTHESIS'), el('h2', {}, 'Your cover letter')), badge(mocked ? 'Test document — mocked synthesis' : 'Ready for your review', mocked ? 'amber' : 'neutral')), pack.summary ? el('p', {class: 'muted'}, pack.summary) : null, downloads, el('div', {class: 'material-preview product-cv-preview', tabindex: 0, 'aria-label': 'Cover letter preview'}, letter), array(pack.outstanding_questions).length ? details('Questions to resolve before applying', list(pack.outstanding_questions.map(cvFindingText), '')) : null, details('How the reviews were resolved', list(array(pack.decisions).map(item => `${human(item.decision)}: ${item.reason}`), 'No additional reviewer decisions were recorded.')), el('p', {class: 'field-help'}, 'Review the CV and cover letter, then submit them through the employer’s application page.'));
+}
 function renderCVProduct(workflow) {
   const jobId = workflow.job_id || cvProduct.jobId, run = currentCVRun(workflow), active = !!run && ['queued', 'running'].includes(run.status);
   const versions = array(workflow.versions), selectedId = workflow.selected_material_id || run?.selected_material_id || array(run?.material_ids).slice(-1)[0];
@@ -728,10 +726,11 @@ function renderCVProduct(workflow) {
   const body = $('#cv-workflow-body'), content = [], job = getJobs().find(item => String(item.id) === String(jobId));
   const selectionKey = `${run?.id || ''}:${version?.id || ''}`;
   if (cvProduct.displayedRun !== selectionKey) { cvProduct.displayedRun = selectionKey; cvProduct.selected.clear(); cvProduct.rejected.clear(); }
-  if (!workflow.base_cv_ready || !workflow.connections_ready) {
-    const setup = el('section', {class: 'cv-setup-card'}, el('h2', {}, 'Set up once, then create & review in one click.'), list(array(workflow.setup_blockers).map(cvFindingText), 'Your base CV and model connections are required.'));
+  if (!workflow.base_cv_ready || !workflow.connections_ready || array(workflow.setup_blockers).length) {
+    const setup = el('section', {class: 'cv-setup-card'}, el('h2', {}, 'A little setup. A stronger application.'), list(array(workflow.setup_blockers).map(cvFindingText), 'Your base CV and model connections are required.'));
     if (!workflow.base_cv_ready) setup.append(button('Choose your base CV', () => navigate('your-cv'), 'button-primary'));
-    if (!workflow.connections_ready) setup.append(button('Connect reviewer', () => navigate('settings'), 'button-primary'));
+    if (workflow.base_cv_ready && array(workflow.setup_blockers).length) setup.append(button('Add your verified experience', () => navigate('your-cv'), 'button-quiet'));
+    if (!workflow.connections_ready) setup.append(button('Connect reviewers', () => { $('#model-connections-settings').open = true; navigate('settings'); }, 'button-primary'));
     content.push(setup);
   }
   if (job) content.push(...jobNotices(job));
@@ -741,7 +740,7 @@ function renderCVProduct(workflow) {
     const label = run.label || {queued: 'Preparing draft', running: 'Preparing draft', ready: 'Ready for your review', needs_answer: 'Needs your answer', failed: 'Could not complete', uncertain: 'Could not complete', cancelled: 'Cancelled', needs_setup: 'Connection needed'}[run.status] || human(run.status);
     const status = el('section', {class: `cv-live-status${active ? ' active' : ''}`, role: 'status'}, active ? el('span', {class: 'spinner', 'aria-hidden': 'true'}) : null, el('div', {}, el('h2', {}, isMockedCVRun(run) ? `Test run · ${label}` : label), el('p', {}, active ? 'Progress is saved by the app. You can leave this page and return while it continues.' : ['ready', 'needs_answer'].includes(run.status) ? 'Review the finished document and any remaining questions before using it.' : 'Completed stages are preserved. A failed reviewer is not counted as a passed review.')));
     if (active) status.append(button('Cancel', event => cvProductAction('cancel', {run_id: run.id}, event.currentTarget), 'button-quiet button-small'));
-    content.push(status);
+    content.push(applicationProgress(run, workflow), status);
     if (run.error) content.push(el('div', {class: 'banner banner-error', role: 'alert'}, typeof run.error === 'string' ? run.error : cvFindingText(run.error)));
     if (['failed', 'uncertain', 'cancelled', 'needs_setup'].includes(run.status)) {
       const retry = el('section', {class: 'cv-retry'}), acknowledged = el('input', {type: 'checkbox'});
@@ -751,8 +750,8 @@ function renderCVProduct(workflow) {
     }
   }
   if (!run || ['needs_setup', 'cancelled'].includes(run.status)) {
-    const start = detailSection('Create a CV for this job', directionFields(jobId), button('Create & review CV', event => cvProductAction('start', {}, event.currentTarget), 'button-primary'));
-    $('button', start).disabled = !workflow.base_cv_ready || !workflow.connections_ready;
+    const start = detailSection('Prepare this application', el('p', {class: 'muted'}, 'Create a tailored CV, independent reviews and a cover letter grounded in your experience.'), directionFields(jobId), button('Prepare application', event => cvProductAction('start', {}, event.currentTarget), 'button-primary'));
+    $('button', start).disabled = !workflow.base_cv_ready || !workflow.connections_ready || array(workflow.setup_blockers).length > 0;
     content.push(start);
   }
   if (version) {
@@ -783,6 +782,7 @@ function renderCVProduct(workflow) {
     const versionDirection = version.direction?.emphasis || version.emphasis || resultRun?.direction?.emphasis || directionDraft(jobId).emphasis;
     const directionReason = version.direction?.reason || resultRun?.direction_reason;
     content.push(el('section', {class: 'cv-finished-document'}, el('div', {class: 'section-heading'}, el('div', {}, el('h2', {}, `Your CV · version ${version.version}`), el('p', {class: 'muted'}, `Direction: ${directionChoices(jobId).find(([key]) => key === versionDirection)?.[1] || human(versionDirection)}`), directionReason ? el('p', {class: 'field-help'}, directionReason) : null), badge(testVersion ? 'Test document — mocked review' : active ? 'Draft — checks in progress' : reviewedRun?.status === 'needs_answer' ? 'Reviewed — your answer needed' : reviewedRun ? 'Ready for your review' : 'Review required', active || !reviewedRun || testVersion ? 'amber' : '')), testVersion && !isMockedCVRun(run) ? el('p', {class: 'banner banner-warning'}, 'Test run — mocked model responses. This selected document has no verified live review.') : null, download, el('div', {class: 'material-preview product-cv-preview', tabindex: 0, 'aria-label': 'Tailored CV preview'}, version.cv_text || version.text || 'Preview not recorded.')));
+    const pack = applicationPack(resultRun, version); if (pack) content.push(pack);
     content.push(el('div', {class: 'cv-result-columns'}, detailSection('What improved', list(improvements, reviewedRun ? 'No further material changes were recommended.' : 'Changes appear when the review stages complete.')), cvAttentionSection(job, version, resultRun, !!reviewedRun, workflow.confirmed_qualifications)));
     content.push(el('div', {class: 'cv-check-summary'}, resultCheck('Verified evidence fit', analysis.evidence_match), resultCheck('How the CV presents your evidence', analysis.evidence_presentation), resultCheck('Document checks', analysis.document_checks)));
     content.push(adjust);
@@ -974,7 +974,16 @@ function runProgress(run) {
   const requests = run.requests ?? counters.requests;
   return `${found} roles found${fresh === undefined ? '' : ` · ${fresh} new unique`} · ${refreshed} existing records refreshed · ${checked} eligibility checked${boards === undefined ? '' : ` · ${boards} boards attempted`}${requests === undefined ? '' : ` · ${requests} source requests`}${run.message ? ` — ${run.message}` : ''}`;
 }
-async function startSearch(mode, control) { await busy(control, async () => { const scope = $('#search-scope').value; await api('/api/search', {mode, scope}); announce(`${human(mode)} ${scope} search started. Coverage is bounded by the configured search budgets; Top picks do not limit the inventory.`); await refreshState(); }); }
+async function startSearch(mode, control) {
+  await busy(control, async () => {
+    const scope = $('#search-scope').value, continuation = mode === 'normal' ? continuableSearch(scope) : null;
+    await api(continuation ? `/api/runs/${encodeURIComponent(continuation.id)}/resume` : '/api/search', continuation ? {} : {mode, scope});
+    announce(continuation ? 'Continuing with the remaining sources. Your collected jobs are preserved.' : 'Finding jobs. New opportunities will appear here as they arrive.');
+    if (state.page !== 'all') navigate('all');
+    await refreshState();
+  });
+  renderDiscoveryStatus();
+}
 async function cancelRun(id, control) { await busy(control, async () => { await api(`/api/runs/${encodeURIComponent(id)}/cancel`, {}); announce('Cancellation requested. Partial results are preserved.'); await refreshState(); }); }
 function renderRuns() {
   if (!state.data) return;
@@ -1076,8 +1085,8 @@ function renderProfile() {
   const refs = ['direct_evidence_ids', 'Supporting evidence IDs', {list: true, help: 'One exact evidence ID per line, from the evidence records below.'}];
   const employment = recordEditor('Employment', array(profile.employment), [['title', 'Role'], ['employer', 'Employer'], ['start', 'Start date'], ['end', 'End date or Present'], refs], records => setProfile('employment', records), () => ({record_id: `employment-${Date.now()}`, title: '', employer: '', start: '', end: '', direct_evidence_ids: []}));
   const projects = ['projects', 'research'].map(key => recordEditor(human(key), array(profile[key]), [['name', 'Name'], ['period', 'Dates'], refs], records => setProfile(key, records), () => ({record_id: `${key}-${Date.now()}`, name: '', period: '', direct_evidence_ids: []})));
-  const guidance = el('p', {class: 'banner banner-info'}, 'Your profile starts empty. Add supported facts here, then upload a base CV in Your CV. Uploading a document does not automatically verify its claims. Qualifications print the exact text of their linked evidence record; mark completed awards and approved evidence explicitly. All personal details are stored locally.');
-  $('#profile-fields').replaceChildren(guidance, basic, contact, skills, eligibilityFields, employment, ...projects, qualifications, evidence);
+  const guidance = el('p', {class: 'banner banner-info'}, 'Add your experience in your own words. Only facts you approve can appear in an application; uploading a CV alone does not verify them. Your personal details stay in this local workspace.');
+  $('#profile-fields').replaceChildren(guidance, basic, contact, skills, evidence, details('Experience & qualifications', employment, ...projects, qualifications), details('Eligibility & languages', eligibilityFields));
 }
 function renderPolicyFields() {
   const settings = settingsDraft;
@@ -1212,6 +1221,8 @@ async function saveReviewedImport(event) {
 }
 function bindEvents() {
   ['#import-button', '#pipeline-import-button'].forEach(selector => $(selector).addEventListener('click', () => openImport()));
+  $('#bulk-preparation-tools').addEventListener('toggle', () => $('#inventory-list').classList.toggle('batch-selection', $('#bulk-preparation-tools').open));
+  $('#search-scope').addEventListener('change', () => { inventoryState.region = $('#search-scope').value; resetInventoryFilters(); renderDiscoveryStatus(); });
   $('#back-to-jobs-button').addEventListener('click', backToJobs);
   $('#refresh-diagnostics-button').addEventListener('click', event => busy(event.currentTarget, renderDiagnostics));
   $$('[data-location]').forEach(control => control.addEventListener('click', () => { inventoryState.region = 'all'; inventoryState.location = control.dataset.location; inventoryState.page = 1; $('#inventory-country').value = ''; $('#inventory-work-pattern').value = ''; renderPipeline(); }));
@@ -1219,14 +1230,9 @@ function bindEvents() {
   $$('[data-close-dialog]').forEach(control => control.addEventListener('click', () => closeDialog(control.closest('dialog'))));
   $$('dialog').forEach(dialog => { dialog.addEventListener('click', event => { if (event.target === dialog) { const box = dialog.getBoundingClientRect(); if (event.clientX < box.left || event.clientX > box.right || event.clientY < box.top || event.clientY > box.bottom) closeDialog(dialog); } }); });
   window.addEventListener('hashchange', () => { const page = normalPage(location.hash.slice(1)); if (['recommended', 'all', 'needs_checking', 'saved', 'applications', 'settings', 'your-cv', 'cv-workflow'].includes(page)) changePage(page, true); });
-  $('#show-more-button').addEventListener('click', () => openInventory('all'));
-  $$('[data-today-region]').forEach(control => control.addEventListener('click', () => openInventory(control.dataset.todayRegion)));
-  $('#view-stretches-button').addEventListener('click', () => { openInventory('all'); $('#inventory-fit').value = 'stretch'; renderPipeline(); });
-  $('#quick-add-form').addEventListener('submit', event => { event.preventDefault(); openImport($('#quick-add-url').value.trim()); });
   $('#fetch-import-preview').addEventListener('click', fetchImportPreview);
   $('#import-form').elements.namedItem('url').addEventListener('input', () => { importPreview = null; $('#import-preview-status').textContent = 'URL changed. Fetch a new preview or complete the manual details.'; });
   $('#application-dialog').addEventListener('close', () => { applicationDirty = false; });
-  $('#today-preparation-button').addEventListener('click', () => { navigate('search'); setTimeout(() => { $('#preparation-queue').open = true; $('#preparation-queue').scrollIntoView({behavior: 'smooth'}); }, 0); });
   $$('[data-region]').forEach(control => control.addEventListener('click', () => { inventoryState.location = ''; openInventory(control.dataset.region, {view: inventoryState.view, reset: false}); }));
   $('#inventory-search').addEventListener('input', () => { clearTimeout(inventoryState.searchTimer); inventoryState.searchTimer = setTimeout(() => { inventoryState.page = 1; renderPipeline(); }, 240); });
   ['#inventory-status', '#inventory-country', '#inventory-family', '#inventory-fit', '#inventory-eligibility', '#inventory-work-authorisation', '#inventory-verification', '#inventory-salary', '#inventory-work-pattern', '#inventory-sponsorship', '#inventory-relocation', '#inventory-application-stage', '#inventory-stretches', '#inventory-excluded', '#inventory-seniority', '#inventory-source', '#inventory-saved', '#inventory-hidden', '#inventory-date-field', '#inventory-date-from', '#inventory-date-to'].forEach(selector => $(selector).addEventListener('change', () => { inventoryState.page = 1; renderPipeline(); }));
@@ -1241,7 +1247,6 @@ function bindEvents() {
   $('#prepare-selected-button').addEventListener('click', event => previewPreparation({job_ids: [...inventoryState.selected.keys()].map(id => Number(id))}, event.currentTarget));
   $$('[data-prepare-next]').forEach(control => control.addEventListener('click', () => previewPreparation({filters: inventoryFilters(), count: Number(control.dataset.prepareNext)}, control)));
   $('#confirm-preparation-button').addEventListener('click', event => confirmPreparation(event.currentTarget));
-  $('#refresh-button').addEventListener('click', event => busy(event.currentTarget, async () => { await api('/api/shortlist/refresh', {}); await refreshState(); announce('Today refreshed. Your saved jobs and application records remain available.'); }));
   $('#search-button').addEventListener('click', event => startSearch('normal', event.currentTarget)); $('#deep-search-button').addEventListener('click', event => startSearch('deep', event.currentTarget)); $('#bootstrap-search-button').addEventListener('click', event => startSearch('bootstrap', event.currentTarget));
   $('#import-form').addEventListener('submit', saveReviewedImport);
   $('#company-form').addEventListener('submit', async event => {
@@ -1260,11 +1265,11 @@ function bindEvents() {
     event.preventDefault(); busy($('button[type=submit]', event.currentTarget), async () => { await api('/api/profile', {profile: profileDraft}); profileDirty = false; await refreshState({renderForms: true}); $('#profile-save-status').textContent = 'Profile version saved'; announce('Profile saved. New drafts use the updated evidence.'); });
   });
   $('#settings-form').addEventListener('submit', event => {
-    event.preventDefault(); busy($('button[type=submit]', event.currentTarget), async () => { await api('/api/settings', {settings: settingsDraft}); settingsDirty = false; await refreshState({renderForms: true}); $('#settings-save-status').textContent = 'Settings saved'; announce('Search settings saved. Refresh optional Top picks when you want to reselect.'); });
+    event.preventDefault(); busy($('button[type=submit]', event.currentTarget), async () => { await api('/api/settings', {settings: settingsDraft}); settingsDirty = false; await refreshState({renderForms: true}); $('#settings-save-status').textContent = 'Settings saved'; announce('Search preferences saved.'); });
   });
   document.addEventListener('keydown', event => {
     if (event.ctrlKey || event.metaKey || event.altKey || event.target.closest('input, textarea, select, [contenteditable=true]') || $$('dialog[open]').length) return;
-    if (['1', '2', '3', '4', '5'].includes(event.key)) { event.preventDefault(); navigate({'1': 'recommended', '2': 'your-cv', '3': 'saved', '4': 'applications', '5': 'settings'}[event.key]); }
+    if (['1', '2', '3', '4', '5'].includes(event.key)) { event.preventDefault(); navigate({'1': 'all', '2': 'your-cv', '3': 'saved', '4': 'applications', '5': 'settings'}[event.key]); }
     if (['a', 'i'].includes(event.key.toLowerCase())) { event.preventDefault(); openImport(); }
     if (event.key === '/') { event.preventDefault(); navigate('pipeline'); setTimeout(() => $('#inventory-search').focus(), 0); }
   });
@@ -1272,8 +1277,7 @@ function bindEvents() {
 }
 async function init() {
   bindEvents();
-  $('#today-date').textContent = new Date().toLocaleDateString('en-GB', {weekday: 'long', day: 'numeric', month: 'long'}).toUpperCase();
-  const page = normalPage(location.hash.slice(1)); changePage(['recommended', 'all', 'needs_checking', 'saved', 'applications', 'settings', 'your-cv', 'cv-workflow'].includes(page) ? page : 'recommended');
+  const page = normalPage(location.hash.slice(1)); changePage(['recommended', 'all', 'needs_checking', 'saved', 'applications', 'settings', 'your-cv', 'cv-workflow'].includes(page) ? page : 'all');
   try { await refreshState({renderForms: true}); } catch (error) {
     $('#connection-label').textContent = 'Local app unavailable'; $('#connection-dot').className = 'connection-dot error';
     showError($('#global-error'), error);

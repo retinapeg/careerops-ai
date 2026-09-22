@@ -14,7 +14,7 @@ from careerops import model_connections as connections
 class FakeStore:
     def __init__(self, path):
         self.path, self.lock = path, threading.RLock()
-        self.values = {'profile': {'name': 'Candidate Example', 'evidence': [{'id': 'e1', 'text': 'Built a test system.'}]},
+        self.values = {'profile': {'name': 'Candidate Example', 'evidence': [{'id': 'e1', 'text': 'Built a test system.', 'status': 'verified'}]},
                        'settings': {'model_connections': {**{r: {'provider': 'codex_cli' if r != 'blue' else 'claude_cli', 'model': 'test-model', 'effort': 'high'} for r in connections.ROLES}, 'timeout_seconds': 30, 'max_concurrent_runs': 1}}}
         self.jobs = {1: {'id': 1, 'title': 'Synthetic Analyst', 'description': 'Explain systems.', 'status': 'new'}, 2: {'id': 2, 'title': 'Other job'}}
         self.materials = {}
@@ -50,7 +50,8 @@ def system(tmp_path, monkeypatch):
     monkeypatch.setattr(connections, 'status', lambda store: {'ready': True, 'setup_blockers': [], 'configuration': store.settings()['model_connections']})
     def execute(connection, payload, schema, role, **kwargs):
         calls.append((role, deepcopy(payload)))
-        return {'response': {'findings': [], 'summary': 'Mocked independent review'}, 'provider': connection['provider'],
+        response = ({'summary': 'Mocked synthesis', 'decisions': [{'finding_id': f['id'], 'decision': 'agree', 'reason': 'Supported by the frozen review.'} for f in payload['findings']], 'letter_paragraphs': [{'evidence_ids': ['e1']}]} if role == 'purple' else {'findings': [], 'summary': 'Mocked independent review'})
+        return {'response': response, 'provider': connection['provider'],
                 'actual_model': 'test-model', 'mocked': True, 'usage': {'input_tokens': 1}, 'tool_calls': 0}
     monkeypatch.setattr(connections, 'execute', execute)
     def build(job, profile, proposal, direction=None, base_cv=None):
@@ -81,7 +82,7 @@ def test_double_click_frozen_inputs_independent_reviews_and_no_apply(system):
     runner._run(first['id'])
     run = runner.get(first['id'])
     assert run['status'] == 'ready'
-    assert [role for role, _ in calls] == ['generator', 'red', 'blue']
+    assert [role for role, _ in calls] == ['generator', 'red', 'blue', 'purple']
     assert calls[1][1] == calls[2][1]
     assert calls[1][1]['advert'] == 'Explain systems.'
     assert calls[1][1]['evidence'][0]['text'] == 'Built a test system.'
@@ -111,7 +112,7 @@ def test_uncertain_retry_needs_consent_reuses_completed_calls(system, monkeypatc
     runner.retry(run['id'], explicit_uncertain=True)
     runner._run(run['id'])
     assert runner.get(run['id'])['status'] == 'ready'
-    assert [role for role, _ in calls] == ['generator', 'red', 'blue', 'blue']
+    assert [role for role, _ in calls] == ['generator', 'red', 'blue', 'blue', 'purple']
     assert len(store.materials) == 1
 
 
@@ -147,8 +148,8 @@ def test_partial_review_restart_uses_frozen_packet_and_schema_and_clears_error(s
     replacement._run(run['id'])
     public = replacement.get(run['id'])
     assert public['status'] == 'ready'
-    assert [role for role, _ in calls] == ['generator', 'red', 'blue', 'blue']
-    assert calls[-1][1] == original_packet
+    assert [role for role, _ in calls] == ['generator', 'red', 'blue', 'blue', 'purple']
+    assert calls[-2][1] == original_packet
     assert schemas == [{'rubric_schema': 'v2'}] * 3
     assert 'review_inputs' not in public
     assert 'error' not in public['receipts']['a:r0:blue']
@@ -240,7 +241,7 @@ def test_document_failure_retry_does_not_repeat_models(system, monkeypatch):
     runner.retry(run['id'])
     runner._run(run['id'])
     assert runner.get(run['id'])['status'] == 'ready'
-    assert len(calls) == 3
+    assert len(calls) == 4
 
 
 def test_reviews_bounded_to_two_revisions_and_findings_have_run_ids(system):
@@ -257,7 +258,7 @@ def test_reviews_bounded_to_two_revisions_and_findings_have_run_ids(system):
     result = runner.get(run['id'])
     assert result['status'] == 'ready'
     assert len(result['material_ids']) == 3
-    assert len(calls) == 7
+    assert len(calls) == 8
     assert all(f['id'].startswith(str(run['id']) + ':') for f in result['suggestions'])
     assert result['what_improved'] == ['Bring evidence earlier.']
     assert result['suggestions'][0]['status'] == 'applied'
@@ -285,7 +286,7 @@ def test_review_again_skips_generator_and_missing_connection_stays_setup(system,
     material = store.save_material(1, 'existing', {'cv_text': 'Prior CV', 'direction': {}, 'blocked_proposals': []})
     run = runner.start(1, {'action': 'review_again', 'material_id': material['id']})
     runner._run(run['id'])
-    assert [role for role, _ in calls] == ['red', 'blue']
+    assert [role for role, _ in calls] == ['red', 'blue', 'purple']
     monkeypatch.setattr(connections, 'status', lambda store: {'ready': False, 'setup_blockers': ['Connect reviewer'], 'configuration': store.settings()['model_connections']})
     blocked = runner.start(1, {'idempotency_key': 'missing'})
     assert blocked['status'] == 'needs_setup'
@@ -305,7 +306,7 @@ def test_real_thread_keeps_running_without_browser_and_reuses_owner(system):
         while active.get(run['id'])['status'] in engine.ACTIVE and time.monotonic() < deadline:
             time.sleep(.02)
         assert active.get(run['id'])['status'] == 'ready'
-        assert len(calls) == 3
+        assert len(calls) == 4
     finally:
         active.close()
 

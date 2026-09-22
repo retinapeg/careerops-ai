@@ -158,7 +158,12 @@ def default_settings() -> dict:
                                              "max_new_employer_requests": 100, "max_board_requests": 150, "max_vacancy_requests": 120,
                                              "max_historical_requests": 0, "max_ai_reviews": 15, "per_host_limit": 100, "timeout_seconds": 600},
                                     "bootstrap": {}}},
-                   "sources": [], "role_families": ["Python engineer", "AI automation", "technical support", "implementation consultant",
+                   "sources": [
+                       {"type": "greenhouse", "company": "Monzo", "url": "https://job-boards.greenhouse.io/monzo", "enabled": True},
+                       {"type": "greenhouse", "company": "Anthropic", "url": "https://job-boards.greenhouse.io/anthropic", "enabled": True},
+                       {"type": "ashby", "company": "OpenAI", "url": "https://jobs.ashbyhq.com/openai", "enabled": True},
+                       {"type": "lever", "company": "Palantir", "url": "https://jobs.lever.co/palantir", "enabled": True},
+                   ], "role_families": ["Python engineer", "AI automation", "technical support", "implementation consultant",
                                                       "data analyst", "AI evaluation", "API integration", "research engineer", "quantitative analyst"],
                    "normal": {"max_pages": 12, "max_jobs": 80, "max_queries": 6, "max_turns": 6,
                               "concurrency": 2, "timeout_seconds": 90, "max_retries": 1},
@@ -360,6 +365,10 @@ def _salary(job: dict, text: str, source: str) -> None:
         quote = _excerpt(text, match)
         low = _number(match["low"], match["lowk"] or (match["highk"] if match["high"] else ""))
         high = _number(match["high"], match["highk"] or match["lowk"]) if match["high"] else low
+        # Do not truncate an unsupported magnitude such as $10M into $10,
+        # or promote a contradictory extracted range to asserted source facts.
+        if (match.end() < len(text) and text[match.end()].isalpha() and not text[match.end() - 1].isspace()) or low > high:
+            continue
         currency = {"£": "GBP", "€": "EUR", "$": "USD" if job.get("country") == "US" else "unknown", "₪": "ILS"}.get(match["currency"].strip(), match["currency"].strip().upper())
         before = text[max(0, match.start() - 50):match.start()].lower()
         after = text[match.end():match.end() + 90].lower()
@@ -378,7 +387,7 @@ def _salary(job: dict, text: str, source: str) -> None:
         explicit_ote = bool(re.search(r"(?:\bote|on.target earnings|total compensation)\s*(?::|of|up to|from)?\s*$", before) or re.match(r"\s*(?:(?:per |a |/)(?:year|annum)\s*)?(?:ote\b|on.target earnings|total compensation)", after))
         # Employer revenue/funding is not employee compensation. In particular
         # '$10 billion in lifetime revenue' must not become a $10 base salary.
-        if not explicit_base and re.search(r"\b(?:revenue|turnover|valuation|funding|market cap|investment raised)\b", quote, re.I):
+        if not explicit_base and not explicit_ote and re.search(r"\b(?:revenue|turnover|valuation|funding|market cap|investment raised|annual spend|customer spend|client spend|account value|contract value|deal size|portfolio value)\b", quote, re.I):
             continue
         allowance = re.search(r"\b(?:allowance|wellness|working from home|equipment budget|learning budget|meal vouchers?|reimbursement)\b", quote, re.I)
         salary_type = "base" if explicit_base else "ote" if explicit_ote or re.search(r"\bote\b|on.target earnings|total compensation", quote, re.I) else "base"

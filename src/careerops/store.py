@@ -654,6 +654,10 @@ class Store:
                 value.update(checkpoint=prior.get("checkpoint", {}), resumed_from=prior_id,
                              review_spend_usd=prior.get("review_spend_usd", 0),
                              review_count=prior.get("review_count", 0), query_leads=prior.get('query_leads', {}))
+                # An explicit continuation gets another bounded time window;
+                # money, request caps and completed work remain cumulative.
+                value['checkpoint'] = copy.deepcopy(value['checkpoint'])
+                value['checkpoint']['elapsed_seconds'] = 0
             value["id"] = db.execute("INSERT INTO runs(data) VALUES (?)", (encode(value),)).lastrowid
             if prior_id:
                 prior["resumed_by"] = value["id"]

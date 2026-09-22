@@ -1,8 +1,8 @@
 # CareerOps AI
 
-A local job-search workspace with evidence-bound CV generation and independent
-red-team and blue-team review. Find vacancies, retain the full discovery inventory,
-save promising roles, prepare versioned documents and track your own applications.
+A local job-search workspace: discover vacancies, save promising roles and prepare
+an application. Evidence-bound CV generation, independent red and blue reviews,
+and purple-team synthesis produce versioned CVs and source-backed cover letters.
 
 The UI runs on your computer. This repository contains application code and
 synthetic checks; your profile, uploaded CVs, job history and generated documents
@@ -26,14 +26,24 @@ flowchart TD
     U --> F
     F --> G{Supported revision available?}
     G -->|Yes, within two revision rounds| D
-    G -->|No, or revision limit reached| H[Check document exports]
-    H --> I[Ready for review or needs your answer]
+    G -->|No, or revision limit reached| P[Purple synthesis of both reviews]
+    P --> L[Select approved evidence for this version's cover letter]
+    L --> H[Check document exports]
+    H --> I[Ready for human review or needs your answer]
 ```
 
 The review branches represent independent information paths. Calls run
 **sequentially**, using the same frozen packet, and neither reviewer sees the
-other's response. Red and blue are configured reviewer roles with a shared
-structured review contract; their labels do not prove complementary expertise.
+other's response. Red checks unsupported claims and requirement gaps; blue looks
+for stronger truthful positioning. Purple then reconciles their findings. These
+roles have different instructions and a shared structured contract; their labels
+do not prove complementary expertise or factual correctness.
+
+Purple selects approved evidence for the letter body. The controller copies those
+source sentences and adds the role, company, salutation and closing. This keeps the
+draft traceable; edit its wording before sending. Purple cannot erase unresolved
+questions or turn a model opinion into candidate evidence. Each pack belongs to
+one saved CV version, and downloading it never makes another model call.
 
 The graph makes several engineering decisions explicit:
 
@@ -66,15 +76,25 @@ PYTHONPATH=src python -m careerops --port 8766
 Open [the local workspace](http://127.0.0.1:8766). The server binds to loopback;
 storing the code in a private repository does not deploy or host the UI.
 
-1. Enter your own identity, experience, skills and supporting facts in **Settings**.
-2. Upload a PDF or DOCX in **Your CV**. Uploading preserves a source document; it
+1. Choose **Find jobs** in **Discover**. Four public employer boards are configured
+   initially: Monzo, Anthropic, OpenAI and Palantir. Add sources in Settings to
+   broaden coverage; this starter set is not a search of the whole job market.
+2. Enter your identity, experience, skills and approved facts in **Your profile**.
+   Upload a PDF or DOCX there. Uploading preserves a source document; it
    does not automatically certify its claims or replace the authoritative profile.
-3. Configure **Generator**, **Critical reviewer / red team** and **Independent
-   reviewer / blue team** in Settings, using the exact model identifiers available
+3. Configure **Generator**, **Red**, **Blue** and **Purple** in Settings, using the
+   exact model identifiers available
    through your authenticated Codex or Claude CLI installations.
-4. Discover vacancies or import a job, then choose **Create & review CV**.
-5. Inspect outstanding questions and the saved version before downloading or
-   recording your own application progress.
+4. Save a promising vacancy or choose **Prepare application** on its card.
+5. Review the findings, outstanding questions, CV and cover letter before
+   downloading or recording your application progress.
+
+Discovery works without a model provider. London is the initial display filter;
+the full inventory remains available through the location filter. A blank profile
+shows **Fit not assessed**, rather than pretending the vacancy is unsuitable.
+Searches have bounded time and request limits. **Continue finding jobs** resumes
+unfinished work after a time limit, preserving previous results and cumulative
+request/spend limits. Source warnings remain visible when coverage is partial.
 
 Connection readiness means the local CLI appears available. Only a completed
 receipt demonstrates an actual model call. Calls use the selected CLI connection

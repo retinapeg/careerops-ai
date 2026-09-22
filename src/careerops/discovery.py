@@ -29,6 +29,7 @@ import certifi
 from .registry import board_identity
 
 MAX_BYTES = 2_000_000
+BOARD_MAX_BYTES = 32_000_000  # Whole public ATS feeds include hundreds of full adverts.
 MAX_URL = 4096
 
 
@@ -410,8 +411,10 @@ def _import(url, fetch):
     ats = _ats_location(url)
     identity = board_identity(url)
     if identity and identity["type"] == "ashby" and len(parts.path.strip("/").split("/")) >= 2:
-        rows = fetch(identity["endpoint"]).json().get("jobs", [])
+        rows, _ = _board_rows(identity, fetch)
         for raw in rows:
+            if not isinstance(raw, dict):
+                continue
             if urlsplit(str(raw.get("jobUrl", ""))).path.rstrip("/") == parts.path.rstrip("/"):
                 return _ashby(raw, identity["board"], url)
         raise ImportNeedsText("The direct vacancy was not found in the current public Ashby feed.")
@@ -701,8 +704,9 @@ def _discover_legacy(settings: dict, mode: str, emit, cancelled) -> dict:
             warning(str(exc) if isinstance(exc, FetchError) else "Source returned an unsupported job structure.")
         checkpoint_event()
         emit({"kind": "progress", "message": f'{counts["jobs"]} verified roles found; {counts["duplicates"]} duplicate leads removed.', **counts})
-    if not pending and not counts["pages"]:
-        warning("No discovery sources are configured. Add a company careers URL or enable a budgeted search provider; manual import remains available.")
+    if not pending and not counts["pages"] and status == "completed":
+        status = "setup_required"
+        warning("No public sources are enabled. Enable an employer board in Settings, or add a public careers URL, then fetch again.")
     result = {"status": status, **counts, "spent_usd": str(spent), "checkpoint": checkpoint(), "concurrency": 1}
     checkpoint_event()
     emit({"kind": "progress", "message": f"Discovery {status.replace('_', ' ')}.", **result})
@@ -815,7 +819,7 @@ def _board_rows(identity, fetch, offset=0, page_size=100):
     url = identity["endpoint"]
     if identity["type"] == "lever":
         url += "?" + urlencode({"mode": "json", "skip": offset, "limit": page_size})
-    data = fetch(url, max_bytes=8_000_000).json()
+    data = fetch(url, max_bytes=BOARD_MAX_BYTES).json()
     rows = data if identity["type"] == "lever" else data.get("jobs")
     if not isinstance(rows, list):
         raise FetchError("ATS returned an unsupported response.")
@@ -868,6 +872,18 @@ def verify_board(url, *, provenance=None, fetch=safe_fetch):
 
 def discover(settings: dict, mode: str, emit, cancelled) -> dict:
     """Discover a broad inventory with separate phase, host, scope and money caps."""
+    deliver = emit
+
+    def emit(event):
+        try:
+            deliver(event)
+        except RunStopped:
+            raise
+        except Exception as exc:
+            # Persistence/controller failures are not malformed public adverts.
+            # Let the host stop safely with its last durable checkpoint intact.
+            raise RuntimeError("Discovery could not persist its progress.") from exc
+
     if mode not in {"normal", "deep", "bootstrap"}:
         raise ValueError("Search mode must be normal, deep or bootstrap.")
     search = settings.get("search", {})
@@ -1088,7 +1104,7 @@ def discover(settings: dict, mode: str, emit, cancelled) -> dict:
                                        "pages_read": previous.get("pages_read", 0) + int(first_page),
                                        "rows_returned": previous.get("rows_returned", 0) + (len(rows) if first_page else 0),
                                        "next_offset": offset + len(rows) if more else None, "more_results": more,
-                                       "response_byte_limit": 8_000_000, "page_offset": offset,
+                                       "response_byte_limit": BOARD_MAX_BYTES, "page_offset": offset,
                                        "page_complete": False, "page_jobs_processed": 0}
         countries = set()
         # Emit the verified registry record before jobs; root can retain a board
@@ -1106,7 +1122,7 @@ def discover(settings: dict, mode: str, emit, cancelled) -> dict:
                     job["company"] = plain_text(item["company"])[:300]
                 countries.update(_job_countries(job))
                 jobs.append(job)
-            except (FetchError, ValueError, TypeError, KeyError, AttributeError):
+            except (FetchError, ValueError, TypeError, KeyError, AttributeError, IndexError):
                 counts["malformed"] += int(first_page)
                 source_bucket["malformed"] = source_bucket.get("malformed", 0) + int(first_page)
                 warning("An ATS record lacked a usable vacancy description or direct URL.")
@@ -1308,7 +1324,10 @@ def discover(settings: dict, mode: str, emit, cancelled) -> dict:
             except (FetchError, ValueError, TypeError, KeyError, AttributeError, IndexError) as exc:
                 if item in pending:
                     pending.remove(item)
-                warning(str(exc) if isinstance(exc, FetchError) else "Source returned an unsupported job structure.")
+                reason = str(exc) if isinstance(exc, FetchError) else "Source returned an unsupported job structure."
+                host = urlsplit(item.get("url", "")).hostname
+                warning(f"{host}: {reason}" if host else reason)
+                limitations.append("source_failed")
                 if item.get("url"):
                     emit({"kind": "verification_failed", "url": item["url"], "reason": str(exc) if isinstance(exc, FetchError) else "Unsupported source structure"})
                 if item["kind"] == "query":
@@ -1322,13 +1341,18 @@ def discover(settings: dict, mode: str, emit, cancelled) -> dict:
             status = "coverage_complete" if counts["boards_attempted"] >= limits["board_objective"] and counts["query_combinations"] >= limits["query_objective"] else "sources_exhausted"
     except RunStopped as exc:
         status = str(exc)
+    if not pending and not counts["pages"] and status == "sources_exhausted":
+        status = "setup_required"
+    message = ("No public sources are enabled. Enable an employer board in Settings, or add a public careers URL, then fetch again."
+               if status == "setup_required" else
+               f"Retained {counts['jobs']} vacancies from {counts['boards_verified']} verified employer boards; {counts['new_unique']} new.")
+    if "source_failed" in limitations:
+        message += " Some sources could not be read; review the source warnings before retrying."
     if not counts["pages"]:
-        warning("No public discovery request completed. Configure verified boards or public directory sources; paid search also requires an explicit budget.")
-    if not web.get("enabled") or web.get("provider") not in {"brave", "adzuna"}:
-        warning("Live web search is unavailable: no configured search route is enabled. Verified boards and public directory links remain available.")
+        warning(message if status == "setup_required" else "No public discovery request completed. Review the run's source warnings and request limits before retrying.")
     state = checkpoint()
     state["phase_cursor"] = cursor
-    result = {"status": status, "stop_reason": status, "scope": scope, **counts, "requests": counts["pages"], "phase_counts": phases, "per_host": hosts, "coverage": limits, "coverage_met": counts["boards_attempted"] >= limits["board_objective"] and counts["query_combinations"] >= limits["query_objective"], "limitations": sorted(set(limitations)), "spent_usd": str(spent), "checkpoint": state, "concurrency": 1,
+    result = {"status": status, "stop_reason": status, "message": message, "scope": scope, **counts, "requests": counts["pages"], "phase_counts": phases, "per_host": hosts, "coverage": limits, "coverage_met": counts["boards_attempted"] >= limits["board_objective"] and counts["query_combinations"] >= limits["query_objective"], "limitations": sorted(set(limitations)), "spent_usd": str(spent), "checkpoint": state, "concurrency": 1,
               **{key: state[key] for key in ("source_counts", "location_counts", "query_counts", "pagination", "counter_semantics")}}
     emit({"kind": "checkpoint", "checkpoint": state})
     emit({"kind": "progress", "message": f"Discovery stopped: {status.replace('_', ' ')}.", **result})

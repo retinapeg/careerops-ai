@@ -103,7 +103,11 @@ def test_ashby_public_board_and_direct_import_preserve_secondary_location(monkey
     job = next(e["job"] for e in events if e["kind"] == "job")
     assert d._job_countries(job) == ["FR", "GB"]
     assert job["work_pattern"] == "Hybrid"
-    direct = d._import(raw["jobUrl"], lambda u: page(u, {"jobs": [raw]}))
+    def direct_feed(url, **kwargs):
+        assert kwargs["max_bytes"] == d.BOARD_MAX_BYTES
+        return page(url, {"jobs": [None, raw]})
+
+    direct = d._import(raw["jobUrl"], direct_feed)
     assert direct["url"] == raw["jobUrl"]
 
 

@@ -2710,3 +2710,74 @@ dialog::backdrop {
 
 .bulk-card-select { display: none; align-items: center; gap: 6px; color: var(--muted); font-size: 11px; }
 #bulk-preparation-tools[open]:not([hidden]) ~ #inventory-list .bulk-card-select { display: flex; }
+
+/* Discovery and application studio: one clear next action per screen. */
+:root { --paper:#f8f9f6; --green:#285b48; --green-dark:#173f32; --line:#e2e7df; }
+main { max-width:1240px; padding:34px 42px 30px; }
+.sidebar { padding-top:28px; background:#fcfdfb; }
+.sidebar-note { opacity:.78; }
+.primary-nav a[data-page=settings] { margin-top:26px; color:var(--muted); }
+.page-heading { align-items:flex-start; margin-bottom:26px; gap:20px; }
+.page-heading h1 { font-size:clamp(30px,3vw,40px); letter-spacing:-1.4px; }
+.page-heading>.text-link { flex-shrink:0; margin-top:33px; font-size:12px; }
+.page-description { max-width:650px; font-size:14px; line-height:1.6; }
+.discovery-toolbar { padding:21px 23px; gap:15px; margin-bottom:19px; background:#eaf1e7; border-color:#dce5d7; border-radius:14px; }
+.discovery-toolbar strong { font-size:15px; font-weight:600; }
+.discovery-toolbar p { font-size:12px; line-height:1.5; max-width:530px; }
+.discovery-toolbar .button { min-height:46px; padding-inline:24px; font-size:14px; }
+.discovery-toolbar select { min-height:46px; background:#fff; border:1px solid #cfdbca; border-radius:8px; padding:9px 12px; color:var(--ink); }
+.onboarding-next-step { display:flex; align-items:center; justify-content:space-between; gap:18px; padding:15px 18px; margin:0 0 22px; border:1px solid var(--line); border-radius:10px; background:#fff; }
+.onboarding-next-step strong { font-size:13px; }
+.onboarding-next-step p { color:var(--muted); font-size:12px; margin-top:4px; line-height:1.5; }
+.onboarding-next-step>.text-link { flex-shrink:0; font-size:12px; }
+.inventory-toolbar { margin-bottom:12px; }
+.search-field { min-height:48px; background:white; border-radius:10px; }
+.search-field input { font-size:14px; }
+.inventory-filter-details { margin:0 0 9px; padding:12px 16px; border-color:var(--line); background:#fff; border-radius:9px; }
+.inventory-filter-details>summary { font-size:12px; color:var(--muted); }
+.inventory-filter-details[open]>summary { margin-bottom:18px; color:var(--ink); }
+.inventory-summary { margin:20px 0 13px; font-size:12px; color:var(--muted); }
+.inventory-summary strong { font-size:12px; font-weight:500; }
+.recommendation-feed { gap:18px; }
+.compact-job-card { padding:23px; border:1px solid var(--line); border-radius:13px; box-shadow:0 2px 6px #243d2d03; }
+.compact-job-card:hover { border-color:#b9cbbb; box-shadow:0 4px 14px #243d2d07; }
+.compact-job-card .company-name { text-transform:none; letter-spacing:0; font-size:13px; color:#68776c; }
+.compact-job-card .card-top { margin-bottom:11px; }
+.compact-job-card .card-title { font-size:21px; line-height:1.35; margin-bottom:12px; letter-spacing:-.45px; }
+.compact-job-card .card-location { font-size:12px; line-height:1.65; }
+.compact-job-card .compact-job-pay { font-size:12px; color:#45594b; margin-bottom:10px; }
+.compact-job-card .recommendation-reasons { margin:13px 0 19px; gap:12px; }
+.compact-job-card .recommendation-reasons dt { font-size:10px; letter-spacing:.2px; }
+.compact-job-card .recommendation-reasons dd { font-size:12px; line-height:1.6; }
+.compact-job-card .card-footer { padding-top:16px; border-top:1px solid #eef1eb; gap:10px; }
+.compact-job-card .card-footer .button { font-size:12px; min-height:39px; }
+.compact-job-card .card-footer .button-primary { margin-left:auto; }
+.application-card-status { display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-top:15px; padding-top:14px; border-top:1px solid var(--line); }
+.application-card-status p { width:100%; font-size:12px; }
+.application-card-status .text-link { margin-left:auto; font-size:12px; }
+#inventory-list.batch-selection .bulk-card-select { display:flex; }
+.workspace-tools { margin-top:30px; }
+.workspace-tools>summary { color:var(--muted); font-size:12px; }
+.empty-state { min-height:215px; padding:35px 24px; background:white; border:1px dashed #d5dfd0; border-radius:13px; }
+.empty-state h3 { font-size:20px; }
+.empty-state p { max-width:470px; font-size:13px; }
+.empty-icon { width:40px; height:40px; margin-bottom:14px; font-size:23px; }
+.settings-fold>summary { font-size:15px; font-weight:600; cursor:pointer; }
+.settings-fold[open]>summary { margin-bottom:24px; }
+.settings-fold .settings-title { margin-top:15px; }
+.settings-intro { font-size:14px; color:var(--muted); margin:15px 0; max-width:650px; }
+#profile-fields>.details-box { margin-top:20px; }
+.application-progress { list-style:none; padding:0; display:flex; flex-wrap:wrap; gap:10px; margin:0 0 20px; }
+.application-progress li { display:flex; align-items:center; gap:8px; font-size:12px; padding:10px 14px; border:1px solid var(--line); border-radius:24px; background:white; color:var(--muted); }
+.application-progress li.complete { background:#eef4e9; border-color:#d7e3cd; color:#31543b; }
+.application-progress li.active { border-color:#a7b7aa; color:var(--ink); }
+.application-progress li.failed { color:var(--red); background:var(--red-soft); }
+.application-progress .red>span:first-child { color:#a2605e; }
+.application-progress .blue>span:first-child { color:#547fa5; }
+.application-progress .purple>span:first-child { color:#8565a4; }
+.cover-letter-document { border-top:3px solid #b7a4c8; }
+.cover-letter-document .eyebrow { color:#816894; margin-bottom:8px; }
+.cover-letter-document>.field-help { margin-top:19px; }
+.cover-letter-document .product-cv-preview { max-height:480px; }
+@media(max-width:900px) { main { padding:27px 24px; } .page-heading>.text-link { margin-top:0; } .discovery-toolbar>div { flex-basis:100%; } .onboarding-next-step { align-items:flex-start; flex-direction:column; gap:11px; } }
+@media(max-width:620px) { main { padding:24px 17px; } .page-heading { flex-direction:column; gap:12px; } .page-heading h1 { font-size:30px; } .discovery-toolbar { padding:18px; } .discovery-toolbar>.button { width:auto; flex:1; } .discovery-toolbar .search-scope { flex:1; } .compact-job-card { padding:20px; } .compact-job-card .card-footer .button-primary { margin-left:auto; } .sidebar-note { display:none; } .application-progress { gap:6px; } .application-progress li { padding:8px 11px; font-size:11px; } }

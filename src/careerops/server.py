@@ -140,13 +140,15 @@ class Application:
 
     def state(self):
         from careerops.providers import provider_status
+        from careerops.materials import approved_evidence
         jobs = self.store.jobs()
         settings = self.store.settings()
+        profile = self.store.profile()
         from careerops.inventory import query_inventory
         counts = {region: query_inventory(jobs, settings, {'region': region, 'include_excluded': True})['counts'] for region in ('overseas','london','all')}
         summaries = [self.summary(j) for j in jobs]
         return {"jobs": summaries, "shortlist": self.store.shortlist(), "pipeline": [j for j in summaries if j["status"] != "new"],
-                "settings": settings, "profile": self.store.profile(), "companies": self.store.companies(),
+                "settings": settings, "profile": profile, "evidence_ready": bool(approved_evidence(profile)), "companies": self.store.companies(),
                 "runs": self.store.runs(), "providers": provider_status(settings), "token": self.token,
                 "inventory_counts": counts, "preparation_batches": self.store.preparation_batches(), "boards": self.store.boards(),
                 "stats": {"inventory": len(jobs), "admitted": sum(bool(j["evaluation"].get("admitted")) for j in jobs), "applied": sum(j["status"] == "applied" for j in jobs)}}
@@ -347,7 +349,7 @@ class Application:
                 run["checked"] += 1
                 run['new_unique'] = run.get('new_unique', 0) + int(not result['duplicate'])
                 if run['checked'] % 25 == 0:
-                    self.store.refresh_shortlist(replace=False)
+                    run['shortlisted'] = len(self.store.refresh_shortlist(replace=False))
                 job = result["job"]
                 provider = settings.get("providers", {})
                 max_turns = event.get('review_limit', settings.get("search", {}).get(run["mode"], {}).get("max_turns", 6))
@@ -403,7 +405,6 @@ class Application:
                 run["usage_usd"] = event.get("spent_usd", event.get("cost_usd", run.get("usage_usd", 0)))
             else:
                 run["events"] = (run.get("events", []) + [event])[-100:]
-            run["shortlisted"] = sum(len(v) for v in self.store.shortlist().values())
             self.store.update_run(run["id"], {k: v for k, v in run.items() if k != "id"})
         try:
             outcome = discover(settings, run["mode"], emit, cancellation.is_set)
@@ -421,8 +422,7 @@ class Application:
             run["message"] = "Search stopped safely. Partial jobs and checkpoints were retained. Check provider readiness, limits and source configuration."
             run["error_type"] = type(exc).__name__
         finally:
-            self.store.refresh_shortlist(replace=False)
-            run['shortlisted'] = sum(len(v) for v in self.store.shortlist().values())
+            run['shortlisted'] = len(self.store.refresh_shortlist(replace=False))
             run["finished_at"] = now()
             self.store.update_run(run["id"], {k: v for k, v in run.items() if k != "id"})
             cancellation.set()
@@ -488,6 +488,10 @@ def make_server(app, port=8765):
                 if path == '/api/model-connections':
                     from careerops import model_connections
                     return self.respond(200, model_connections.status(app.store))
+                if len(parts) == 6 and parts[:2] == ['api', 'cv-runs'] and parts[3] == 'application-pack':
+                    from careerops.application_pack import export_application_pack
+                    file = export_application_pack(app.store, int(parts[2]), int(parts[4]), parts[5])
+                    return self.respond(200, file.read_bytes(), mimetypes.guess_type(file)[0] or 'application/octet-stream', file.name)
                 if len(parts) == 4 and parts[:2] == ['api', 'jobs'] and parts[3] == 'cv-workflow':
                     return self.respond(200, app.cv_workflow(int(parts[2])))
                 if len(parts) == 4 and parts[:2] == ['api', 'jobs'] and parts[3] == 'cv':

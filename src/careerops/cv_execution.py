@@ -10,6 +10,7 @@ import secrets
 import threading
 
 from careerops import model_connections
+from careerops.materials import approved_evidence
 
 DIRECTIONS = [{'value': key, 'label': label} for key, label in (
     ('balanced', 'Balanced for this job'), ('applied_ai', 'Applied AI / implementation'),
@@ -119,12 +120,16 @@ class CVExecution:
         base = self._base()
         blockers = list(connections['setup_blockers'])
         if not base:
-            blockers.insert(0, 'Upload your base CV once in Your CV.')
+            blockers.insert(0, 'Upload your base CV once in Your profile.')
+        evidence_ready = bool(approved_evidence(self.store.profile()))
+        if not evidence_ready:
+            blockers.insert(0, 'Add supported experience in Your profile before preparing an application.')
         return {'job_id': int(job_id), 'runs': runs,
                 'active_run': next((run for run in runs if run['status'] in ACTIVE), None),
                 'latest_run': runs[0] if runs else None,
                 'selected_material_id': self.store.meta(f'cv_selected:{job_id}'),
                 'base_cv_ready': bool(base), 'connections_ready': connections['ready'],
+                'evidence_ready': evidence_ready,
                 'setup_blockers': blockers, 'directions': DIRECTIONS,
                 'reviewer_mode': 'automatic', 'max_automatic_rounds': 2}
 
@@ -180,7 +185,9 @@ class CVExecution:
             raise ValueError('Invalid CV run request identifier.')
         blockers = list(connections['setup_blockers'])
         if not base:
-            blockers.insert(0, 'Upload your base CV once in Your CV.')
+            blockers.insert(0, 'Upload your base CV once in Your profile.')
+        if not approved_evidence(profile):
+            blockers.insert(0, 'Add supported experience in Your profile before preparing an application.')
         with self.store.lock, self.store.connect() as db:
             db.execute('BEGIN IMMEDIATE')
             previous = db.execute('SELECT id,job_id FROM cv_runs WHERE idempotency_key=?', (idempotency,)).fetchone()
@@ -203,6 +210,7 @@ class CVExecution:
                    'error': None, 'requires_explicit_retry': False, 'cancel_requested': False,
                    'base_cv_version': {'id': base.get('id'), 'sha256': base.get('sha256'), 'filename': base.get('filename')} if base else None,
                    'evidence_version': _hash(profile), 'advert_version': _hash(job),
+                   'workflow_roles': [role for role in ('generator', 'red', 'blue', 'purple') if role in snapshot['connections']],
                    'selected_findings': selected, 'rejected_findings': rejected}
             run['id'] = db.execute('INSERT INTO cv_runs(job_id,idempotency_key,data) VALUES (?,?,?)',
                                   (int(job_id), idempotency, json.dumps(run))).lastrowid
@@ -237,9 +245,16 @@ class CVExecution:
             if run['status'] == 'needs_setup':
                 connections, base = model_connections.status(self.store), self._base()
                 if not base or not connections['ready']:
-                    raise ValueError('Upload your base CV and connect all three model roles before retrying.')
+                    raise ValueError('Upload your base CV and connect every model role before retrying.')
+                if not approved_evidence(run['snapshot']['profile']):
+                    profile = self.store.profile()
+                    if not approved_evidence(profile) or run['snapshot'].get('source_material'):
+                        raise ValueError('Add supported experience in Your profile and prepare a new application.')
+                    run['snapshot']['profile'] = deepcopy(profile)
+                    run['evidence_version'] = _hash(profile)
                 run['snapshot']['base_cv'] = deepcopy(base)
                 run['snapshot']['connections'] = connections['configuration']
+                run['workflow_roles'] = [role for role in ('generator', 'red', 'blue', 'purple') if role in connections['configuration']]
                 run['base_cv_version'] = {key: base.get(key) for key in ('id', 'sha256', 'filename')}
                 run['snapshot_hash'] = _hash(run['snapshot'])
             for receipt in run['receipts'].values():
@@ -425,6 +440,19 @@ class CVExecution:
                 if finding['id'] in applied:
                     finding['status'] = 'applied'
             material = self._save_material(run, branch, round_number + 1, revised, material['id'])
+        # Historical frozen runs keep their original three-role execution contract.
+        if 'purple' in snapshot['connections']:
+            from careerops import application_pack
+            pack_key = str(material['id'])
+            if pack_key not in run.setdefault('application_packs', {}):
+                self._stage(run, 'synthesis', 'Purple team: preparing your application')
+                synthesis, schema = self._review_input(run, f'{branch}:purple',
+                    lambda: application_pack.synthesis_packet(job, material, packet, results, findings),
+                    application_pack.Synthesis.model_json_schema)
+                response = self._call(run, f'{branch}:purple', 'purple', synthesis, schema)
+                mocked = any(receipt.get('mocked') is True for receipt in run['receipts'].values())
+                run['application_packs'][pack_key] = application_pack.build_pack(response, synthesis, profile, mocked=mocked)
+                self._write(run)
         return material
 
     def _compare(self, run, candidates):
@@ -503,6 +531,9 @@ class CVExecution:
                 warning = run.get('document_checks', {}).get(str(material['id']), {}).get('warning')
                 if warning:
                     attention.append(warning)
+                pack_questions = run.get('application_packs', {}).get(str(material['id']), {}).get('outstanding_questions', [])
+                attention.extend(pack_questions)
+                questions = questions or bool(pack_questions)
             run['needs_attention'] = list(dict.fromkeys(attention))
             run.update(status='needs_answer' if questions else 'ready', stage='complete',
                        label='Needs your answer' if questions else 'Ready for your review', completed_at=_now())

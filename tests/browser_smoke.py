@@ -30,7 +30,7 @@ def main():
         config = model_connections.defaults(store.settings())
         return {"ready": True, "setup_blockers": [], "configuration": config,
                 "roles": {role: dict(config[role], ready=True, live_verified=False)
-                          for role in ("generator", "red", "blue")}, "detected": {}}
+                          for role in model_connections.ROLES}, "detected": {}}
 
     def execute(connection, payload, schema, role, **kwargs):
         calls.append(role)
@@ -45,6 +45,10 @@ def main():
                     for key in section["evidence_ids"][:2]]}
                     for section in payload["available_sections"]],
             }
+        elif role == "purple":
+            response = {"summary": "Synthetic purple synthesis; supported facts retained.",
+                        "decisions": [{"finding_id": f["id"], "decision": "agree", "reason": "Supported by frozen evidence."} for f in payload["findings"]],
+                        "letter_paragraphs": [{"evidence_ids": [payload["evidence"][0]["id"]]}]}
         else:
             review_packets.append(deepcopy(payload))
             response = {"summary": "Synthetic independent review; no external model was called.", "findings": []}
@@ -77,7 +81,7 @@ def main():
                         request.abort()
 
                 page.route("**/*", route)
-                page.goto(origin + "/#settings")
+                page.goto(origin + "/#your-cv")
                 form = page.locator("#profile-form")
                 expect(form.get_by_label("Name", exact=True)).to_have_value("")
                 form.get_by_label("Name", exact=True).fill("Synthetic Test Candidate")
@@ -86,12 +90,13 @@ def main():
 
                 def section(label):
                     block = form.locator("details").filter(
-                        has=page.locator("summary", has_text=re.compile("^" + re.escape(label) + "$")))
+                        has=page.locator("summary", has_text=re.compile("^" + re.escape(label) + "$"))).last
                     block.locator("summary").click()
                     return block
 
                 contact = section("Contact details")
                 contact.get_by_label("Email", exact=True).fill("candidate@example.invalid")
+                form.get_by_text("Experience & qualifications", exact=True).click()
                 employment = section("Employment")
                 employment.get_by_role("button", name="＋ Add entry", exact=True).click()
                 for label, value in {"Role": "Data Analyst", "Employer": "Synthetic Example Company",
@@ -136,7 +141,7 @@ def main():
                 expect(card).to_be_visible()
                 card.locator("[data-bookmark-id]").click()
                 expect(card.locator("[data-bookmark-id]")).to_have_attribute("aria-pressed", "true")
-                card.get_by_role("button", name="Create & review CV", exact=True).click()
+                card.get_by_role("button", name="Prepare application", exact=True).click()
                 deadline = time.monotonic() + 60
                 while time.monotonic() < deadline:
                     runs = app.cv_execution.list(job["id"])
@@ -145,14 +150,21 @@ def main():
                     page.wait_for_timeout(100)
                 run = app.cv_execution.list(job["id"])[0]
                 assert run["status"] in {"ready", "needs_answer"}, (run["status"], run.get("error"))
-                assert calls == ["generator", "red", "blue"], calls
+                assert calls == ["generator", "red", "blue", "purple"], calls
                 assert len(review_packets) == 2 and review_packets[0] == review_packets[1]
+                pack = run["application_packs"][str(run["selected_material_id"])]
+                assert "Dear Hiring Team" in pack["cover_letter"]["text"]
+                assert pack["mocked"] is True
                 assert run["document_checks"]
                 for check in run["document_checks"].values():
                     assert check["docx_available"]
                     assert check.get("pdf_text_extractable") or check.get("pdf_available") is False
                 expect(page.locator("#cv-workflow-body")).to_contain_text("Test run", timeout=10000)
                 expect(page.locator(".cv-live-status.active")).to_have_count(0)
+                expect(page.locator("#cv-workflow-body")).to_contain_text("Your cover letter")
+                for fmt in ("txt", "docx"):
+                    response = page.request.get(f"{origin}/api/cv-runs/{run['id']}/application-pack/{pack['material_id']}/{fmt}")
+                    assert response.status == 200 and len(response.body()) > 50
                 page.screenshot(path=str(output / "cv-workflow.png"), full_page=True)
                 page.goto(origin + "/#saved")
                 expect(page.locator(f'[data-job-id="{job["id"]}"]')).to_be_visible()
@@ -164,7 +176,7 @@ def main():
                 receipt = {"blank_profile_edit_save_reload": "passed", "base_cv_upload": "passed",
                            "saved_jobs": "passed", "mocked_model_calls": calls,
                            "independent_review_inputs_identical": True, "run_status": run["status"],
-                           "document_checks": run["document_checks"], "application_submitted": False,
+                           "document_checks": run["document_checks"], "application_submitted": False, "cover_letter_downloads": ["txt", "docx"],
                            "browser_errors": errors, "external_browser_requests": external}
                 (output / "receipt.json").write_text(json.dumps(receipt, indent=2) + "\n")
                 print(json.dumps(receipt, indent=2))
