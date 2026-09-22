@@ -135,3 +135,24 @@ def test_workspace_failure_is_not_misreported_as_a_bad_public_board(monkeypatch)
     with pytest.raises(RuntimeError, match="persist its progress") as caught:
         discovery.discover(settings, "normal", broken_workspace, lambda: False)
     assert isinstance(caught.value.__cause__, ValueError)
+
+
+def test_relocation_checks_skip_irrelevant_adverts_and_preserve_unicode(monkeypatch):
+    from careerops import inventory
+
+    search, patterns = inventory.re.search, []
+
+    def tracked(pattern, *args, **kwargs):
+        patterns.append(pattern)
+        return search(pattern, *args, **kwargs)
+
+    monkeypatch.setattr(inventory.re, "search", tracked)
+    for value in (True, "advertised", "available", "provided", "yes"):
+        assert inventory._relocation({"relocation": value}) == "advertised"
+    for value in (False, "unavailable", "not_provided", "no"):
+        assert inventory._relocation({"relocation": value}) == "unavailable"
+    assert patterns == []
+    assert inventory._relocation({"description": "We offer a London office."}) == "unknown"
+    assert patterns == ["relocation"]
+    assert inventory._relocation({"description": "RELOCATİON SUPPORT IS PROVIDED"}) == "advertised"
+    assert inventory._relocation({"description": "No relocation assistance is offered."}) == "unavailable"

@@ -356,6 +356,8 @@ def _relocation(job: dict) -> str:
         return "unavailable"
     # Only explicit relocation support wording counts, never an office address.
     description = str(job.get("description") or "")
+    if not re.search("relocation", description, re.I):
+        return "unknown"
     if re.search(r"(?:no|not (?:provide|offer)|without).{0,25}relocation (?:support|assistance|package)|relocation (?:support|assistance|package).{0,15}(?:unavailable|not (?:provided|offered))", description, re.I):
         return "unavailable"
     if re.search(r"(?:offer|provide|includes?).{0,25}relocation (?:support|assistance|package)|relocation (?:support|assistance|package) (?:is )?(?:available|provided|offered)", description, re.I):
