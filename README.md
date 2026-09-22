@@ -4,6 +4,18 @@ A local job-search workspace: discover vacancies, save promising roles and prepa
 an application. Evidence-bound CV generation, independent red and blue reviews,
 and purple-team synthesis produce versioned CVs and source-backed cover letters.
 
+CV preparation is **graph-engineered**: each application runs through an explicit,
+persisted workflow graph (freeze inputs → select evidence → build CV → red and blue
+review → bounded revision → purple synthesis → cover letter → human review) that
+Python controls, rather than a free-running agent. See
+[Graph-engineered workflow](#graph-engineered-workflow) below.
+
+![CareerOps AI dashboard design concept: swipe-style job discovery on the left, the red/blue/purple application graph on the right](docs/dashboard-concept.png)
+
+*Design concept of the target dashboard, rendered with synthetic data. It is not a
+screenshot of the current build. The concept pairs quick, swipe-style triage for
+routine vacancies with the full review graph for roles you can't just swipe-apply to.*
+
 The UI runs on your computer. This repository contains application code and
 synthetic checks; your profile, uploaded CVs, job history and generated documents
 belong in the ignored `local_data/` directory.
@@ -74,7 +86,7 @@ PYTHONPATH=src python -m careerops --port 8766
 ```
 
 Open [the local workspace](http://127.0.0.1:8766). The server binds to loopback;
-storing the code in a private repository does not deploy or host the UI.
+hosting this code on GitHub does not deploy or host the UI.
 
 1. Choose **Find jobs** in **Discover**. Four public employer boards are configured
    initially: Monzo, Anthropic, OpenAI and Palantir. Add sources in Settings to
