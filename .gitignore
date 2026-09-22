@@ -1,0 +1,59 @@
+# Virtual environment
+.venv/
+
+# Secrets
+.env
+.env.*
+!.env.example
+**/client_secret*.json
+**/*oauth*credentials*.json
+**/*oauth*token*.json
+**/credentials.json
+**/token.json
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+*.egg-info/
+build/
+dist/
+
+# macOS
+.DS_Store
+
+# Private candidate data
+local_data/
+local_data/application_audit.jsonl
+local_data/STOP_AUTONOMY
+outputs/
+**/browser_profile/
+**/storage_state*.json
+playwright-report/
+test-results/
+screenshots/
+traces/
+*.har
+*.log
+*.sqlite
+*.sqlite3
+*.db
+*.dump
+*.backup
+
+# Private reports copied from Gmail; publish synthetic fixtures instead
+examples/*real*canary*.json
+
+# CV/document files
+*.docx
+*.pdf
+*.xlsx
+*.xls
+*.csv
+*.tsv
