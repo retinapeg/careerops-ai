@@ -120,3 +120,13 @@ def test_refuses_a_folder_it_did_not_create(tmp_path):
     with pytest.raises(ValueError, match="not created by this demo"):
         demo.run_demo(tmp_path)
     assert (tmp_path / "keep.txt").read_text(encoding="utf-8") == "not demo data"
+
+
+def test_command_line_prints_a_short_summary(tmp_path, capsys):
+    out = tmp_path / "demo"
+    assert demo.main(["--out", str(out)]) == 0
+    printed = capsys.readouterr().out
+    assert printed.startswith("CareerOps offline demo: synthetic data, scripted replies, no model called.")
+    assert "Model-role calls (scripted): generator, red, blue, red, blue, purple" in printed
+    assert "Final status: needs_answer" in printed
+    assert (out / "transcript.json").is_file() and (out / "transcript.md").is_file()
