@@ -37,7 +37,8 @@ HOW_REPLIES_WERE_MADE = (
     "Every generator, reviewer and synthesis reply was produced by a deterministic scripted "
     "function in careerops/demo.py and checked against the same pydantic schema the workflow "
     "applies. The controller, validators, revision logic, synthesis checks and DOCX export are the "
-    "unmodified project code.")
+    "project's own code; only the model calls and LibreOffice detection are replaced, so PDF export "
+    "is deliberately switched off rather than missing.")
 NO_MODEL_STATEMENT = f"No model was called. {HOW_REPLIES_WERE_MADE} All data is synthetic."
 MARKER = ".careerops-demo"
 OWNED = ("demo.sqlite3", "demo.sqlite3-wal", "demo.sqlite3-shm", "demo.sqlite3-journal",
@@ -351,7 +352,7 @@ def render_markdown(t):
                   "", "Cover letter (body paragraphs copied verbatim from the selected evidence):", "",
                   "```text", pack["cover_letter"]["text"], "```", "",
                   "Outstanding questions:", "", *[f"- {q}" for q in pack["outstanding_questions"]], ""]
-    lines += ["## Export checks", ""]
+    lines += ["## Export checks", "", t["offline_guard"]["pdf_export"], ""]
     for material_id, check in t["document_checks"].items():
         lines.append(f"- Material {material_id}: " + ", ".join(f"{k}={v}" for k, v in check.items()))
     lines += ["", "## Needs your attention", "", *[f"- {item}" for item in t["needs_attention"]], ""]
