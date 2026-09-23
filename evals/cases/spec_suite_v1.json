@@ -1129,6 +1129,381 @@
           "rationale": "The claim is two approved statements joined by a single space in the cited order, which is a verbatim copy."
         }
       ]
+    },
+    "g3_skills.json": {
+      "gate": "G3",
+      "cases": [
+        {
+          "case_id": "G3-01",
+          "skill": "Kubernetes",
+          "category": "positive_use",
+          "evidence": [
+            {
+              "id": "bank:g3-01-1",
+              "status": "DIRECT",
+              "text": "Deployed three internal services to a Kubernetes cluster and wrote their Helm charts."
+            }
+          ],
+          "expected": "should_accept",
+          "rationale": "The evidence shows the candidate deploying services to Kubernetes, which is genuine use of the skill."
+        },
+        {
+          "case_id": "G3-02",
+          "skill": "SQL",
+          "category": "positive_use",
+          "evidence": [
+            {
+              "id": "bank:g3-02-1",
+              "status": "DIRECT",
+              "text": "Wrote SQL queries that matched supplier invoices to purchase orders each month."
+            }
+          ],
+          "expected": "should_accept",
+          "rationale": "The candidate wrote SQL queries in their own work, which is genuine positive use."
+        },
+        {
+          "case_id": "G3-03",
+          "skill": "Excel",
+          "category": "positive_use",
+          "evidence": [
+            {
+              "id": "bank:g3-03-1",
+              "status": "DIRECT",
+              "text": "Built an Excel model of weekly staffing costs for five care homes."
+            }
+          ],
+          "expected": "should_accept",
+          "rationale": "The candidate built a model in Excel, which is genuine positive use."
+        },
+        {
+          "case_id": "G3-04",
+          "skill": "Tableau",
+          "category": "positive_use",
+          "evidence": [
+            {
+              "id": "bank:g3-04-1",
+              "status": "DIRECT",
+              "text": "Published Tableau dashboards showing bed occupancy by ward for the hospital operations team."
+            }
+          ],
+          "expected": "should_accept",
+          "rationale": "The candidate published Tableau dashboards, which is genuine positive use."
+        },
+        {
+          "case_id": "G3-05",
+          "skill": "Terraform",
+          "category": "positive_use",
+          "evidence": [
+            {
+              "id": "bank:g3-05-1",
+              "status": "DIRECT",
+              "text": "Provisioned staging environments with Terraform modules for the platform team."
+            },
+            {
+              "id": "bank:g3-05-2",
+              "status": "DIRECT",
+              "text": "Reviewed infrastructure changes with two senior engineers before each release."
+            }
+          ],
+          "expected": "should_accept",
+          "rationale": "The candidate provisioned environments with Terraform, which is genuine positive use."
+        },
+        {
+          "case_id": "G3-06",
+          "skill": "SAP",
+          "category": "positive_use",
+          "evidence": [
+            {
+              "id": "bank:g3-06-1",
+              "status": "DIRECT",
+              "text": "Raised purchase orders and goods receipts in SAP for a manufacturing site of 200 staff."
+            }
+          ],
+          "expected": "should_accept",
+          "rationale": "The candidate carried out transactions in SAP, which is genuine positive use."
+        },
+        {
+          "case_id": "G3-07",
+          "skill": "Git",
+          "category": "positive_use",
+          "evidence": [
+            {
+              "id": "bank:g3-07-1",
+              "status": "DIRECT",
+              "text": "Managed feature branches in Git and resolved merge conflicts before each release."
+            },
+            {
+              "id": "bank:g3-07-2",
+              "status": "DIRECT",
+              "text": "Wrote release notes for the support team."
+            }
+          ],
+          "expected": "should_accept",
+          "rationale": "The candidate managed branches in Git, which is genuine positive use."
+        },
+        {
+          "case_id": "G3-08",
+          "skill": "Go",
+          "category": "positive_use",
+          "evidence": [
+            {
+              "id": "bank:g3-08-1",
+              "status": "DIRECT",
+              "text": "Wrote a Go command-line tool that validated nightly data exports."
+            }
+          ],
+          "expected": "should_accept",
+          "rationale": "The candidate wrote a tool in the Go language, which is genuine positive use."
+        },
+        {
+          "case_id": "G3-09",
+          "skill": "R",
+          "category": "positive_use",
+          "evidence": [
+            {
+              "id": "bank:g3-09-1",
+              "status": "DIRECT",
+              "text": "Fitted regression models in R to estimate footfall by postcode district."
+            }
+          ],
+          "expected": "should_accept",
+          "rationale": "The candidate fitted models in R, which is genuine positive use of the language."
+        },
+        {
+          "case_id": "G3-10",
+          "skill": "Salesforce",
+          "category": "positive_use",
+          "evidence": [
+            {
+              "id": "bank:g3-10-1",
+              "status": "DIRECT",
+              "text": "Configured Salesforce case queues and routing rules for a 30-person support desk."
+            }
+          ],
+          "expected": "should_accept",
+          "rationale": "The candidate configured Salesforce, which is genuine positive use."
+        },
+        {
+          "case_id": "G3-11",
+          "skill": "Power BI",
+          "category": "positive_use",
+          "evidence": [
+            {
+              "id": "bank:g3-11-1",
+              "status": "DIRECT",
+              "text": "Built Power BI reports on monthly repairs spend for the housing directorate."
+            }
+          ],
+          "expected": "should_accept",
+          "rationale": "The candidate built Power BI reports, which is genuine positive use."
+        },
+        {
+          "case_id": "G3-12",
+          "skill": "Python",
+          "category": "positive_use",
+          "evidence": [
+            {
+              "id": "bank:g3-12-1",
+              "status": "DIRECT",
+              "text": "Wrote Python scripts to rename and file 4,000 scanned invoices by supplier and date."
+            }
+          ],
+          "expected": "should_accept",
+          "rationale": "The candidate wrote Python scripts, which is genuine positive use."
+        },
+        {
+          "case_id": "G3-13",
+          "skill": "Kubernetes",
+          "category": "negated",
+          "evidence": [
+            {
+              "id": "bank:g3-13-1",
+              "status": "DIRECT",
+              "text": "Chose a single virtual machine over Kubernetes for the prototype to keep hosting costs down."
+            }
+          ],
+          "expected": "should_reject",
+          "rationale": "Kubernetes is named only as the option the candidate decided against, so the evidence is not a use of the skill."
+        },
+        {
+          "case_id": "G3-14",
+          "skill": "PostgreSQL",
+          "category": "negated",
+          "evidence": [
+            {
+              "id": "bank:g3-14-1",
+              "status": "DIRECT",
+              "text": "Have not used PostgreSQL; all database work was in Microsoft Access."
+            }
+          ],
+          "expected": "should_reject",
+          "rationale": "The evidence explicitly negates use of PostgreSQL, so it cannot support the skill."
+        },
+        {
+          "case_id": "G3-15",
+          "skill": "Docker",
+          "category": "negated",
+          "evidence": [
+            {
+              "id": "bank:g3-15-1",
+              "status": "DIRECT",
+              "text": "Ran the booking service directly on the host without Docker, as the client's servers did not permit containers."
+            }
+          ],
+          "expected": "should_reject",
+          "rationale": "The evidence says the service ran without Docker, so it is a mention and not a use."
+        },
+        {
+          "case_id": "G3-16",
+          "skill": "Java",
+          "category": "homograph_or_substring",
+          "evidence": [
+            {
+              "id": "bank:g3-16-1",
+              "status": "DIRECT",
+              "text": "Managed stock for the coffee bar, including orders of Java and Colombian beans."
+            }
+          ],
+          "expected": "should_reject",
+          "rationale": "Java here is a coffee bean, a homograph of the programming language, so it is not use of the skill."
+        },
+        {
+          "case_id": "G3-17",
+          "skill": "Rust",
+          "category": "homograph_or_substring",
+          "evidence": [
+            {
+              "id": "bank:g3-17-1",
+              "status": "DIRECT",
+              "text": "Treated rust on trailer chassis during the quarterly maintenance programme."
+            }
+          ],
+          "expected": "should_reject",
+          "rationale": "Rust here is corrosion on metal, a homograph of the programming language, so it is not use of the skill."
+        },
+        {
+          "case_id": "G3-18",
+          "skill": "Go",
+          "category": "homograph_or_substring",
+          "evidence": [
+            {
+              "id": "bank:g3-18-1",
+              "status": "DIRECT",
+              "text": "Signed off go-live checklists for three branch refits."
+            }
+          ],
+          "expected": "should_reject",
+          "rationale": "Go appears only inside the phrase go-live, so the evidence does not show use of the Go language."
+        },
+        {
+          "case_id": "G3-19",
+          "skill": "Swift",
+          "category": "homograph_or_substring",
+          "evidence": [
+            {
+              "id": "bank:g3-19-1",
+              "status": "DIRECT",
+              "text": "Arranged swift replacement of damaged items for online customers."
+            }
+          ],
+          "expected": "should_reject",
+          "rationale": "Swift here means quick, a homograph of the programming language, so it is not use of the skill."
+        },
+        {
+          "case_id": "G3-20",
+          "skill": "Terraform",
+          "category": "to_learn",
+          "evidence": [
+            {
+              "id": "bank:g3-20-1",
+              "status": "DIRECT",
+              "text": "Added Terraform to my development plan at the annual appraisal."
+            }
+          ],
+          "expected": "should_reject",
+          "rationale": "Terraform is recorded as something to learn, not something the candidate has used."
+        },
+        {
+          "case_id": "G3-21",
+          "skill": "Tableau",
+          "category": "to_learn",
+          "evidence": [
+            {
+              "id": "bank:g3-21-1",
+              "status": "DIRECT",
+              "text": "Listed Tableau as a learning goal in the 2024 personal development review."
+            },
+            {
+              "id": "bank:g3-21-2",
+              "status": "DIRECT",
+              "text": "Produced monthly sales summaries in Excel for the area manager."
+            }
+          ],
+          "expected": "should_reject",
+          "rationale": "Tableau appears only as a learning goal, so the evidence does not show use of it."
+        },
+        {
+          "case_id": "G3-22",
+          "skill": "React",
+          "category": "to_learn",
+          "evidence": [
+            {
+              "id": "bank:g3-22-1",
+              "status": "DIRECT",
+              "text": "Working through an online React course in the evenings to prepare for front-end work."
+            }
+          ],
+          "expected": "should_reject",
+          "rationale": "The candidate is studying React on a course rather than using it in work, so the skill is something to learn."
+        },
+        {
+          "case_id": "G3-23",
+          "skill": "Oracle",
+          "category": "someone_else",
+          "evidence": [
+            {
+              "id": "bank:g3-23-1",
+              "status": "DIRECT",
+              "text": "Shadowed the database administrator while she tuned Oracle queries for the finance system."
+            }
+          ],
+          "expected": "should_reject",
+          "rationale": "The Oracle work was done by a colleague the candidate shadowed, so it is someone else's skill."
+        },
+        {
+          "case_id": "G3-24",
+          "skill": "Power BI",
+          "category": "someone_else",
+          "evidence": [
+            {
+              "id": "bank:g3-24-1",
+              "status": "DIRECT",
+              "text": "Supplied cleaned sales figures to the analytics team, who built the Power BI reports."
+            },
+            {
+              "id": "bank:g3-24-2",
+              "status": "DIRECT",
+              "text": "Checked weekly sales totals against till reports."
+            }
+          ],
+          "expected": "should_reject",
+          "rationale": "The Power BI reports were built by another team, so the evidence shows someone else's use of the skill."
+        },
+        {
+          "case_id": "G3-25",
+          "skill": "Kotlin",
+          "category": "someone_else",
+          "evidence": [
+            {
+              "id": "bank:g3-25-1",
+              "status": "DIRECT",
+              "text": "Tested the Android app that a contractor built in Kotlin and logged 40 defects."
+            }
+          ],
+          "expected": "should_reject",
+          "rationale": "The Kotlin code was written by a contractor and the candidate only tested the app, so it is someone else's skill."
+        }
+      ]
     }
   }
 }
