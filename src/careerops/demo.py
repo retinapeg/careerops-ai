@@ -384,9 +384,9 @@ def main(argv=None):
     parser = argparse.ArgumentParser(prog=GENERATED_BY, description=__doc__.split("\n\n")[0])
     parser.add_argument("--out", default="local_data/demo", help="output folder (default: local_data/demo)")
     args = parser.parse_args(argv)
-    out = Path(args.out).resolve()
+    out = Path(args.out)
     transcript = run_demo(out)
-    print(summary(transcript, out))
+    print(summary(transcript, out))  # paths as given, so the summary does not expose the home folder
     return 0 if transcript["status"] in {"ready", "needs_answer"} else 1
 
 
