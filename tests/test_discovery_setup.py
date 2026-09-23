@@ -60,6 +60,22 @@ def test_fresh_install_lists_every_overseas_country_disabled_with_recognised_cit
         assert config["cities"] and all(country_codes(city) == [code] for city in config["cities"])
 
 
+def test_city_order_leads_with_major_cities_and_every_city_keeps_its_country_and_label():
+    # The order of CITIES only chooses the label when one location names several
+    # cities of a country. Each city on its own keeps its country and its label.
+    from careerops.policy import CITIES, CITY_ALIASES, country_codes, location_options
+    assert CITIES["GR"][0] == "Athens" and CITIES["FR"][0] == "Paris"
+    assert CITIES["ES"][0] == "Madrid" and CITIES["IT"][0] == "Rome" and CITIES["PL"][0] == "Warsaw"
+    # Accent-folded spellings match each other, so the first one listed labels both.
+    first_spelling = {"Málaga": "Malaga", "Zürich": "Zurich", "Krakow": "Kraków"}
+    for code, names in CITIES.items():
+        for name in names:
+            assert country_codes(name) == [code], name
+            label = first_spelling.get(name, CITY_ALIASES.get(name, name))
+            assert [(o["country"], o["city"]) for o in location_options({"location": name})] == [(code, label)], name
+    assert country_codes("Nice, France") == ["FR"] and country_codes("Berlin, with nice offices") == ["DE"]
+
+
 def test_empty_or_disabled_sources_require_setup_without_silent_fallback(monkeypatch):
     def forbidden(*args, **kwargs):
         raise AssertionError("A disabled or absent source must not make a request")

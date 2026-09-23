@@ -29,23 +29,26 @@ COUNTRIES = {
     "DE": ("Germany", "Deutschland", "Allemagne"), "CH": ("Switzerland", "Suisse"), "SG": ("Singapore",),
     "PL": ("Poland", "Polska", "Pologne"), "PT": ("Portugal",), "NL": ("Netherlands",), "IE": ("Ireland",),
 }
+# Cities recognised in advert locations. Each country lists its largest or
+# best-known city first, with regions last; a location naming several cities of
+# one country is labelled with the first listed. Countries do not depend on it.
 CITIES = {
     "GB": ("London", "Canary Wharf", "Londres", "לונדון", "Λονδίνο"),
     "IL": ("Tel Aviv", "Tel-Aviv", "Haifa", "Herzliya", "Jerusalem", "תל אביב", "תל-אביב", "חיפה", "הרצליה", "ירושלים"),
-    "GR": ("Crete", "Heraklion", "Chania", "Athens", "Thessaloniki", "Athina", "Ηράκλειο", "Κρήτη", "Χανιά", "Αθήνα", "Θεσσαλονίκη"),
-    "FR": ("Nice", "Sophia Antipolis", "Marseille", "Montpellier", "Toulouse", "Paris", "Sophia-Antipolis", "Aix-en-Provence", "Côte d'Azur", "Île-de-France"),
+    "GR": ("Athens", "Athina", "Thessaloniki", "Heraklion", "Chania", "Crete", "Αθήνα", "Θεσσαλονίκη", "Ηράκλειο", "Χανιά", "Κρήτη"),
+    "FR": ("Paris", "Marseille", "Toulouse", "Nice", "Montpellier", "Aix-en-Provence", "Sophia Antipolis", "Sophia-Antipolis", "Île-de-France", "Côte d'Azur"),
     "CY": ("Nicosia", "Limassol", "Larnaca", "Paphos"),
     "MT": ("Valletta", "Sliema", "St Julian's"),
-    "ES": ("Barcelona", "Valencia", "Malaga", "Málaga", "Alicante", "Madrid"),
-    "IT": ("Milan", "Rome", "Naples", "Bologna", "Turin", "Trieste"),
+    "ES": ("Madrid", "Barcelona", "Valencia", "Malaga", "Málaga", "Alicante"),
+    "IT": ("Rome", "Milan", "Naples", "Turin", "Bologna", "Trieste"),
     "US": ("New York", "Chicago", "Boston", "San Francisco", "San Jose"),
     "DE": ("Berlin", "Munich"), "CH": ("Zurich", "Zürich", "Geneva"),
-    "SG": ("Singapore",), "PL": ("Kraków", "Krakow", "Warsaw", "Warszawa"),
+    "SG": ("Singapore",), "PL": ("Warsaw", "Warszawa", "Kraków", "Krakow"),
     "PT": ("Lisbon", "Lisboa", "Porto"), "NL": ("Amsterdam",), "IE": ("Dublin",),
 }
 # Neutral starting cities for each overseas country: well-known cities listed
 # alphabetically, drawn from CITIES so each one is recognised in adverts. The
-# order of CITIES itself drives classification and is deliberately separate.
+# order of CITIES itself sets city labels and is deliberately separate.
 DEFAULT_CITIES = {
     "IL": ("Haifa", "Jerusalem", "Tel Aviv"), "GR": ("Athens", "Thessaloniki"),
     "FR": ("Marseille", "Paris", "Toulouse"), "CY": ("Larnaca", "Nicosia", "Paphos"),
