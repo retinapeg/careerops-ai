@@ -270,7 +270,7 @@ def _normalised(text):
 
 
 def ablations(fixture, section_id, text, ids):
-    """Reject decisions of the two ablation baselines on the same admitted corpus."""
+    """Reject decisions of the two ablation baselines for one claim case, including one citing non-admitted records."""
     id_reject = (section_id not in fixture.bank or any(i not in fixture.admitted for i in ids)
                  or not set(ids) <= set(fixture.bank[section_id]["section_evidence_ids"]))
     normalised_reject = id_reject or _normalised(text) != _normalised(" ".join(fixture.admitted[i] for i in ids))
@@ -936,7 +936,10 @@ def render_report(results):
     lines += ["", "Case changes are blocked by design: the specification requires verbatim copies, so a change of case is "
               "treated as new wording even when the meaning is unchanged.",
               f"Statements that belong to no section (education records) were not edited: {', '.join(edits['statements_with_no_section'])}.",
-              "", "### Ablation baselines on the same admitted corpus", "",
+              "", "### Ablation baselines on every claim case, including those citing non-admitted records", "",
+              "Each row counts every case in its corpus. The generated should-reject cases therefore include the claims "
+              "citing non-admitted records, which the summary attributes to the admission filter (G1) and leaves out of "
+              "the claim gate's row.", "",
               "(a) id check only: cited ids are admitted and belong to the section; text ignored.",
               "(b) normalised verbatim and id check: (a), plus text equal to the cited statements after collapsing whitespace and case folding.",
               "", "| Corpus | Rule | Confusion | Miss rate | False-rejection rate |", "|---|---|---|---|---|"]

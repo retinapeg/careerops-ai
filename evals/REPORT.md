@@ -93,7 +93,9 @@ Result: 302/302 blocked by construction (exact-match gate).
 Case changes are blocked by design: the specification requires verbatim copies, so a change of case is treated as new wording even when the meaning is unchanged.
 Statements that belong to no section (education records) were not edited: bank:ba, bank:bootcamp, bank:bsc, bank:cert, bank:cpc, bank:diploma.
 
-### Ablation baselines on the same admitted corpus
+### Ablation baselines on every claim case, including those citing non-admitted records
+
+Each row counts every case in its corpus. The generated should-reject cases therefore include the claims citing non-admitted records, which the summary attributes to the admission filter (G1) and leaves out of the claim gate's row.
 
 (a) id check only: cited ids are admitted and belong to the section; text ignored.
 (b) normalised verbatim and id check: (a), plus text equal to the cited statements after collapsing whitespace and case folding.
