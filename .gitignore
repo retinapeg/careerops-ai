@@ -54,3 +54,6 @@ traces/
 *.xls
 *.csv
 *.tsv
+
+# Local reports; publish synthetic fixtures instead
+examples/*real*
