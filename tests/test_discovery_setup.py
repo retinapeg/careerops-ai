@@ -189,3 +189,15 @@ def test_relocation_checks_skip_irrelevant_adverts_and_preserve_unicode(monkeypa
     assert patterns == ["relocation"]
     assert inventory._relocation({"description": "RELOCATİON SUPPORT IS PROVIDED"}) == "advertised"
     assert inventory._relocation({"description": "No relocation assistance is offered."}) == "unavailable"
+
+
+@pytest.mark.parametrize("code", ["DE", "CH", "NL", "PT", "PL", "CY", "FR", "GR", "ES", "IT"])
+def test_non_english_countries_add_local_language_role_phrases(code):
+    settings = default_settings()
+    for country, config in settings["locations"].items():
+        config["enabled"] = country == code
+    settings["search"]["scope"] = "overseas"
+    queries = discovery._volume_queries(settings, 12)
+    phrases = discovery.LOCAL_ROLE_PHRASES[code]
+    assert queries and {q["country"] for q in queries} == {code.lower()}
+    assert any(q["what"] in phrases for q in queries)

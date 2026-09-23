@@ -753,6 +753,20 @@ def _london_location(job):
     return policy._london(job) or (job.get("office_days") == 0 and "WORLDWIDE" in _job_countries(job))
 
 
+# Role phrases in the main local language of each listed country where adverts
+# are often written in it. Every third query for that country adds one.
+_GERMAN_PHRASES = ["Datenanalyst", "Softwareentwickler", "technischer Berater"]
+_GREEK_PHRASES = ["αναλυτής δεδομένων", "μηχανικός λογισμικού"]
+LOCAL_ROLE_PHRASES = {
+    "FR": ["analyste données", "ingénieur Python", "consultant technique"], "GR": _GREEK_PHRASES, "CY": _GREEK_PHRASES,
+    "ES": ["analista de datos", "ingeniero software"], "IT": ["analista dati", "sviluppatore Python"],
+    "IL": ["data analyst", "software engineer"], "DE": _GERMAN_PHRASES, "CH": _GERMAN_PHRASES,
+    "NL": ["data-analist", "softwareontwikkelaar", "technisch consultant"],
+    "PT": ["analista de dados", "engenheiro de software", "consultor técnico"],
+    "PL": ["analityk danych", "programista Python", "konsultant techniczny"],
+}
+
+
 def _volume_queries(settings, maximum):
     search = settings.get("search", {})
     explicit = (search.get("web") or {}).get("queries")
@@ -763,7 +777,7 @@ def _volume_queries(settings, maximum):
     from .policy import COUNTRIES
     names = {code: aliases[0] for code, aliases in COUNTRIES.items()}
     roles = search.get("role_families") or ["software engineer", "data analyst", "solutions engineer", "technical support", "QA analyst"]
-    local = {"FR": ["analyste données", "ingénieur Python", "consultant technique"], "GR": ["αναλυτής δεδομένων", "μηχανικός λογισμικού"], "ES": ["analista de datos", "ingeniero software"], "IT": ["analista dati", "sviluppatore Python"], "IL": ["data analyst", "software engineer"]}
+    local = LOCAL_ROLE_PHRASES
     result, seen_queries = [], set()
     for index in range(maximum):
         for country, cities in locations:
