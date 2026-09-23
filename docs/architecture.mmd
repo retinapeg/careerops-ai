@@ -8,10 +8,10 @@ flowchart TD
     db[("SQLite store<br/>jobs, runs, CV versions")]
     disc["Job discovery + rules scoring<br/>discovery.py, policy.py"]
     ats["Public ATS feeds<br/>Greenhouse, Lever, Ashby"]
-    paid["Optional, off by default:<br/>paid LLM review, web search<br/>providers.py"]
-    cvg["CV workflow graph<br/>cv_execution.py<br/>validates every proposal"]
+    paid["Optional, off by default:<br/>paid LLM review, web search<br/>providers.py, discovery.py"]
+    cvg["CV workflow graph<br/>cv_execution.py<br/>checks: cv_document.py"]
     llm["LLM via Codex/Claude CLI<br/>generator, red, blue, purple<br/>model_connections.py"]
-    docs["DOCX / PDF export<br/>PDF needs LibreOffice<br/>materials.py"]
+    docs["CV + cover letter export<br/>PDF needs LibreOffice<br/>materials, application_pack"]
     tests["pytest + smoke checks<br/>synthetic data,<br/>mocked models"]
 
     you -->|"uses"| ui

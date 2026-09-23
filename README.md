@@ -32,8 +32,8 @@ belong in the ignored `local_data/` directory.
 
 *Purple: model call · blue: deterministic code · green: human · amber: evaluation · grey: storage · dashed: external, optional, mocked or planned*
 
-The browser UI talks only to a Python server bound to 127.0.0.1, which keeps all
-state in one local SQLite file. **Find jobs** starts a bounded background worker
+The browser UI talks only to a Python server bound to 127.0.0.1, which keeps its
+records in a local SQLite file. **Find jobs** starts a bounded background worker
 that reads public Greenhouse, Lever and Ashby feeds, scores each vacancy with
 deterministic rules and saves it; paid web search and a paid-API evidence review
 exist but stay off until you configure credentials and a budget. **Prepare
@@ -44,12 +44,12 @@ stores receipts and CV versions before continuing. Diagram source:
 
 ## How AI is used
 
-- **Models and roles:** four LLM roles (generator, red, blue, purple), each an
-  exact model ID you choose for a Codex CLI or Claude CLI already signed in on your
-  machine. Defaults are Codex for generator, red and purple and Claude for blue. No
-  model is bundled, and a fresh install has none connected.
+- **Models and roles:** four LLM roles (generator, red, blue, purple), each a
+  model ID set in Settings for a Codex CLI or Claude CLI already installed and
+  signed in on your machine. Defaults are Codex for generator, red and purple and
+  Claude for blue. No model is bundled; without a signed-in CLI, runs stop at setup.
 - **Inputs and outputs:** each role receives a frozen JSON packet (advert, approved
-  profile evidence, base CV and, for reviewers, the CV version) and must return
+  profile evidence, base-CV structure and, for reviewers, the CV version) and must return
   schema-constrained JSON. Python builds the CV and cover letter from approved
   evidence; a finding not anchored in the advert, CV text and approved evidence
   becomes a question for you. See [Graph-engineered workflow](#graph-engineered-workflow).
@@ -61,8 +61,9 @@ stores receipts and CV versions before continuing. Diagram source:
   revision limit, document export and application tracking are ordinary code. You
   supply the facts, answer open questions and send applications yourself.
 - **Optional paid route (off by default):** with an API key in the server
-  environment plus a model ID, prices and a positive budget in Settings, discovery
-  can send admitted vacancies and verified evidence to the OpenAI Responses or Anthropic Messages API for an advisory review.
+  environment and, in Settings, a selected provider, the paid billing route, a model
+  ID, prices and a positive budget, a search can send admitted vacancies and verified
+  evidence to the OpenAI Responses or Anthropic Messages API for an advisory review.
   Quotes and evidence IDs are checked locally (`providers.py`).
 - **Evaluation and limits:** the test suite uses synthetic data and mocked model
   calls, which are never recorded as live receipts. There is no benchmark of CV
