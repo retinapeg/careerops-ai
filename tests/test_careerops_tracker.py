@@ -1,5 +1,6 @@
 import json
 import math
+import sqlite3
 
 import pytest
 
@@ -154,6 +155,19 @@ def test_blank_exceptional_base_is_rejected_and_the_workspace_still_opens(tmp_pa
     reopened = Store(path)
     assert reopened.settings()['exceptional']['base_gbp'] == before
     assert reopened.update_settings({'exceptional': {'base_gbp': 0}})['exceptional']['base_gbp'] == 0
+    # A workspace where earlier code already stored the blank trigger opens,
+    # and the stored value is repaired so the default applies again.
+    stored = reopened.meta('settings')
+    stored['exceptional']['base_gbp'] = value
+    if isinstance(value, float) and math.isnan(value):
+        # JSON storage refuses NaN, so only a hand-edited database holds it.
+        with sqlite3.connect(path) as db:
+            db.execute("UPDATE metadata SET data=? WHERE key='settings'", (json.dumps(stored),))
+    else:
+        reopened.put_meta('settings', stored)
+    repaired = Store(path)
+    assert repaired.settings()['exceptional']['base_gbp'] == before
+    assert 'base_gbp' not in repaired.meta('settings')['exceptional']
 
 
 def test_professional_queue_rebuilds_from_full_candidates_without_old_pins(store, monkeypatch):
