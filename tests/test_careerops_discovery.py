@@ -121,13 +121,13 @@ def test_ashby_explicit_workplace_type_overrides_generic_remote_flag(workplace, 
 
 def test_ashby_multicountry_summary_cannot_claim_us_salary_for_london():
     from careerops.policy import extract_job, reextract_job
-    raw = {"title": "Scientific Implementation Associate", "location": "New York, San Francisco, Munich, London, Cleveland or Pittsburgh",
-           "descriptionPlain": "Scientific implementation with data. US base salary USD 65,000–85,000 per year.",
-           "jobUrl": "https://jobs.ashbyhq.com/uncountable/fixture", "compensation": {
+    raw = {"title": "Implementation Associate", "location": "New York, Munich or London",
+           "descriptionPlain": "Implementation work with data. US base salary USD 65,000–85,000 per year.",
+           "jobUrl": "https://jobs.ashbyhq.com/example-multicountry/fixture", "compensation": {
                "summaryComponents": [{"compensationType": "Salary", "minValue": 65000, "maxValue": 85000, "currencyCode": "USD", "interval": "1 YEAR"}],
                "compensationTiers": [{"title": "US", "currency": "USD"}, {"title": "London", "currency": "GBP"}]}}
     original = deepcopy(raw)
-    job = d._ashby(raw, "uncountable", raw["jobUrl"])
+    job = d._ashby(raw, "example-multicountry", raw["jobUrl"])
     assert job["salary_geography_unresolved"] is True
     assert job["salary_min"] is None and job["salary_max"] is None and job["salary_currency"] is None
     assert job["compensation_details"] == {"source": raw["jobUrl"], "provider": "ashby", "data": raw["compensation"]}
