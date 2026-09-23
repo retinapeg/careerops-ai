@@ -739,48 +739,18 @@ def coverage_limits(settings, mode):
 
 
 def _country_codes(value):
-    # Compatibility with existing installations until the inventory migration.
     from . import policy
-    if hasattr(policy, "country_codes"):
-        return policy.country_codes(value)
-    text = str(value or "").casefold()
-    aliases = {
-        "IL": ["israel", "tel aviv", "tel-aviv", "haifa", "herzliya", "jerusalem", "yokneam", "ramat gan"],
-        "GR": ["greece", "athens", "thessaloniki", "heraklion", "greek"],
-        "FR": ["france", "paris", "lyon", "marseille", "toulouse", "bordeaux", "nice"],
-        "CY": ["cyprus", "limassol", "nicosia", "larnaca", "paphos"],
-        "MT": ["malta", "valletta", "sliema", "st julian"],
-        "ES": ["spain", "madrid", "barcelona", "valencia", "malaga", "málaga"],
-        "IT": ["italy", "milan", "milano", "rome", "roma", "turin", "torino"],
-        "GB": ["united kingdom", "london", "england", "uk"],
-    }
-    return [code for code, names in aliases.items() if text.strip().upper() == code or any(re.search(r"(?<!\w)" + re.escape(name) + r"(?!\w)", text) for name in names)]
+    return policy.country_codes(value)
 
 
 def _job_countries(job):
     from . import policy
-    if hasattr(policy, "location_options"):
-        return sorted({option["country"] for option in policy.location_options(job)})
-    primary = _country_codes(job.get("location")) or _country_codes(job.get("country"))
-    if job.get("all_locations_required") and "GB" in primary:
-        primary = ["GB"]
-    values = list(primary)
-    alternatives = job.get("available_locations") or []
-    alternatives = [alternatives] if isinstance(alternatives, (str, dict)) else alternatives
-    for location in [] if job.get("all_locations_required") else alternatives:
-        values.extend([location.get("country"), location.get("city"), location.get("location")] if isinstance(location, dict) else [location])
-    if job.get("office_days") == 0:
-        values.extend(job.get("remote_countries") or [])
-    # Never infer vacancy location from company boilerplate or description.
-    return sorted({code for value in values for code in (["WORLDWIDE"] if str(value).upper() == "WORLDWIDE" else _country_codes(value))})
+    return sorted({option["country"] for option in policy.location_options(job)})
 
 
 def _london_location(job):
     from . import policy
-    if hasattr(policy, "location_options"):
-        return policy._london(job) or (job.get("office_days") == 0 and "WORLDWIDE" in _job_countries(job))
-    values = [job.get("location"), job.get("city"), *(job.get("available_locations") or [])]
-    return any(re.search(r"\b(?:london|londres|canary wharf)\b", str(v), re.I) for v in values) or (job.get("office_days") == 0 and bool({"GB", "WORLDWIDE"}.intersection(_job_countries(job))))
+    return policy._london(job) or (job.get("office_days") == 0 and "WORLDWIDE" in _job_countries(job))
 
 
 def _volume_queries(settings, maximum):
