@@ -9,10 +9,14 @@ from careerops.policy import default_settings
 from careerops.registry import board_identity
 
 
-def test_fresh_install_fetches_public_starter_boards_without_credentials(monkeypatch):
+def test_public_boards_fetch_without_credentials(monkeypatch):
     settings = default_settings()
-    sources = settings["search"]["sources"]
-    assert len(sources) == 4
+    assert settings["search"]["sources"] == []
+    sources = [{"type": "greenhouse", "company": "Example A", "url": "https://job-boards.greenhouse.io/example-a", "enabled": True},
+               {"type": "greenhouse", "company": "Example B", "url": "https://job-boards.greenhouse.io/example-b", "enabled": True},
+               {"type": "ashby", "company": "Example C", "url": "https://jobs.ashbyhq.com/example-c", "enabled": True},
+               {"type": "lever", "company": "Example D", "url": "https://jobs.lever.co/example-d", "enabled": True}]
+    settings["search"]["sources"] = sources
     assert {board_identity(source["url"])["type"] for source in sources} == {"greenhouse", "ashby", "lever"}
     calls = []
 

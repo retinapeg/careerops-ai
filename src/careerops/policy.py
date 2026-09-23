@@ -173,12 +173,8 @@ def default_settings() -> dict:
                                              "max_new_employer_requests": 100, "max_board_requests": 150, "max_vacancy_requests": 120,
                                              "max_historical_requests": 0, "max_ai_reviews": 15, "per_host_limit": 100, "timeout_seconds": 600},
                                     "bootstrap": {}}},
-                   "sources": [
-                       {"type": "greenhouse", "company": "Monzo", "url": "https://job-boards.greenhouse.io/monzo", "enabled": True},
-                       {"type": "greenhouse", "company": "Anthropic", "url": "https://job-boards.greenhouse.io/anthropic", "enabled": True},
-                       {"type": "ashby", "company": "OpenAI", "url": "https://jobs.ashbyhq.com/openai", "enabled": True},
-                       {"type": "lever", "company": "Palantir", "url": "https://jobs.lever.co/palantir", "enabled": True},
-                   ], "role_families": ["software engineer", "data analyst", "solutions engineer", "technical support", "QA analyst"],
+                   # No employer board is preconfigured; discovery asks for one in Settings.
+                   "sources": [], "role_families": ["software engineer", "data analyst", "solutions engineer", "technical support", "QA analyst"],
                    "normal": {"max_pages": 12, "max_jobs": 80, "max_queries": 6, "max_turns": 6,
                               "concurrency": 2, "timeout_seconds": 90, "max_retries": 1},
                    "deep": {"max_pages": 36, "max_jobs": 240, "max_queries": 18, "max_turns": 16,
