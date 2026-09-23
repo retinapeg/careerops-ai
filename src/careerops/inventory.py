@@ -331,13 +331,8 @@ def _location_matches(job, location):
     item = job["inventory"]
     if location == "london":
         return item["region"] == "london" or item["london_alternative"]
-    if location == "remote":
-        return item["work_pattern"] == "remote"
-    if location == "southern_france":
-        places = " ".join(str(option.get("location") or option.get("city") or "") for option in item["location_options"])
-        places += " " + str(job.get("location") or "")
-        return "FR" in item["all_countries"] and bool(re.search(r"\b(?:nice|sophia.antipolis|antibes|cannes|marseille|aix.en.provence|toulon|montpellier|n[iî]mes|avignon|toulouse|bordeaux|perpignan|provence|occitanie|southern france|south of france)\b", places, re.I))
-    return {"israel": "IL", "greece": "GR", "cyprus": "CY"}.get(location) in item["all_countries"]
+    # The only other preset accepted by query_inventory is "remote".
+    return item["work_pattern"] == "remote"
 
 
 def _work_pattern(job: dict) -> str:
@@ -459,7 +454,7 @@ def query_inventory(jobs: list[dict], settings: dict, filters: dict | None = Non
     if date_field not in {"posted", "discovered", "last_seen"}:
         raise ValueError("Date field must be posted, discovered, or last_seen")
     location = str(raw.get("location") or "")
-    if location not in {"", "all", "london", "israel", "greece", "cyprus", "southern_france", "remote"}:
+    if location not in {"", "all", "london", "remote"}:
         raise ValueError("Unsupported location preset")
     dates = {}
     for key in ("date_from", "date_to"):

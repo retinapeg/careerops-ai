@@ -69,6 +69,18 @@ def test_needs_checking_keeps_low_fit_unknown_roles():
     assert result['per_page'] == 50
 
 
+def test_location_presets_are_generic_and_countries_use_the_country_filter():
+    from careerops.inventory import query_inventory
+    from careerops.policy import default_settings
+    base = {'title': 'Data analyst', 'evaluation': {'eligibility': 'needs_checking', 'fit': 2}, 'last_verified': '2026-09-11'}
+    jobs = [dict(base, id=1, location='London, UK', country='GB', work_pattern='hybrid'),
+            dict(base, id=2, location='Athens, Greece', country='GR', work_pattern='remote')]
+    ids = lambda location: query_inventory(jobs, default_settings(), {'view': 'needs_checking', 'region': 'all', 'location': location})['all_matching_ids']
+    assert ids('') == [1, 2] and ids('london') == [1] and ids('remote') == [2]
+    with pytest.raises(ValueError, match='Unsupported location preset'):
+        ids('greece')
+
+
 def test_readable_titles_and_literal_language_requirements():
     from careerops.inventory import presentation
     job = {'title': 'AI Trainers Network - Greek', 'company':'Example', 'location':'Greece',

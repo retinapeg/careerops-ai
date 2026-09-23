@@ -75,7 +75,7 @@ for (const label of ['Original advert title','AI trainer - Greek','This is not a
 assert.ok(descend(jobDetails).some(node => node.tagName === 'blockquote' && node.textContent === 'Native or near-native proficiency in Greek.'));
 assert.ok(descend(jobDetails).some(node => node.tagName === 'a' && node.attributes.href === 'https://example.com/jobs/13' && node.textContent.includes('language requirement')));
 assert.ok(!jobDetails.textContent.includes('[object '));
-run("inventoryState.location='israel'; inventoryState.view='all'; resetInventoryFilters(false)");
+run("inventoryState.location='remote'; inventoryState.view='all'; resetInventoryFilters(false)");
 assert.equal(run('inventoryFilters().status'), 'all');
 assert.equal(run('inventoryFilters().include_stretch'), true);
 assert.equal(run('inventoryFilters().date_field'), 'discovered');

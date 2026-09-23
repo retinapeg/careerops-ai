@@ -313,7 +313,7 @@ def assess_candidacy(job: dict, profile: dict, settings: dict, legacy: dict) -> 
     if london:
         why.append("London or explicitly permitted UK remote work fits the primary search geography.")
     elif targets:
-        why.append("An advertised work location matches the configured Mediterranean search.")
+        why.append("An advertised work location matches a configured overseas location.")
     next_action = ("Skip the recommendation queue; review the listed blockers or core mismatch." if band == "not_suitable" else
                    "Treat as a stretch: verify the core skill and seniority gaps before preparing materials." if band == "stretch" else
                    "Review the source and clarify the listed gaps, then tailor a professional application." if band == "plausible" else
