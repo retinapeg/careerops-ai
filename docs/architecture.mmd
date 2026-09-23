@@ -1,0 +1,45 @@
+%% Architecture of careerops-ai at commit 6503840ab32fb3728767ef28be904a5e4c05975c
+%% Sources: src/careerops/__main__.py, src/careerops/server.py, src/careerops/static/app.js, src/careerops/store.py, src/careerops/discovery.py, src/careerops/registry.py, src/careerops/policy.py, src/careerops/providers.py, src/careerops/cv_execution.py, src/careerops/cv_document.py, src/careerops/application_pack.py, src/careerops/model_connections.py, src/careerops/materials.py, src/careerops/base_cv.py, tests/test_careerops_cv_execution.py
+%% Render: npx @mermaid-js/mermaid-cli -i docs/architecture.mmd -o docs/images/architecture.svg -b white
+flowchart TD
+    you["You<br/>profile, CV, answers<br/>apply to employers yourself"]
+    ui["Browser UI<br/>static/app.js"]
+    srv["Local HTTP server<br/>server.py, 127.0.0.1 only"]
+    db[("SQLite store<br/>jobs, runs, CV versions")]
+    disc["Job discovery + rules scoring<br/>discovery.py, policy.py"]
+    ats["Public ATS feeds<br/>Greenhouse, Lever, Ashby"]
+    paid["Optional, off by default:<br/>paid LLM review, web search<br/>providers.py, discovery.py"]
+    cvg["CV workflow graph<br/>cv_execution.py<br/>checks: cv_document.py"]
+    llm["LLM via Codex/Claude CLI<br/>generator, red, blue, purple<br/>model_connections.py"]
+    docs["CV + cover letter export<br/>PDF needs LibreOffice<br/>materials, application_pack"]
+    tests["pytest + smoke checks<br/>synthetic data,<br/>mocked models"]
+
+    you -->|"uses"| ui
+    ui <-->|"JSON API + token"| srv
+    srv -->|"Find jobs"| disc
+    srv -->|"Prepare application"| cvg
+    srv <-->|"read / write"| db
+    disc -->|"HTTPS GET"| ats
+    disc -.->|"if enabled"| paid
+    disc -->|"upsert + score"| db
+    cvg -->|"frozen packet"| llm
+    llm -->|"JSON reply"| cvg
+    cvg -->|"receipts, versions"| db
+    cvg -->|"export check"| docs
+    srv -->|"download"| docs
+    tests -.->|"checks"| cvg
+
+    class you human;
+    class ui,srv,disc,cvg,docs det;
+    class db store;
+    class ats,paid ext;
+    class llm ai;
+    class tests eval;
+
+    classDef ai fill:#efe7fb,stroke:#6a4c93,stroke-width:2px,color:#2b1d45;
+    classDef det fill:#eef3f8,stroke:#2f5d8a,stroke-width:1.5px,color:#172c37;
+    classDef human fill:#e8f0ec,stroke:#285b48,stroke-width:1.5px,color:#173f32;
+    classDef eval fill:#f7efdf,stroke:#8b6330,stroke-width:1.5px,color:#4a3413;
+    classDef store fill:#f3f4f1,stroke:#65757b,stroke-width:1.5px,color:#172c37;
+    classDef ext fill:#ffffff,stroke:#2f5d8a,stroke-width:1.5px,stroke-dasharray:4 3,color:#172c37;
+    classDef mock fill:#ffffff,stroke:#9aa5a8,stroke-width:1.5px,stroke-dasharray:6 4,color:#65757b;
