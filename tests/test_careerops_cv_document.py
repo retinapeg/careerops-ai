@@ -16,8 +16,8 @@ def document():
     profile = default_profile()
     profile.update(name="Candidate Example", contact={"email": "private@example.test", "phone": "07700900001"},
         education=[
-            {"record_id": "example_certificate", "qualification": "Postgraduate Certificate in Statistics", "institution": "Example University", "automation": "AUTO"},
-            {"record_id": "example_degree", "qualification": "Bachelor of Science in Statistics", "institution": "Example University", "classification": "First Class Honours", "automation": "AUTO"}],
+            {"record_id": "example_certificate", "qualification": "Postgraduate Certificate in Data Science", "institution": "Example College", "automation": "AUTO"},
+            {"record_id": "example_degree", "qualification": "Bachelor of Science in Economics", "institution": "Example University", "classification": "First Class Honours", "automation": "AUTO"}],
         qualifications=[{"completed": True, "evidence_ids": ["certificate"]}, {"completed": True, "evidence_ids": ["degree"]}],
         skills=["Python", "SQL"], evidence=[
             {"id": "bank:work1", "status": "DIRECT", "text": "Handled customer calls and communicated clearly under pressure."},
@@ -29,8 +29,8 @@ def document():
             {"id": "bank:future", "status": "CURRENT_PROJECT", "text": "Will implement automated job submission in a future feature."},
             {"id": "bank:verify", "status": "VERIFY", "text": "Led 200 commercial software engineers."},
             {"id": "bank:private", "status": "DIRECT", "text": "Private sentinel", "sensitive": True},
-            {"id": "bank:certificate", "status": "DIRECT", "text": "Example University — Postgraduate Certificate in Statistics"},
-            {"id": "bank:degree", "status": "DIRECT", "text": "Example University — BSc Statistics, First Class Honours"}],
+            {"id": "bank:certificate", "status": "DIRECT", "text": "Example College — Postgraduate Certificate in Data Science"},
+            {"id": "bank:degree", "status": "DIRECT", "text": "Example University — BSc Economics, First Class Honours"}],
         employment=[
             {"record_id": "old", "title": "Office Clerk", "employer": "Example Office", "start": "2020", "end": "2021", "evidence_ids": ["old"]},
             {"record_id": "recent", "title": "Call Handler", "employer": "Example Service", "start": "2022", "end": "2023", "evidence_ids": ["work1", "work2"]}],
@@ -83,9 +83,9 @@ def test_confirmed_award_dates_reach_both_packets_workspace_and_new_cv_without_p
     from careerops.store import Store
     job, profile, proposal, old_material = document
     profile["education"] = [
-        {"record_id": "example_certificate", "qualification": "Postgraduate Certificate in Statistics", "institution": "Example University",
+        {"record_id": "example_certificate", "qualification": "Postgraduate Certificate in Data Science", "institution": "Example College",
          "automation": "AUTO", "award_date": "2023-06-01", "source_refs": ["user_confirmed:education"]},
-        {"record_id": "example_degree", "qualification": "Bachelor of Science in Statistics", "institution": "Example University",
+        {"record_id": "example_degree", "qualification": "Bachelor of Science in Economics", "institution": "Example University",
          "automation": "AUTO", "award_date": "2020-07-01", "source_refs": ["user_confirmed:education"]},
         {"record_id": "unverified", "qualification": "Unverified course", "automation": "AUTO", "award_date": "2099-01-01", "award_date_verified": False},
         {"record_id": "source_only", "qualification": "Uploaded course", "automation": "VERIFY", "award_date": "2098-01-01"}]
@@ -124,7 +124,7 @@ def test_protected_facts_cannot_be_changed_even_with_plausible_evidence_ids(docu
     elif kind == "date":
         work[0]["subheading"] = "2010 – Present"
     elif kind == "qualification":
-        changed["sections"][-1]["paragraphs"] = ["MSc Statistics"]
+        changed["sections"][-1]["paragraphs"] = ["MSc Data Science"]
     elif kind == "attribution":
         work[0].update(paragraphs=[profile["evidence"][3]["text"]], evidence_ids=["bank:project"])
     else:
@@ -138,7 +138,7 @@ def test_protected_facts_cannot_be_changed_even_with_plausible_evidence_ids(docu
 def test_unproved_model_rewrite_remains_visible_but_never_enters_the_cv(document):
     job, profile, proposal, _ = document
     proposal["sections"][0]["claims"][0]["text"] = "Led a commercial organisation of 200 engineers."
-    result = build_document(job, profile, proposal, base_cv={"id": 3, "conflicts": [{"field": "qualification", "message": "Source says MSc; retained verified PGCert."}]})
+    result = build_document(job, profile, proposal, base_cv={"id": 3, "conflicts": [{"field": "qualification", "message": "Source says doctorate; retained verified diploma."}]})
     assert "200 engineers" not in result["cv_text"]
     assert result["requires_human_review"] and result["blocked_proposals"]
     assert result["base_cv_conflicts"][0]["field"] == "qualification"

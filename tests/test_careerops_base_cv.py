@@ -48,10 +48,10 @@ def test_upload_reuse_and_replacement_preserve_profile_and_original(tmp_path):
 
 
 def test_section_text_and_middle_names_are_not_false_conflicts():
-    text = 'Candidate Middle Example\nEducation\nPostgraduate Certificate in Statistics within the MSc programme\nExperience\nSupported scientific research with Python.'
-    structured, conflicts = base_cv.reconcile(text, {'name': 'Candidate Example', 'education': [{'qualification': 'Postgraduate Certificate in Statistics'}]})
+    text = 'Candidate Middle Example\nEducation\nGraduate Diploma in Economics within the Master of Arts programme\nExperience\nSupported scientific research with Python.'
+    structured, conflicts = base_cv.reconcile(text, {'name': 'Candidate Example', 'education': [{'qualification': 'Graduate Diploma in Economics'}]})
     assert not conflicts
-    assert structured['sections']['education'] == ['Postgraduate Certificate in Statistics within the MSc programme']
+    assert structured['sections']['education'] == ['Graduate Diploma in Economics within the Master of Arts programme']
     assert base_cv._date_range('Sep 2023 – November 2024') == ('2023-09', '2024-11')
     assert base_cv._date_range('12 Jan 2026 – 26 Jun 2026') == ('2026-01-12', '2026-06-26')
     profile = {'employment': [{'title': 'Data Scientist', 'employer': 'Example Ltd', 'start': 'Late 2020', 'end': '2021-02'}]}
