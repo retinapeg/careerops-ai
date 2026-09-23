@@ -1,0 +1,120 @@
+{
+  "note": "White-box regression cases, found by reading the gate code and then writing inputs that slip past it. They are not a rate and are not part of the frozen specification suite. 'documented_today' records how each gate behaves today; tests/test_evidence_gate_eval.py fails when the observed behaviour changes, so fixing a gate forces this file and the report to be updated.",
+  "cases": [
+    {
+      "id": "KF-01",
+      "gate": "G3",
+      "summary": "Skill 'Go' from evidence that mentions a go-live checklist",
+      "probe": {"kind": "skill", "skill": "Go", "evidence": ["Prepared the go-live checklist for the new till system."]},
+      "correct_behaviour": "omitted",
+      "failing_observation": "listed",
+      "documented_today": "listed"
+    },
+    {
+      "id": "KF-02",
+      "gate": "G3",
+      "summary": "Skill 'R' from evidence that mentions an R&D department",
+      "probe": {"kind": "skill", "skill": "R", "evidence": ["Worked in the R&D department preparing test samples."]},
+      "correct_behaviour": "omitted",
+      "failing_observation": "listed",
+      "documented_today": "listed"
+    },
+    {
+      "id": "KF-03",
+      "gate": "G3",
+      "summary": "Skill 'Kubernetes' from evidence that says it was never touched",
+      "probe": {"kind": "skill", "skill": "Kubernetes", "evidence": ["Has never touched Kubernetes in a work setting."]},
+      "correct_behaviour": "omitted",
+      "failing_observation": "listed",
+      "documented_today": "listed"
+    },
+    {
+      "id": "KF-04",
+      "gate": "G1",
+      "summary": "Record describing the candidate as autistic",
+      "probe": {"kind": "admission", "text": "Built the rota spreadsheet as an autistic engineer."},
+      "correct_behaviour": "not_admitted",
+      "failing_observation": "admitted",
+      "documented_today": "admitted"
+    },
+    {
+      "id": "KF-05",
+      "gate": "G1",
+      "summary": "Record describing the candidate as disabled",
+      "probe": {"kind": "admission", "text": "Handled payroll queries as a disabled employee."},
+      "correct_behaviour": "not_admitted",
+      "failing_observation": "admitted",
+      "documented_today": "admitted"
+    },
+    {
+      "id": "KF-06",
+      "gate": "G1",
+      "summary": "Record disclosing treatment for depression",
+      "probe": {"kind": "admission", "text": "Returned to the team after treatment for depression."},
+      "correct_behaviour": "not_admitted",
+      "failing_observation": "admitted",
+      "documented_today": "admitted"
+    },
+    {
+      "id": "KF-07",
+      "gate": "G1",
+      "summary": "Record disclosing a pregnancy",
+      "probe": {"kind": "admission", "text": "Covered the office move around my pregnancy."},
+      "correct_behaviour": "not_admitted",
+      "failing_observation": "admitted",
+      "documented_today": "admitted"
+    },
+    {
+      "id": "KF-08",
+      "gate": "G4",
+      "summary": "Technical profile statement written from a planning application, charity rotas and the 'latest' visitor list",
+      "probe": {"kind": "profile_statements", "statement_id": "technical", "skills": [],
+                "job": {"title": "Office Administrator", "company": "Example Council", "description": "Keep records and answer visitor enquiries.", "requirements": []},
+                "evidence": ["Submitted a planning application for the community hall extension.",
+                             "Helped a charity integrate two volunteer rotas into one weekly schedule.",
+                             "Kept the latest visitor list up to date at reception."]},
+      "correct_behaviour": "not_generated",
+      "failing_observation": "generated",
+      "documented_today": "generated"
+    },
+    {
+      "id": "KF-09",
+      "gate": "G5",
+      "summary": "A longer statement spliced inside a shorter one in the same paragraph",
+      "probe": {"kind": "document_inner_splice", "profile_id": "support_to_analytics", "section_id": "employment:rep",
+                "paragraph_index": 0, "outer_id": "bank:rep1", "inner_id": "bank:rep3"},
+      "correct_behaviour": "rejected",
+      "failing_observation": "passed",
+      "documented_today": "passed"
+    },
+    {
+      "id": "KF-10",
+      "gate": "G5",
+      "summary": "A supported paragraph printed twice in the same section",
+      "probe": {"kind": "document_duplicate_paragraph", "profile_id": "support_to_analytics", "section_id": "employment:rep",
+                "paragraph_index": 0},
+      "correct_behaviour": "rejected",
+      "failing_observation": "passed",
+      "documented_today": "passed"
+    },
+    {
+      "id": "KF-11",
+      "gate": "G7",
+      "summary": "Reviewer finding whose advert quote is the single character 'a'",
+      "probe": {"kind": "advert_quote", "profile_id": "support_to_analytics", "quote": "a"},
+      "correct_behaviour": "demoted_to_question",
+      "failing_observation": "anchored",
+      "documented_today": "anchored"
+    },
+    {
+      "id": "KF-12",
+      "gate": "G6",
+      "summary": "Older draft path: fabricated employment heading and dates",
+      "probe": {"kind": "draft_heading", "profile_id": "support_to_analytics", "profile_ref": "rep",
+                "heading": "Senior Machine Learning Engineer | Example Research Lab", "subheading": "2015 – 2023"},
+      "correct_behaviour": "rejected",
+      "failing_observation": "passed",
+      "documented_today": "passed"
+    }
+  ]
+}
