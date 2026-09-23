@@ -10,6 +10,7 @@ import secrets
 import threading
 
 from careerops import model_connections
+from careerops.cv_document import OutdatedDocumentError, check_document_version
 from careerops.materials import approved_evidence
 
 DIRECTIONS = [{'value': key, 'label': label} for key, label in (
@@ -166,6 +167,8 @@ class CVExecution:
             job, profile, base = deepcopy(frozen['job']), deepcopy(frozen['profile']), deepcopy(frozen['base_cv'])
         if action in {'review_again', 'revise'} and not material:
             raise ValueError('Choose a generated CV to revise or review again.')
+        if material and action in {'review_again', 'revise'}:
+            check_document_version(material)
         selected, rejected = data.get('selected_findings', []), data.get('rejected_findings', [])
         if any(not isinstance(value, list) or len(value) > 100 or any(not isinstance(v, str) for v in value) for value in (selected, rejected)):
             raise ValueError('Selected changes must be a short list of finding identifiers.')
@@ -549,8 +552,8 @@ class CVExecution:
         except Exception as error:
             # Candidate packets and arbitrary provider stderr are never logged or
             # sent to the browser. Completed receipts remain reusable on retry.
-            run.update(status='failed', stage='stopped', label='Could not complete',
-                       error=f'Document processing could not complete ({type(error).__name__}): {str(error)[:400]}. Completed model calls and earlier CV versions are preserved.',
+            message = str(error) if isinstance(error, OutdatedDocumentError) else f'Document processing could not complete ({type(error).__name__}): {str(error)[:400]}. Completed model calls and earlier CV versions are preserved.'
+            run.update(status='failed', stage='stopped', label='Could not complete', error=message,
                        requires_explicit_retry=False)
             self._write(run)
         finally:

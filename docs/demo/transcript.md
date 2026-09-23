@@ -9,7 +9,7 @@ Every generator, reviewer and synthesis reply was produced by a deterministic sc
 - Model-role calls (scripted): generator -> red -> blue -> red -> blue -> purple
 - Live receipts written: no
 - Process or network attempts blocked by the offline guard: 0
-- stable_sha256: `1602fc0c78a896a7e6780348d355b652ccb41ba3efd3825c4e170ddabafd2cb4`
+- stable_sha256: `3210c5ca9b5b65f66843bd74a356d93e173e70608d3a9f0e2d8f3e39920d6f73`
 
 ## Synthetic inputs
 
@@ -33,7 +33,7 @@ Approved evidence:
 
 | # | Receipt | Role | Packet sha256 | Schema check |
 |---|---|---|---|---|
-| 1 | `a:generation` | generator | `ee6919aecc5a` | passed (Generation) |
+| 1 | `a:generation` | generator | `a29a19a1de31` | passed (Generation) |
 | 2 | `a:r0:red` | red | `fddb2e1843b9` | passed (Review) |
 | 3 | `a:r0:blue` | blue | `fddb2e1843b9` | passed (Review) |
 | 4 | `a:r1:red` | red | `b842a2d97972` | passed (Review) |

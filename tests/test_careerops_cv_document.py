@@ -4,7 +4,8 @@ from copy import deepcopy
 import pytest
 
 from careerops.cv_document import (generation_packet, build_document, validate_document, review_packet,
-                                  validate_review, apply_findings, _compose, DEFAULT_POSITIONING)
+                                  validate_review, apply_findings, _compose, DEFAULT_POSITIONING,
+                                  DOCUMENT_VERSION, OutdatedDocumentError)
 from careerops.cv_review import analysis, requirement_clauses
 from careerops.materials import validate_draft
 from careerops.policy import default_profile, default_settings
@@ -263,3 +264,31 @@ def test_candidacy_component_math_includes_actual_caps_without_changing_scores(d
     assert breakdown["final_score"] == result["score"]
     assert {a["type"] for a in breakdown["adjustments"]} >= {"penalty", "band_cap"}
     assert any("mandatory eligibility" in a["reason"] for a in breakdown["adjustments"])
+
+
+def test_cv_built_under_earlier_rules_asks_for_a_new_version_on_every_recheck(document, tmp_path):
+    # The profile statement wording changed after coherent-cv-v1, so a stored v1
+    # CV cannot be proved again. Each re-check names the cause and the remedy
+    # instead of reporting unapproved profile prose.
+    from careerops.cv_execution import CVExecution
+    from careerops.cv_review import start_review
+    from careerops.store import Store
+    job, profile, _, material = document
+    assert material["document_schema"] == DOCUMENT_VERSION != "coherent-cv-v1"
+    assert validate_document(material, profile, job)["status"] == "passed"
+    old = dict(deepcopy(material), document_schema="coherent-cv-v1")
+    clear = r"earlier CV rules \(coherent-cv-v1\).*Create a new version of this CV"
+    for recheck in (lambda: validate_document(old, profile, job), lambda: validate_draft(old, profile),
+                    lambda: review_packet(job, profile, old), lambda: apply_findings(old, [], profile, job)):
+        with pytest.raises(OutdatedDocumentError, match=clear):
+            recheck()
+    store = Store(tmp_path / "earlier-rules.sqlite3")
+    store.update_profile(profile)
+    saved = store.upsert_job(dict(job, url="https://example.test/earlier-rules"))["job"]
+    stored = store.save_material(saved["id"], "earlier-rules-cv", {k: v for k, v in old.items() if k not in {"id", "job_id"}})
+    with pytest.raises(OutdatedDocumentError, match=clear):
+        start_review(store, stored["id"], explicit=True, job_id=saved["id"])
+    runner = CVExecution(store, autostart=False)
+    for action in ("review_again", "revise"):
+        with pytest.raises(OutdatedDocumentError, match=clear):
+            runner.start(saved["id"], {"action": action, "material_id": stored["id"]})
