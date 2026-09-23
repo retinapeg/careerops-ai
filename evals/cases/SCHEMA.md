@@ -192,8 +192,10 @@ say are unsupported.
   statement?"
   - `technical`: "Practical technical experience spans software development,
     integration and testing."
-  - `quantitative`: "Quantitative problem-solving grounded in physics and
-    scientific research."
+  - `quantitative`: "Quantitative problem-solving grounded in scientific or
+    numerical research." Labels for this theme were written against an
+    earlier wording of the same template, and no evidence set in the suite
+    generated a quantitative statement, so no reported number depends on it.
   - `communication`: "Customer-facing experience combines clear communication
     with practical problem-solving."
   - `tools`: the statement "Practical technical skills include A, B, C, D."
