@@ -31,7 +31,7 @@ def leverrow(identifier, location="Paris, France"):
 
 
 def test_registry_only_merges_verified_observed_boards_and_provenance():
-    assert registry.board_identity("https://job-boards.eu.greenhouse.io/sedna/jobs/1")["endpoint"] == "https://boards-api.greenhouse.io/v1/boards/sedna/jobs?content=true"
+    assert registry.board_identity("https://job-boards.eu.greenhouse.io/example-eu/jobs/1")["endpoint"] == "https://boards-api.greenhouse.io/v1/boards/example-eu/jobs?content=true"
     assert registry.board_identity("https://jobs.eu.lever.co/example/1")["id"] == "lever:eu:example"
     assert registry.board_identity("https://jobs.ashbyhq.com/example/1")["type"] == "ashby"
     assert registry.board_identity("https://jobs.lever.co.evil.test/example") is None
@@ -113,8 +113,8 @@ def test_ashby_public_board_and_direct_import_preserve_secondary_location(monkey
 
 @pytest.mark.parametrize("workplace,is_remote,expected", [("Hybrid", True, None), ("OnSite", True, None), ("Remote", False, 0), ("", True, 0), ("", False, None)])
 def test_ashby_explicit_workplace_type_overrides_generic_remote_flag(workplace, is_remote, expected):
-    raw = {"title": "Technical support engineer", "descriptionPlain": "Caesarea hybrid onsite. Two remote days after ramp-up.", "location": "Caesarea, Israel", "jobUrl": "https://jobs.ashbyhq.com/lumana/test", "workplaceType": workplace, "isRemote": is_remote}
-    job = d._ashby(raw, "lumana", "https://jobs.ashbyhq.com/lumana")
+    raw = {"title": "Technical support engineer", "descriptionPlain": "Madrid hybrid onsite. Two remote days after ramp-up.", "location": "Madrid, Spain", "jobUrl": "https://jobs.ashbyhq.com/example-ashby/test", "workplaceType": workplace, "isRemote": is_remote}
+    job = d._ashby(raw, "example-ashby", "https://jobs.ashbyhq.com/example-ashby")
     assert job.get("office_days") == expected
     assert job["work_pattern"] == workplace
 
@@ -289,7 +289,7 @@ def test_discovery_geography_respects_authoritative_alternatives():
 
 def test_query_combinations_rotate_individual_cities_and_local_languages():
     settings = volume_settings(role_families=["Python engineer", "data analyst", "implementation consultant"])
-    settings["locations"] = {"IL": {"cities": ["Tel Aviv", "Haifa"]}, "FR": {"cities": ["Paris", "Nice"]}, "GR": {"cities": ["Athens", "Chania"]}}
+    settings["locations"] = {"IL": {"cities": ["Tel Aviv", "Haifa"]}, "FR": {"cities": ["Paris", "Marseille"]}, "GR": {"cities": ["Athens", "Thessaloniki"]}}
     queries = d._volume_queries(settings, 50)
     assert 18 <= len(queries) <= 50
     assert len(queries) == len({q["query"] for q in queries})
@@ -336,21 +336,20 @@ def test_embedded_greenhouse_board_is_observed_without_guessing(monkeypatch):
 
 
 def test_greenhouse_office_metadata_is_not_an_advertised_location_choice(monkeypatch):
-    # Live 2026-09-11 Scopely Dublin and Betsson Stockholm postings exposed a
-    # Barcelona/Malta office respectively, despite a different advertised city.
+    # Some Greenhouse postings expose an office different from the advertised city.
     raw = ghrow(469, "IE - Dublin, Ireland")
     raw.update(content="Join our team in Dublin on a hybrid basis.", offices=[{"id": 1, "name": "Barcelona", "location": "Barcelona"}])
-    job = d._greenhouse(raw, "scopely", "https://job-boards.greenhouse.io/scopely")
+    job = d._greenhouse(raw, "example-office", "https://job-boards.greenhouse.io/example-office")
     assert job["available_locations"] == []
     assert job["ats_offices"] == [{"id": 1, "name": "Barcelona", "location": "Barcelona"}]
     assert "ES" not in d._job_countries(job)
     volume_fetch(monkeypatch, lambda u: page(u, {"jobs": [raw]}))
-    result = d.discover(volume_settings(sources=["https://job-boards.greenhouse.io/scopely"]), "bootstrap", lambda e: None, lambda: False)
+    result = d.discover(volume_settings(sources=["https://job-boards.greenhouse.io/example-office"]), "bootstrap", lambda e: None, lambda: False)
     assert result["jobs"] == 1  # Advertised Dublin role is retained, without inventing Spain eligibility.
 
 
 def test_greenhouse_primary_location_retains_actual_multiple_places():
-    job = d._greenhouse(ghrow(380, "Barcelona, Spain; Vienna, Vienna, Austria"), "bitpanda", "https://job-boards.greenhouse.io/bitpanda")
+    job = d._greenhouse(ghrow(380, "Barcelona, Spain; Vienna, Vienna, Austria"), "example-multi", "https://job-boards.greenhouse.io/example-multi")
     assert "ES" in d._job_countries(job)
     assert job["location"] == "Barcelona, Spain; Vienna, Vienna, Austria"
 
@@ -367,7 +366,7 @@ def page(url, value, html=False):
 
 
 def posting(**kwargs):
-    return {"@type": "JobPosting", "title": "Python researcher", "description": "<p>Develop numerical models with Python.</p>", "hiringOrganization": {"name": "Example Research"}, "jobLocation": {"address": {"addressLocality": "Heraklion", "addressCountry": "GR"}}, **kwargs}
+    return {"@type": "JobPosting", "title": "Python researcher", "description": "<p>Develop numerical models with Python.</p>", "hiringOrganization": {"name": "Example Research"}, "jobLocation": {"address": {"addressLocality": "Athens", "addressCountry": "GR"}}, **kwargs}
 
 
 def jsonld(raw):
@@ -560,7 +559,7 @@ def test_page_limit_preserves_pending(monkeypatch):
 
 def test_query_requires_explicit_budget_without_request(monkeypatch):
     monkeypatch.setattr(d, "safe_fetch", lambda *a, **kw: pytest.fail("network called"))
-    config = {"search": {"web": {"enabled": True, "provider": "brave", "queries": ["Python Crete jobs"]}}}
+    config = {"search": {"web": {"enabled": True, "provider": "brave", "queries": ["Python Athens jobs"]}}}
     result = d.discover(config, "normal", lambda e: None, lambda: False)
     assert result["status"] == "budget_required"
     assert result["pages"] == 0
@@ -568,7 +567,7 @@ def test_query_requires_explicit_budget_without_request(monkeypatch):
 
 
 def web_settings(**extra):
-    return {"search": {"normal": {"max_pages": 10, "max_turns": 10}, "web": {"enabled": True, "provider": "brave", "queries": ["Python Crete jobs", "quant Tel Aviv jobs"], "budget_usd": 0.01, "cost_per_query_usd": 0.01, **extra}}}
+    return {"search": {"normal": {"max_pages": 10, "max_turns": 10}, "web": {"enabled": True, "provider": "brave", "queries": ["Python Athens jobs", "quant Tel Aviv jobs"], "budget_usd": 0.01, "cost_per_query_usd": 0.01, **extra}}}
 
 
 def test_query_budget_and_checkpoint_reservation(monkeypatch):
@@ -605,7 +604,7 @@ def test_search_snippet_is_only_lead_not_vacancy(monkeypatch):
             return page(url, {"web": {"results": [{"url": "https://employer.example/careers", "title": "1000 Python jobs"}]}})
         return page(url, "<p>No roles currently</p>", True)
     monkeypatch.setattr(d, "safe_fetch", fetch)
-    config = web_settings(queries=["Python Crete jobs"])
+    config = web_settings(queries=["Python Athens jobs"])
     result = d.discover(config, "normal", lambda e: None, lambda: False)
     assert result["jobs"] == 0
     assert result["pages"] == 2
@@ -841,16 +840,16 @@ def test_overseas_boards_follow_enabled_location_priority_without_dropping_unkno
     calls = volume_fetch(monkeypatch, lambda u: page(u, {"jobs": []}))
     config = volume_settings(registry=[
         {"url": "https://job-boards.greenhouse.io/unrelated", "countries": ["US"]},
-        {"url": "https://job-boards.greenhouse.io/israel", "countries": ["IL"]},
+        {"url": "https://job-boards.greenhouse.io/spain", "countries": ["ES"]},
         {"url": "https://job-boards.greenhouse.io/unknown", "countries": []},
-        {"url": "https://job-boards.greenhouse.io/france", "countries": ["FR"]},
-        {"url": "https://job-boards.greenhouse.io/greece", "countries": ["GR"]},
-        {"url": "https://job-boards.greenhouse.io/disabledcountry", "countries": ["CY"]},
+        {"url": "https://job-boards.greenhouse.io/malta", "countries": ["MT"]},
+        {"url": "https://job-boards.greenhouse.io/italy", "countries": ["IT"]},
+        {"url": "https://job-boards.greenhouse.io/disabledcountry", "countries": ["PT"]},
     ])
-    config["locations"] = {"IL": {"enabled": True, "priority": 100}, "GR": {"enabled": True, "priority": 99},
-                           "FR": {"enabled": True, "priority": 95}, "CY": {"enabled": False, "priority": 200}}
+    config["locations"] = {"ES": {"enabled": True, "priority": 100}, "IT": {"enabled": True, "priority": 99},
+                           "MT": {"enabled": True, "priority": 95}, "PT": {"enabled": False, "priority": 200}}
     original = deepcopy(config)
     result = d.discover(config, "bootstrap", lambda e: None, lambda: False)
-    assert [url.split("/boards/", 1)[1].split("/", 1)[0] for url in calls] == ["israel", "greece", "france", "unknown", "unrelated", "disabledcountry"]
+    assert [url.split("/boards/", 1)[1].split("/", 1)[0] for url in calls] == ["spain", "italy", "malta", "unknown", "unrelated", "disabledcountry"]
     assert result["boards_attempted"] == 6 and not result["checkpoint"]["pending"]
     assert config == original
