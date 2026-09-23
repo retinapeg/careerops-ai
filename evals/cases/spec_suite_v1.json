@@ -1,0 +1,1134 @@
+{
+  "suite": "spec_suite_v1",
+  "description": "Hand-written evaluation cases for the evidence gates, written from evals/cases/SPEC.md and shaped by evals/cases/SCHEMA.md without reference to any implementation. Each entry under 'files' is the complete content of the named per-gate case file. All people, employers and statements are fictional. Frozen once its SHA-256 is recorded in spec_suite_v1.sha256.",
+  "files": {
+    "g1_admission.json": {
+      "gate": "G1",
+      "cases": [
+        {
+          "case_id": "G1-sensitive-01a",
+          "pair_id": "G1-sensitive-01",
+          "category": "sensitive",
+          "sense": "claim: states the candidate's own diagnosis",
+          "record": {
+            "id": "bank:g1-sensitive-01a-1",
+            "status": "DIRECT",
+            "text": "Managed a type 2 diabetes diagnosis while working full-time rotating shifts."
+          },
+          "expected": "should_reject",
+          "rationale": "The record discloses the candidate's own medical diagnosis, a sensitive personal attribute that must be kept out of automated use."
+        },
+        {
+          "case_id": "G1-sensitive-01b",
+          "pair_id": "G1-sensitive-01",
+          "category": "sensitive",
+          "sense": "harmless: diagnosed technical faults",
+          "record": {
+            "id": "bank:g1-sensitive-01b-1",
+            "status": "DIRECT",
+            "text": "Diagnosed intermittent network faults across 14 branch offices using packet captures."
+          },
+          "expected": "should_accept",
+          "rationale": "Diagnosed refers to finding technical faults, so this is ordinary work evidence with no personal attribute."
+        },
+        {
+          "case_id": "G1-sensitive-02a",
+          "pair_id": "G1-sensitive-02",
+          "category": "sensitive",
+          "sense": "claim: states the candidate's own disability (noun)",
+          "record": {
+            "id": "bank:g1-sensitive-02a-1",
+            "status": "DIRECT",
+            "text": "Met every quarterly sales target while living with a physical disability."
+          },
+          "expected": "should_reject",
+          "rationale": "The record discloses that the candidate has a disability, which is a sensitive personal attribute."
+        },
+        {
+          "case_id": "G1-sensitive-02b",
+          "pair_id": "G1-sensitive-02",
+          "category": "sensitive",
+          "sense": "harmless: disability access standards in professional work",
+          "record": {
+            "id": "bank:g1-sensitive-02b-1",
+            "status": "DIRECT",
+            "text": "Audited the council website against disability access guidelines and fixed 40 issues."
+          },
+          "expected": "should_accept",
+          "rationale": "Disability names an accessibility standard the candidate worked to, not an attribute of the candidate."
+        },
+        {
+          "case_id": "G1-sensitive-03a",
+          "pair_id": "G1-sensitive-03",
+          "category": "sensitive",
+          "sense": "claim: describes the candidate as disabled (adjective)",
+          "record": {
+            "id": "bank:g1-sensitive-03a-1",
+            "status": "DIRECT",
+            "text": "Returned to a full caseload as a disabled employee after a spinal injury."
+          },
+          "expected": "should_reject",
+          "rationale": "The record describes the candidate as disabled and refers to an injury, both sensitive health attributes."
+        },
+        {
+          "case_id": "G1-sensitive-03b",
+          "pair_id": "G1-sensitive-03",
+          "category": "sensitive",
+          "sense": "harmless: disabled user accounts in a system",
+          "record": {
+            "id": "bank:g1-sensitive-03b-1",
+            "status": "DIRECT",
+            "text": "Disabled 200 dormant user accounts in Active Directory during the quarterly access review."
+          },
+          "expected": "should_accept",
+          "rationale": "Disabled is an administrative action on computer accounts, so the record is harmless work evidence."
+        },
+        {
+          "case_id": "G1-sensitive-04a",
+          "pair_id": "G1-sensitive-04",
+          "category": "sensitive",
+          "sense": "claim: describes the candidate as autistic (adjective)",
+          "record": {
+            "id": "bank:g1-sensitive-04a-1",
+            "status": "DIRECT",
+            "text": "Autistic analyst who brings close attention to detail to data-quality checks."
+          },
+          "expected": "should_reject",
+          "rationale": "The record states that the candidate is autistic, which is neurodivergence and therefore a sensitive attribute."
+        },
+        {
+          "case_id": "G1-sensitive-04b",
+          "pair_id": "G1-sensitive-04",
+          "category": "sensitive",
+          "sense": "harmless: designed sessions for autistic visitors",
+          "record": {
+            "id": "bank:g1-sensitive-04b-1",
+            "status": "DIRECT",
+            "text": "Designed quiet-hour gallery sessions for autistic visitors with the museum learning team."
+          },
+          "expected": "should_accept",
+          "rationale": "The word describes the visitors served by the work, not the candidate, so no personal attribute is disclosed."
+        },
+        {
+          "case_id": "G1-sensitive-05a",
+          "pair_id": "G1-sensitive-05",
+          "category": "sensitive",
+          "sense": "claim: states the candidate's own ADHD (noun) as neurodivergence",
+          "record": {
+            "id": "bank:g1-sensitive-05a-1",
+            "status": "DIRECT",
+            "text": "Earned promotion to team leader within 18 months while managing ADHD."
+          },
+          "expected": "should_reject",
+          "rationale": "The record discloses the candidate's ADHD, a neurodivergent condition and a sensitive personal attribute."
+        },
+        {
+          "case_id": "G1-sensitive-05b",
+          "pair_id": "G1-sensitive-05",
+          "category": "sensitive",
+          "sense": "harmless: workplace guidance on neurodiversity",
+          "record": {
+            "id": "bank:g1-sensitive-05b-1",
+            "status": "DIRECT",
+            "text": "Co-wrote workplace guidance on neurodiversity and reasonable adjustments for the HR team."
+          },
+          "expected": "should_accept",
+          "rationale": "Neurodiversity is the subject of a policy document the candidate wrote, not an attribute of the candidate."
+        },
+        {
+          "case_id": "G1-sensitive-06a",
+          "pair_id": "G1-sensitive-06",
+          "category": "sensitive",
+          "sense": "claim: states a mental health condition and related leave",
+          "record": {
+            "id": "bank:g1-sensitive-06a-1",
+            "status": "DIRECT",
+            "text": "Took six months of leave for depression in 2020 before returning to the role."
+          },
+          "expected": "should_reject",
+          "rationale": "The record discloses a mental health condition, which is a sensitive personal attribute."
+        },
+        {
+          "case_id": "G1-sensitive-06b",
+          "pair_id": "G1-sensitive-06",
+          "category": "sensitive",
+          "sense": "harmless: mental health first aid qualification used for colleagues",
+          "record": {
+            "id": "bank:g1-sensitive-06b-1",
+            "status": "DIRECT",
+            "text": "Trained as a mental health first aider and signposted colleagues to support during the office move."
+          },
+          "expected": "should_accept",
+          "rationale": "Mental health appears as a workplace first-aid role supporting others, so no condition of the candidate is disclosed."
+        },
+        {
+          "case_id": "G1-sensitive-07a",
+          "pair_id": "G1-sensitive-07",
+          "category": "sensitive",
+          "sense": "claim: states a long-term physical health condition",
+          "record": {
+            "id": "bank:g1-sensitive-07a-1",
+            "status": "DIRECT",
+            "text": "Managed a long-term heart condition throughout four years on the night shift."
+          },
+          "expected": "should_reject",
+          "rationale": "The record discloses a physical health condition, which is a sensitive personal attribute."
+        },
+        {
+          "case_id": "G1-sensitive-07b",
+          "pair_id": "G1-sensitive-07",
+          "category": "sensitive",
+          "sense": "harmless: condition of returned goods",
+          "record": {
+            "id": "bank:g1-sensitive-07b-1",
+            "status": "DIRECT",
+            "text": "Recorded the condition of returned stock and raised credit notes for damaged items."
+          },
+          "expected": "should_accept",
+          "rationale": "Condition refers to the state of returned goods, so the record is ordinary warehouse evidence."
+        },
+        {
+          "case_id": "G1-sensitive-08a",
+          "pair_id": "G1-sensitive-08",
+          "category": "sensitive",
+          "sense": "claim: states the candidate's own pregnancy (noun)",
+          "record": {
+            "id": "bank:g1-sensitive-08a-1",
+            "status": "DIRECT",
+            "text": "Delivered the payroll migration during my pregnancy and handed over before maternity leave."
+          },
+          "expected": "should_reject",
+          "rationale": "The record discloses the candidate's pregnancy, which is a sensitive personal attribute."
+        },
+        {
+          "case_id": "G1-sensitive-08b",
+          "pair_id": "G1-sensitive-08",
+          "category": "sensitive",
+          "sense": "harmless: configured pregnancy and maternity leave records for employees",
+          "record": {
+            "id": "bank:g1-sensitive-08b-1",
+            "status": "DIRECT",
+            "text": "Configured the HR system to record pregnancy and maternity leave in line with employment law."
+          },
+          "expected": "should_accept",
+          "rationale": "Pregnancy is a leave category in a system the candidate configured, not an attribute of the candidate."
+        },
+        {
+          "case_id": "G1-sensitive-09a",
+          "pair_id": "G1-sensitive-09",
+          "category": "sensitive",
+          "sense": "claim: describes the candidate as pregnant (adjective)",
+          "record": {
+            "id": "bank:g1-sensitive-09a-1",
+            "status": "DIRECT",
+            "text": "Continued as site supervisor while pregnant and returned to the post in 2022."
+          },
+          "expected": "should_reject",
+          "rationale": "The record states that the candidate was pregnant, which is a sensitive personal attribute."
+        },
+        {
+          "case_id": "G1-sensitive-09b",
+          "pair_id": "G1-sensitive-09",
+          "category": "sensitive",
+          "sense": "harmless: risk assessments for pregnant employees",
+          "record": {
+            "id": "bank:g1-sensitive-09b-1",
+            "status": "DIRECT",
+            "text": "Wrote laboratory risk assessments for pregnant employees working with solvents."
+          },
+          "expected": "should_accept",
+          "rationale": "Pregnant describes the employees a professional risk assessment covered, not the candidate."
+        },
+        {
+          "case_id": "G1-sensitive-10a",
+          "pair_id": "G1-sensitive-10",
+          "category": "sensitive",
+          "sense": "claim: states the candidate's religion",
+          "record": {
+            "id": "bank:g1-sensitive-10a-1",
+            "status": "DIRECT",
+            "text": "Practising Christian who serves as a church elder alongside full-time work."
+          },
+          "expected": "should_reject",
+          "rationale": "The record discloses the candidate's religion, a sensitive personal attribute."
+        },
+        {
+          "case_id": "G1-sensitive-10b",
+          "pair_id": "G1-sensitive-10",
+          "category": "sensitive",
+          "sense": "harmless: catalogued a library subject area named religion",
+          "record": {
+            "id": "bank:g1-sensitive-10b-1",
+            "status": "DIRECT",
+            "text": "Catalogued and reshelved the religion and philosophy collection at the university library."
+          },
+          "expected": "should_accept",
+          "rationale": "Religion names a library subject area the candidate catalogued, so no belief of the candidate is disclosed."
+        },
+        {
+          "case_id": "G1-sensitive-11a",
+          "pair_id": "G1-sensitive-11",
+          "category": "sensitive",
+          "sense": "claim: states the candidate's ethnicity",
+          "record": {
+            "id": "bank:g1-sensitive-11a-1",
+            "status": "DIRECT",
+            "text": "Brings lived experience as a British Pakistani woman to community outreach work."
+          },
+          "expected": "should_reject",
+          "rationale": "The record discloses the candidate's ethnicity, a sensitive personal attribute."
+        },
+        {
+          "case_id": "G1-sensitive-11b",
+          "pair_id": "G1-sensitive-11",
+          "category": "sensitive",
+          "sense": "harmless: analysed ethnicity monitoring data",
+          "record": {
+            "id": "bank:g1-sensitive-11b-1",
+            "status": "DIRECT",
+            "text": "Analysed ethnicity data for the annual equality monitoring report to the trust board."
+          },
+          "expected": "should_accept",
+          "rationale": "Ethnicity is a field in monitoring data the candidate analysed, not an attribute of the candidate."
+        },
+        {
+          "case_id": "G1-sensitive-12a",
+          "pair_id": "G1-sensitive-12",
+          "category": "sensitive",
+          "sense": "claim: states the candidate's sexual orientation",
+          "record": {
+            "id": "bank:g1-sensitive-12a-1",
+            "status": "DIRECT",
+            "text": "Openly gay professional who co-founded the company's LGBT staff network."
+          },
+          "expected": "should_reject",
+          "rationale": "The record discloses the candidate's sexual orientation, a sensitive personal attribute."
+        },
+        {
+          "case_id": "G1-sensitive-12b",
+          "pair_id": "G1-sensitive-12",
+          "category": "sensitive",
+          "sense": "harmless: revised monitoring questions about sexual orientation",
+          "record": {
+            "id": "bank:g1-sensitive-12b-1",
+            "status": "DIRECT",
+            "text": "Revised the optional sexual orientation question on the recruitment equality monitoring form."
+          },
+          "expected": "should_accept",
+          "rationale": "Sexual orientation is the subject of a form question the candidate revised, not an attribute of the candidate."
+        },
+        {
+          "case_id": "G1-sensitive-13a",
+          "pair_id": "G1-sensitive-13",
+          "category": "sensitive",
+          "sense": "claim: states the candidate's date of birth",
+          "record": {
+            "id": "bank:g1-sensitive-13a-1",
+            "status": "DIRECT",
+            "text": "Date of birth: 14 March 1979."
+          },
+          "expected": "should_reject",
+          "rationale": "The record states the candidate's date of birth, which reveals age and is a sensitive personal attribute."
+        },
+        {
+          "case_id": "G1-sensitive-13b",
+          "pair_id": "G1-sensitive-13",
+          "category": "sensitive",
+          "sense": "harmless: validated date-of-birth fields in a form",
+          "record": {
+            "id": "bank:g1-sensitive-13b-1",
+            "status": "DIRECT",
+            "text": "Validated date-of-birth fields in the patient registration form so that impossible dates were refused."
+          },
+          "expected": "should_accept",
+          "rationale": "Date of birth is a form field the candidate validated, not the candidate's own date of birth."
+        },
+        {
+          "case_id": "G1-sensitive-14a",
+          "pair_id": "G1-sensitive-14",
+          "category": "sensitive",
+          "sense": "claim: states the candidate's age",
+          "record": {
+            "id": "bank:g1-sensitive-14a-1",
+            "status": "DIRECT",
+            "text": "Aged 52, with over 30 years in retail management."
+          },
+          "expected": "should_reject",
+          "rationale": "The record states the candidate's age, a sensitive personal attribute."
+        },
+        {
+          "case_id": "G1-sensitive-14b",
+          "pair_id": "G1-sensitive-14",
+          "category": "sensitive",
+          "sense": "harmless: aged debt in a ledger",
+          "record": {
+            "id": "bank:g1-sensitive-14b-1",
+            "status": "DIRECT",
+            "text": "Chased aged debt over 90 days and cut the sales ledger balance by 18 per cent."
+          },
+          "expected": "should_accept",
+          "rationale": "Aged debt is an accounting term for overdue invoices, so no personal attribute is disclosed."
+        },
+        {
+          "case_id": "G1-sensitive-15a",
+          "pair_id": "G1-sensitive-15",
+          "category": "sensitive",
+          "sense": "claim: states the candidate's age as a number of years",
+          "record": {
+            "id": "bank:g1-sensitive-15a-1",
+            "status": "DIRECT",
+            "text": "At 58, brings steady judgement and long experience to a young team."
+          },
+          "expected": "should_reject",
+          "rationale": "The record states the candidate's age, a sensitive personal attribute."
+        },
+        {
+          "case_id": "G1-sensitive-15b",
+          "pair_id": "G1-sensitive-15",
+          "category": "sensitive",
+          "sense": "harmless: age-based fare discounts in software testing",
+          "record": {
+            "id": "bank:g1-sensitive-15b-1",
+            "status": "DIRECT",
+            "text": "Tested the fare calculator for correct age discounts for under-16s and over-60s."
+          },
+          "expected": "should_accept",
+          "rationale": "Age refers to fare rules in software the candidate tested, not the candidate's own age."
+        },
+        {
+          "case_id": "G1-future-01a",
+          "pair_id": "G1-future-01",
+          "category": "future",
+          "sense": "claim: something the candidate will do",
+          "record": {
+            "id": "bank:g1-future-01a-1",
+            "status": "DIRECT",
+            "text": "Will lead the migration of the finance team to the new ledger system next year."
+          },
+          "expected": "should_reject",
+          "rationale": "The record describes future work the candidate will do, which is a plan presented as experience."
+        },
+        {
+          "case_id": "G1-future-01b",
+          "pair_id": "G1-future-01",
+          "category": "future",
+          "sense": "harmless: a will as a probate document",
+          "record": {
+            "id": "bank:g1-future-01b-1",
+            "status": "DIRECT",
+            "text": "Drafted wills and prepared probate applications for private clients under partner supervision."
+          },
+          "expected": "should_accept",
+          "rationale": "Wills are legal documents the candidate drafted, so the record describes completed work."
+        },
+        {
+          "case_id": "G1-future-02a",
+          "pair_id": "G1-future-02",
+          "category": "future",
+          "sense": "claim: something the candidate is going to do",
+          "record": {
+            "id": "bank:g1-future-02a-1",
+            "status": "DIRECT",
+            "text": "Am going to complete the PRINCE2 Practitioner qualification in the spring."
+          },
+          "expected": "should_reject",
+          "rationale": "The record states a qualification the candidate is going to complete, which is not yet experience."
+        },
+        {
+          "case_id": "G1-future-02b",
+          "pair_id": "G1-future-02",
+          "category": "future",
+          "sense": "harmless: waste previously going to landfill",
+          "record": {
+            "id": "bank:g1-future-02b-1",
+            "status": "DIRECT",
+            "text": "Diverted 70 per cent of site waste that had been going to landfill into recycling streams."
+          },
+          "expected": "should_accept",
+          "rationale": "Going to describes where waste was sent before the candidate's completed change, not a future plan."
+        },
+        {
+          "case_id": "G1-future-03a",
+          "pair_id": "G1-future-03",
+          "category": "future",
+          "sense": "claim: something the candidate plans to do",
+          "record": {
+            "id": "bank:g1-future-03a-1",
+            "status": "DIRECT",
+            "text": "Plan to manage a team of five analysts once the restructure is complete."
+          },
+          "expected": "should_reject",
+          "rationale": "The record describes what the candidate plans to do, a future plan presented as experience."
+        },
+        {
+          "case_id": "G1-future-03b",
+          "pair_id": "G1-future-03",
+          "category": "future",
+          "sense": "harmless: rolled out planning software",
+          "record": {
+            "id": "bank:g1-future-03b-1",
+            "status": "DIRECT",
+            "text": "Rolled out shift planning software that let 12 site managers book staff online."
+          },
+          "expected": "should_accept",
+          "rationale": "Planning names a type of software the candidate rolled out, which is completed work."
+        },
+        {
+          "case_id": "G1-future-04a",
+          "pair_id": "G1-future-04",
+          "category": "future",
+          "sense": "claim: something the candidate intends to do",
+          "record": {
+            "id": "bank:g1-future-04a-1",
+            "status": "DIRECT",
+            "text": "Intend to take on budget-holder responsibility for the regional office."
+          },
+          "expected": "should_reject",
+          "rationale": "The record states an intention rather than something the candidate has done."
+        },
+        {
+          "case_id": "G1-future-04b",
+          "pair_id": "G1-future-04",
+          "category": "future",
+          "sense": "harmless: intended use of grant funds in reports",
+          "record": {
+            "id": "bank:g1-future-04b-1",
+            "status": "DIRECT",
+            "text": "Reported the intended use of each grant fund to the charity's trustees every quarter."
+          },
+          "expected": "should_accept",
+          "rationale": "Intended describes the purpose of grant funds in reports the candidate wrote, which is completed work."
+        },
+        {
+          "case_id": "G1-future-05a",
+          "pair_id": "G1-future-05",
+          "category": "future",
+          "sense": "claim: something the candidate is planning to build",
+          "record": {
+            "id": "bank:g1-future-05a-1",
+            "status": "DIRECT",
+            "text": "Planning to build a customer self-service portal in React during the coming year."
+          },
+          "expected": "should_reject",
+          "rationale": "The record describes a project the candidate is planning to build, which is not yet experience."
+        },
+        {
+          "case_id": "G1-future-05b",
+          "pair_id": "G1-future-05",
+          "category": "future",
+          "sense": "harmless: a financial forecast",
+          "record": {
+            "id": "bank:g1-future-05b-1",
+            "status": "DIRECT",
+            "text": "Built a 12-month cash-flow forecast that the board used to set the annual budget."
+          },
+          "expected": "should_accept",
+          "rationale": "A forecast is a completed piece of financial work, not a plan of the candidate's own."
+        },
+        {
+          "case_id": "G1-future-06a",
+          "pair_id": "G1-future-06",
+          "category": "future",
+          "sense": "claim: next year the candidate will be training others",
+          "record": {
+            "id": "bank:g1-future-06a-1",
+            "status": "DIRECT",
+            "text": "Next year I will be training new starters on the returns process."
+          },
+          "expected": "should_reject",
+          "rationale": "The record describes training the candidate will deliver in future, a plan presented as experience."
+        },
+        {
+          "case_id": "G1-future-06b",
+          "pair_id": "G1-future-06",
+          "category": "future",
+          "sense": "harmless: Will as part of a street name",
+          "record": {
+            "id": "bank:g1-future-06b-1",
+            "status": "DIRECT",
+            "text": "Arranged the staff rota so that the Will Street branch was covered on every bank holiday."
+          },
+          "expected": "should_accept",
+          "rationale": "Will is part of a place name in a record of completed work, not a statement about the future."
+        },
+        {
+          "case_id": "G1-future-07a",
+          "pair_id": "G1-future-07",
+          "category": "future",
+          "sense": "claim: something the candidate expects to achieve",
+          "record": {
+            "id": "bank:g1-future-07a-1",
+            "status": "DIRECT",
+            "text": "Expect to qualify as a chartered accountant in 2027."
+          },
+          "expected": "should_reject",
+          "rationale": "The record states a qualification the candidate expects to gain, which is a future plan."
+        },
+        {
+          "case_id": "G1-future-07b",
+          "pair_id": "G1-future-07",
+          "category": "future",
+          "sense": "harmless: expected delivery dates from a tracking system",
+          "record": {
+            "id": "bank:g1-future-07b-1",
+            "status": "DIRECT",
+            "text": "Gave customers expected delivery dates from the carrier tracking system and chased late parcels."
+          },
+          "expected": "should_accept",
+          "rationale": "Expected delivery dates are data the candidate reported, so the record describes completed work."
+        },
+        {
+          "case_id": "G1-future-08a",
+          "pair_id": "G1-future-08",
+          "category": "future",
+          "sense": "claim: something the candidate aims to deliver",
+          "record": {
+            "id": "bank:g1-future-08a-1",
+            "status": "DIRECT",
+            "text": "Aim to deliver the new warehouse layout by the end of next quarter."
+          },
+          "expected": "should_reject",
+          "rationale": "The record states an aim for future delivery rather than completed experience."
+        },
+        {
+          "case_id": "G1-future-08b",
+          "pair_id": "G1-future-08",
+          "category": "future",
+          "sense": "harmless: maintained a product roadmap",
+          "record": {
+            "id": "bank:g1-future-08b-1",
+            "status": "DIRECT",
+            "text": "Maintained the product roadmap and reported progress against it to the leadership team each month."
+          },
+          "expected": "should_accept",
+          "rationale": "Maintaining a roadmap is completed work even though a roadmap describes future releases."
+        },
+        {
+          "case_id": "G1-absence-01a",
+          "pair_id": "G1-absence-01",
+          "category": "absence",
+          "sense": "claim: the candidate has never used a system",
+          "record": {
+            "id": "bank:g1-absence-01a-1",
+            "status": "DIRECT",
+            "text": "Have never used SAP but pick up new systems quickly."
+          },
+          "expected": "should_reject",
+          "rationale": "The record states that the candidate has never used SAP, which is an absence of experience."
+        },
+        {
+          "case_id": "G1-absence-01b",
+          "pair_id": "G1-absence-01",
+          "category": "absence",
+          "sense": "harmless: taught learners with no prior experience",
+          "record": {
+            "id": "bank:g1-absence-01b-1",
+            "status": "DIRECT",
+            "text": "Taught spreadsheet basics to adult learners with no prior experience of computers."
+          },
+          "expected": "should_accept",
+          "rationale": "No prior experience describes the learners the candidate taught, not a gap in the candidate's own experience."
+        },
+        {
+          "case_id": "G1-absence-02a",
+          "pair_id": "G1-absence-02",
+          "category": "absence",
+          "sense": "claim: no experience with a responsibility",
+          "record": {
+            "id": "bank:g1-absence-02a-1",
+            "status": "DIRECT",
+            "text": "No experience with managing budgets or purchase orders."
+          },
+          "expected": "should_reject",
+          "rationale": "The record states that the candidate has no experience of budgets, which is an absence of experience."
+        },
+        {
+          "case_id": "G1-absence-02b",
+          "pair_id": "G1-absence-02",
+          "category": "absence",
+          "sense": "harmless: reduced errors to none",
+          "record": {
+            "id": "bank:g1-absence-02b-1",
+            "status": "DIRECT",
+            "text": "Reduced picking errors to none over a six-week audit by relabelling bin locations."
+          },
+          "expected": "should_accept",
+          "rationale": "None describes an error count the candidate achieved, which is positive evidence of completed work."
+        },
+        {
+          "case_id": "G1-absence-03a",
+          "pair_id": "G1-absence-03",
+          "category": "absence",
+          "sense": "claim: the candidate has not touched a language in years",
+          "record": {
+            "id": "bank:g1-absence-03a-1",
+            "status": "DIRECT",
+            "text": "Have not touched Python since leaving university."
+          },
+          "expected": "should_reject",
+          "rationale": "The record states that the candidate has not used Python, which is a negation of experience."
+        },
+        {
+          "case_id": "G1-absence-03b",
+          "pair_id": "G1-absence-03",
+          "category": "absence",
+          "sense": "harmless: a no-touch process the candidate built",
+          "record": {
+            "id": "bank:g1-absence-03b-1",
+            "status": "DIRECT",
+            "text": "Introduced a no-touch returns process that cut handling time per parcel by 20 per cent."
+          },
+          "expected": "should_accept",
+          "rationale": "No-touch names a process the candidate introduced, which is completed work."
+        },
+        {
+          "case_id": "G1-absence-04a",
+          "pair_id": "G1-absence-04",
+          "category": "absence",
+          "sense": "claim: the candidate is unfamiliar with a method",
+          "record": {
+            "id": "bank:g1-absence-04a-1",
+            "status": "DIRECT",
+            "text": "Unfamiliar with Agile methods such as Scrum and Kanban."
+          },
+          "expected": "should_reject",
+          "rationale": "The record states that the candidate is unfamiliar with Agile methods, which is an absence of experience."
+        },
+        {
+          "case_id": "G1-absence-04b",
+          "pair_id": "G1-absence-04",
+          "category": "absence",
+          "sense": "harmless: guided visitors unfamiliar with a site",
+          "record": {
+            "id": "bank:g1-absence-04b-1",
+            "status": "DIRECT",
+            "text": "Guided visitors unfamiliar with the hospital site to the correct wards and clinics."
+          },
+          "expected": "should_accept",
+          "rationale": "Unfamiliar describes the visitors the candidate helped, not the candidate's own experience."
+        },
+        {
+          "case_id": "G1-absence-05a",
+          "pair_id": "G1-absence-05",
+          "category": "absence",
+          "sense": "claim: the candidate does not have line management experience",
+          "record": {
+            "id": "bank:g1-absence-05a-1",
+            "status": "DIRECT",
+            "text": "Do not have any experience of line management."
+          },
+          "expected": "should_reject",
+          "rationale": "The record states a lack of line management experience, which is a negation of experience."
+        },
+        {
+          "case_id": "G1-absence-05b",
+          "pair_id": "G1-absence-05",
+          "category": "absence",
+          "sense": "harmless: not only X but also Y",
+          "record": {
+            "id": "bank:g1-absence-05b-1",
+            "status": "DIRECT",
+            "text": "Handled not only the monthly payroll run but also pension auto-enrolment for 120 staff."
+          },
+          "expected": "should_accept",
+          "rationale": "Not only introduces an addition to completed work, so the record is positive evidence."
+        },
+        {
+          "case_id": "G1-absence-06a",
+          "pair_id": "G1-absence-06",
+          "category": "absence",
+          "sense": "claim: the candidate has never worked in a customer-facing role",
+          "record": {
+            "id": "bank:g1-absence-06a-1",
+            "status": "DIRECT",
+            "text": "Has never worked in a customer-facing role."
+          },
+          "expected": "should_reject",
+          "rationale": "The record states that the candidate has never done customer-facing work, which is an absence of experience."
+        },
+        {
+          "case_id": "G1-absence-06b",
+          "pair_id": "G1-absence-06",
+          "category": "absence",
+          "sense": "harmless: never missed a deadline",
+          "record": {
+            "id": "bank:g1-absence-06b-1",
+            "status": "DIRECT",
+            "text": "Never missed a monthly payroll deadline in four years."
+          },
+          "expected": "should_accept",
+          "rationale": "Never here emphasises a completed record of reliability, not an absence of experience."
+        },
+        {
+          "case_id": "G1-absence-07a",
+          "pair_id": "G1-absence-07",
+          "category": "absence",
+          "sense": "claim: the candidate lacks hands-on experience",
+          "record": {
+            "id": "bank:g1-absence-07a-1",
+            "status": "DIRECT",
+            "text": "Lack hands-on experience with forklifts and other warehouse equipment."
+          },
+          "expected": "should_reject",
+          "rationale": "The record states that the candidate lacks hands-on experience, which is an absence of experience."
+        },
+        {
+          "case_id": "G1-absence-07b",
+          "pair_id": "G1-absence-07",
+          "category": "absence",
+          "sense": "harmless: supported clients who lacked something",
+          "record": {
+            "id": "bank:g1-absence-07b-1",
+            "status": "DIRECT",
+            "text": "Helped claimants who lacked a bank account to open basic accounts for benefit payments."
+          },
+          "expected": "should_accept",
+          "rationale": "Lacked describes the claimants the candidate supported, not the candidate's own experience."
+        },
+        {
+          "case_id": "G1-absence-08a",
+          "pair_id": "G1-absence-08",
+          "category": "absence",
+          "sense": "claim: little to no exposure to a platform",
+          "record": {
+            "id": "bank:g1-absence-08a-1",
+            "status": "DIRECT",
+            "text": "Little to no exposure to cloud platforms such as AWS or Azure."
+          },
+          "expected": "should_reject",
+          "rationale": "The record states that the candidate has little or no exposure to cloud platforms, which is an absence of experience."
+        },
+        {
+          "case_id": "G1-absence-08b",
+          "pair_id": "G1-absence-08",
+          "category": "absence",
+          "sense": "harmless: cleared a backlog without overtime",
+          "record": {
+            "id": "bank:g1-absence-08b-1",
+            "status": "DIRECT",
+            "text": "Cleared a backlog of 300 supplier invoices without any overtime cost."
+          },
+          "expected": "should_accept",
+          "rationale": "Without any overtime cost describes how completed work was achieved, not a gap in experience."
+        }
+      ]
+    },
+    "g2_claims.json": {
+      "gate": "G2",
+      "cases": [
+        {
+          "case_id": "G2-01",
+          "profile_id": "support_to_analytics",
+          "section_id": "employment:rep",
+          "kind": "paraphrase",
+          "source_evidence_ids": [
+            "bank:rep1"
+          ],
+          "claim": {
+            "text": "Created Power BI dashboards that tracked weekly sales for 42 stores.",
+            "evidence_ids": [
+              "bank:rep1"
+            ]
+          },
+          "truthful": true,
+          "expected": "should_reject",
+          "rationale": "Claims must be verbatim copies of approved evidence, so this truthful paraphrase of the dashboard statement is not a verbatim copy and should be rejected."
+        },
+        {
+          "case_id": "G2-02",
+          "profile_id": "support_to_analytics",
+          "section_id": "employment:rep",
+          "kind": "case_change",
+          "source_evidence_ids": [
+            "bank:rep2"
+          ],
+          "claim": {
+            "text": "wrote SQL queries to reconcile till data with stock records each month.",
+            "evidence_ids": [
+              "bank:rep2"
+            ]
+          },
+          "truthful": true,
+          "expected": "should_reject",
+          "rationale": "Claims must be verbatim copies of approved evidence, so this truthful copy with a lower-case first letter is not a verbatim copy and should be rejected."
+        },
+        {
+          "case_id": "G2-03",
+          "profile_id": "support_to_analytics",
+          "section_id": "employment:rep",
+          "kind": "reordered_clauses",
+          "source_evidence_ids": [
+            "bank:rep3"
+          ],
+          "claim": {
+            "text": "Saving about six hours a week, automated a manual stock-variance report with Python.",
+            "evidence_ids": [
+              "bank:rep3"
+            ]
+          },
+          "truthful": true,
+          "expected": "should_reject",
+          "rationale": "Claims must be verbatim copies of approved evidence, so this truthful statement with its clauses reordered is not a verbatim copy and should be rejected."
+        },
+        {
+          "case_id": "G2-04",
+          "profile_id": "support_to_analytics",
+          "section_id": "employment:desk",
+          "kind": "other_non_verbatim",
+          "source_evidence_ids": [
+            "bank:desk3"
+          ],
+          "claim": {
+            "text": "Wrote step-by-step guides that reduced repeat password-reset requests by 30%.",
+            "evidence_ids": [
+              "bank:desk3"
+            ]
+          },
+          "truthful": true,
+          "expected": "should_reject",
+          "rationale": "Claims must be verbatim copies of approved evidence, so this truthful statement with 'per cent' written as a symbol is not a verbatim copy and should be rejected."
+        },
+        {
+          "case_id": "G2-05",
+          "profile_id": "logistics_coordinator",
+          "section_id": "employment:transport",
+          "kind": "paraphrase",
+          "source_evidence_ids": [
+            "bank:tp1"
+          ],
+          "claim": {
+            "text": "Planned the daily delivery routes for an 18-van fleet.",
+            "evidence_ids": [
+              "bank:tp1"
+            ]
+          },
+          "truthful": true,
+          "expected": "should_reject",
+          "rationale": "Claims must be verbatim copies of approved evidence, so this truthful paraphrase of the route-scheduling statement is not a verbatim copy and should be rejected."
+        },
+        {
+          "case_id": "G2-06",
+          "profile_id": "logistics_coordinator",
+          "section_id": "employment:coordinator",
+          "kind": "reordered_clauses",
+          "source_evidence_ids": [
+            "bank:lc2"
+          ],
+          "claim": {
+            "text": "By rescheduling supplier slots, reduced late deliveries from 12 per cent to 5 per cent in one year.",
+            "evidence_ids": [
+              "bank:lc2"
+            ]
+          },
+          "truthful": true,
+          "expected": "should_reject",
+          "rationale": "Claims must be verbatim copies of approved evidence, so this truthful statement with its clauses reordered is not a verbatim copy and should be rejected."
+        },
+        {
+          "case_id": "G2-07",
+          "profile_id": "logistics_coordinator",
+          "section_id": "projects:foodbank",
+          "kind": "case_change",
+          "source_evidence_ids": [
+            "bank:fb1"
+          ],
+          "claim": {
+            "text": "Organised a weekly van rota for a Community Food Bank covering 40 collection points.",
+            "evidence_ids": [
+              "bank:fb1"
+            ]
+          },
+          "truthful": true,
+          "expected": "should_reject",
+          "rationale": "Claims must be verbatim copies of approved evidence, so this truthful copy with changed capitalisation is not a verbatim copy and should be rejected."
+        },
+        {
+          "case_id": "G2-08",
+          "profile_id": "logistics_coordinator",
+          "section_id": "employment:coordinator",
+          "kind": "other_non_verbatim",
+          "source_evidence_ids": [
+            "bank:lc1",
+            "bank:lc3"
+          ],
+          "claim": {
+            "text": "Coordinated inbound deliveries from 25 suppliers using SAP and maintained an Excel tracker of import paperwork and Incoterms for each shipment.",
+            "evidence_ids": [
+              "bank:lc1",
+              "bank:lc3"
+            ]
+          },
+          "truthful": true,
+          "expected": "should_reject",
+          "rationale": "Claims must be verbatim copies of approved evidence, so this truthful merger of two statements into one sentence is not a verbatim copy and should be rejected."
+        },
+        {
+          "case_id": "G2-09",
+          "profile_id": "junior_developer",
+          "section_id": "employment:junior_dev",
+          "kind": "paraphrase",
+          "source_evidence_ids": [
+            "bank:dev1"
+          ],
+          "claim": {
+            "text": "Fixed defects in a Django web app used by 60 dental practices.",
+            "evidence_ids": [
+              "bank:dev1"
+            ]
+          },
+          "truthful": true,
+          "expected": "should_reject",
+          "rationale": "Claims must be verbatim copies of approved evidence, so this truthful paraphrase of the bug-fixing statement is not a verbatim copy and should be rejected."
+        },
+        {
+          "case_id": "G2-10",
+          "profile_id": "junior_developer",
+          "section_id": "employment:junior_dev",
+          "kind": "reordered_clauses",
+          "source_evidence_ids": [
+            "bank:dev3"
+          ],
+          "claim": {
+            "text": "Cut a slow report query from 40 seconds to 4 seconds by adding PostgreSQL indexes.",
+            "evidence_ids": [
+              "bank:dev3"
+            ]
+          },
+          "truthful": true,
+          "expected": "should_reject",
+          "rationale": "Claims must be verbatim copies of approved evidence, so this truthful statement with its clauses reordered is not a verbatim copy and should be rejected."
+        },
+        {
+          "case_id": "G2-11",
+          "profile_id": "junior_developer",
+          "section_id": "projects:timetable",
+          "kind": "case_change",
+          "source_evidence_ids": [
+            "bank:tt1"
+          ],
+          "claim": {
+            "text": "Wrote the Javascript that drew a bus timetable grid in a four-person course team; teammates built the data import.",
+            "evidence_ids": [
+              "bank:tt1"
+            ]
+          },
+          "truthful": true,
+          "expected": "should_reject",
+          "rationale": "Claims must be verbatim copies of approved evidence, so this truthful copy with the product name recapitalised is not a verbatim copy and should be rejected."
+        },
+        {
+          "case_id": "G2-12",
+          "profile_id": "junior_developer",
+          "section_id": "employment:junior_dev",
+          "kind": "other_non_verbatim",
+          "source_evidence_ids": [
+            "bank:dev2"
+          ],
+          "claim": {
+            "text": "Wrote unit tests in Python that raised coverage of the billing module from 55 to 80 per cent",
+            "evidence_ids": [
+              "bank:dev2"
+            ]
+          },
+          "truthful": true,
+          "expected": "should_reject",
+          "rationale": "Claims must be verbatim copies of approved evidence, so this truthful copy without its closing full stop is not a verbatim copy and should be rejected."
+        },
+        {
+          "case_id": "G2-13",
+          "profile_id": "junior_developer",
+          "section_id": "employment:junior_dev",
+          "kind": "paraphrase",
+          "source_evidence_ids": [
+            "bank:dev5"
+          ],
+          "claim": {
+            "text": "Led the development of a REST API for appointment reminders.",
+            "evidence_ids": [
+              "bank:dev5"
+            ]
+          },
+          "truthful": false,
+          "expected": "should_reject",
+          "rationale": "The claim overstates supervised work on one endpoint as leading an API, so it is untrue and also not a verbatim copy of approved evidence."
+        },
+        {
+          "case_id": "G2-14",
+          "profile_id": "support_to_analytics",
+          "section_id": "projects:library",
+          "kind": "other_non_verbatim",
+          "source_evidence_ids": [
+            "bank:lib1"
+          ],
+          "claim": {
+            "text": "Charted visitor numbers for every library in the county using Power BI.",
+            "evidence_ids": [
+              "bank:lib1"
+            ]
+          },
+          "truthful": false,
+          "expected": "should_reject",
+          "rationale": "The claim widens a community library group to every library in the county, which the evidence does not support, and it is not a verbatim copy."
+        },
+        {
+          "case_id": "G2-15",
+          "profile_id": "support_to_analytics",
+          "section_id": "employment:rep",
+          "kind": "verbatim_control",
+          "source_evidence_ids": [
+            "bank:rep4"
+          ],
+          "claim": {
+            "text": "Answered ad hoc data requests from regional managers and explained the figures behind each answer.",
+            "evidence_ids": [
+              "bank:rep4"
+            ]
+          },
+          "truthful": true,
+          "expected": "should_accept",
+          "rationale": "The claim is an exact copy of one approved statement, which the specification permits."
+        },
+        {
+          "case_id": "G2-16",
+          "profile_id": "logistics_coordinator",
+          "section_id": "employment:transport",
+          "kind": "verbatim_control",
+          "source_evidence_ids": [
+            "bank:tp2",
+            "bank:tp3"
+          ],
+          "claim": {
+            "text": "Rebooked collections with customers by phone when vehicles broke down. Kept driver hours records compliant with tachograph rules.",
+            "evidence_ids": [
+              "bank:tp2",
+              "bank:tp3"
+            ]
+          },
+          "truthful": true,
+          "expected": "should_accept",
+          "rationale": "The claim is two approved statements joined by a single space in the cited order, which is a verbatim copy."
+        },
+        {
+          "case_id": "G2-17",
+          "profile_id": "junior_developer",
+          "section_id": "projects:allotment",
+          "kind": "verbatim_control",
+          "source_evidence_ids": [
+            "bank:al1",
+            "bank:al2"
+          ],
+          "claim": {
+            "text": "Built a small Django app that lets members of an allotment society book shared tools. Packaged the app with Docker so another volunteer could run it on a spare laptop.",
+            "evidence_ids": [
+              "bank:al1",
+              "bank:al2"
+            ]
+          },
+          "truthful": true,
+          "expected": "should_accept",
+          "rationale": "The claim is two approved statements joined by a single space in the cited order, which is a verbatim copy."
+        }
+      ]
+    }
+  }
+}
