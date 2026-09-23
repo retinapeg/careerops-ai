@@ -10,18 +10,22 @@ vacancies from public applicant-tracking feeds and prepares a CV and cover lette
 one of them. The person using it answers the open questions and submits applications
 themselves.
 
-- **Run the whole graph offline** with synthetic data and scripted model replies, no
-  model or credentials needed: [Run the offline demo](#run-the-offline-demo).
-- **Measured gate behaviour, including where the gates fail:** [Evaluation](#evaluation).
-- **267 offline tests**, plus a UI smoke test and a browser smoke test.
+- **Offline demo, no model or credentials:** after `pip install -r requirements.txt`, run
+  `PYTHONPATH=src python -m careerops.demo --out local_data/demo` to take a fictional
+  candidate through generation, two review rounds, a revision and synthesis with scripted
+  model replies. See [Run the offline demo](#run-the-offline-demo).
+- **Measured, including where it fails:** miss and false-rejection rates with Wilson 95%
+  intervals for five deterministic gates, over a frozen synthetic case set. See
+  [Evaluation](#evaluation).
+- **279 offline tests**, plus a UI smoke test and a browser smoke test.
 
 ## How AI is used
 
 Every model call in the CV workflow goes through one function,
-`model_connections.execute`. It sends a frozen JSON packet and accepts only JSON that
-validates against a strict schema; for the generator, reviewers and purple these are
-pydantic models with `extra="forbid"` and `strict=True`. **Python decides every
-transition.** Model outputs are data that Python predicates read: a model can add review
+`model_connections.execute`, which sends a frozen JSON packet and passes the expected
+JSON schema to the CLI. The controller then validates each generator, reviewer and purple
+reply against pydantic models with `extra="forbid"` and `strict=True` before using it.
+**Python decides every transition.** Model outputs are data that Python predicates read: a model can add review
 work or questions within fixed bounds, but it cannot skip a gate, extend the revision
 limit or mark a run ready.
 
@@ -42,15 +46,17 @@ weakest link, and the evaluation measures how often it overreaches.
 CLI that is already signed in on the machine. Tools, MCP servers, web search and hooks are
 disabled, and API keys are removed from its environment. A tool-call attempt, a timeout
 or a detected model substitution stops the stage as `uncertain`, and nothing is retried
-without an explicit decision. Substitution is detected when the CLI reports the model it
-ran. The models have no tools and do not choose what happens next: this is a bounded,
+without an explicit decision. Substitution is detected for an explicit `claude-*` model ID,
+and for Codex when the CLI reports the model it ran; a model alias is recorded as
+requested and not checked. The models have no tools and do not choose what happens next: this is a bounded,
 schema-constrained workflow, not an autonomous agent.
 
 ## Run the offline demo
 
-The demo runs the full graph (generator, red and blue review, a deterministic revision,
-a second review round, purple synthesis and export checks) on a fictional candidate and
-advert, with scripted model replies. No model, credentials or network are involved.
+The demo runs the graph's default path (generation, red and blue review, a deterministic
+revision, a second review round, purple synthesis and export checks) on a fictional
+candidate and advert, with scripted model replies. No model, credentials or network are
+involved. The compare, revise and review-again actions are not exercised by the demo.
 
 ```bash
 python3 -m venv .venv
@@ -71,11 +77,14 @@ Unanchored findings demoted to questions: 2
 Final status: needs_answer (11 items need attention)
 DOCX check: passed; PDF available: False
 Live receipts written: False; blocked process/network attempts: 0
+Transcript: local_data/demo/transcript.json and local_data/demo/transcript.md
+stable_sha256: 3210c5ca9b5b65f66843bd74a356d93e173e70608d3a9f0e2d8f3e39920d6f73
 ```
 
 - Each scripted reply is validated against the real schema before it is returned.
-- While the demo runs, starting a process or opening a network connection raises an
-  error, so the run is offline by construction.
+- While the demo runs, the process and network entry points the workflow uses
+  (`subprocess.Popen` and `run`, socket `connect` and `create_connection`, and
+  `shutil.which`) are patched to raise, and the run reports how many attempts it blocked.
 - Replies are marked as mocked, so they can never be recorded as live model receipts.
 - The run writes `transcript.json` (every packet and reply, with hashes) and a readable
   `transcript.md`. A sample is committed at [`docs/demo/transcript.md`](docs/demo/transcript.md).
@@ -97,9 +106,14 @@ from three fictional candidate profiles.
 
 **Method**
 
-- The hand-written cases were written from a specification of claim types, without
-  reference to the gate implementation. They were frozen by SHA-256 before any gate was
-  run against them, and the runner refuses a case file whose hash does not match.
+- The hand-written cases were written from a specification of claim types
+  ([`evals/cases/SPEC.md`](evals/cases/SPEC.md)) without reading the gates' logic. For the
+  profile-summary gate the specification quotes the summary templates, because the labels
+  cannot be defined without them.
+- The case file's SHA-256 was recorded when writing finished. One relabelling pass for
+  consistency followed and was re-hashed before the runner existed; running the
+  pre-relabelling file gives identical rates. The runner refuses a case file whose hash
+  does not match.
 - The positive class is "reject". Each gate reports its miss rate and its
   false-rejection rate separately, with Wilson 95% intervals. There is no score combined
   across gates, because each gate has a different unit.
@@ -122,15 +136,18 @@ of real claims and do not estimate how often the gates fail in use.
 
 - **The claim gate works because it demands an exact copy.** With the text check removed,
   leaving only the evidence-ID check, it misses 448 of the 622 generated claims that
-  should be rejected (72.0%).
+  should be rejected (72.0%). The 622 are the 612 in the table plus 10 citing records that
+  the admission filter rejects first. The 448 misses are claims that copy one statement's
+  text but cite a different statement's ID, which an ID-only check cannot see.
   Exactness has a price: all 12 truthful paraphrases in the suite are blocked.
 - **The two filters in front of generation are weak.** The admission filter matches
   particular words, so it lets through "Am going to complete the PRINCE2 Practitioner
   qualification in the spring" and "Have not touched Python since leaving university".
   It also keeps out harmless records such as "Maintained the product roadmap" and
   "Taught spreadsheet basics to adult learners with no prior experience of computers".
-  The skill check accepts "Go" from evidence about a go-live checklist, and "Kubernetes"
-  from evidence saying it was never touched.
+  In the measured suite the skill check accepts "Kubernetes" from evidence saying a
+  single virtual machine was chosen over it; among the known failures it also accepts
+  "Go" from a go-live checklist.
 - **Twelve known failures**, found by reading the code, are recorded as named regression
   cases in [`evals/cases/known_failures_v1.json`](evals/cases/known_failures_v1.json). They
   are not counted in any rate. A test fails when any of them changes behaviour, so fixing
@@ -144,6 +161,13 @@ of real claims and do not estimate how often the gates fail in use.
 Defects found during this work and deliberately left for separate changes:
 
 - The admission filter and skill check are weak, as measured above.
+- Reviewer anchoring is a substring test, so a one-character advert quote counts as
+  anchored; the document validator accepts one statement spliced inside another and a
+  duplicated paragraph; and the older draft validator accepts a fabricated employment
+  heading. These are known failures KF-11, KF-09, KF-10 and KF-12.
+- The profile-summary wording changed in this version, so CVs built under the earlier
+  rules (`coherent-cv-v1`) cannot be re-checked. The workspace says so plainly and asks
+  for a new version of that CV instead of re-validating it against different rules.
 - Retrying a model reply that parsed but failed schema validation replays the stored reply
   instead of calling the model again, so the run fails the same way until a new run is
   started. The receipt is marked completed before validation.
@@ -152,14 +176,14 @@ Defects found during this work and deliberately left for separate changes:
 - `python-docx` stamps the current time into each saved document, so the same document
   saved twice has a different hash, and that hash feeds the base-CV version.
 - Saving a blank "Verified annual base trigger" in Settings used to make the workspace
-  impossible to reopen. Saving one is now rejected, but a database that already holds a
-  blank value still fails to open.
+  impossible to reopen. Saving one is now rejected, and a database that already holds a
+  blank or invalid value is repaired to the default when it opens.
 
 ## System architecture
 
 ![System architecture: browser UI, loopback Python server, SQLite store, discovery from public ATS feeds, the CV workflow graph with its gates, the CLI model roles, the offline demo and the evidence-gate evaluation](docs/images/architecture.svg)
 
-*Purple: model call · blue: deterministic code · green: human · amber: evaluation · grey: storage · dashed: external, optional, mocked or planned*
+*Purple: model call · blue: deterministic code · green: human · amber: tests and evaluation · grey: storage · dashed: external, optional or mocked*
 
 The browser UI talks only to a Python server bound to 127.0.0.1, which keeps its records
 in a local SQLite file. **Find jobs** starts a bounded background worker that reads
@@ -290,8 +314,9 @@ node src/careerops/static/app.smoke.cjs
 PYTHONPATH=src python -m evals.evidence_gates --check
 ```
 
-`pytest.ini` puts `src` and the repository root on the import path. The last command checks
-that the committed evaluation report still matches a fresh run.
+`pytest.ini` puts `src` and the repository root on the import path. The UI smoke test
+needs Node.js (checked with Node 26). The last command checks that the committed
+evaluation report still matches a fresh run.
 
 Browser checks also use Playwright and its Chromium installation:
 
