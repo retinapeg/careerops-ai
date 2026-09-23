@@ -755,10 +755,10 @@ def _london_location(job):
 
 # Role phrases in the main local language of each listed country where adverts
 # are often written in it. Every third query for that country adds one.
+# Cyprus and Malta adverts are mostly in English, so they have none.
 _GERMAN_PHRASES = ["Datenanalyst", "Softwareentwickler", "technischer Berater"]
-_GREEK_PHRASES = ["αναλυτής δεδομένων", "μηχανικός λογισμικού"]
 LOCAL_ROLE_PHRASES = {
-    "FR": ["analyste données", "ingénieur Python", "consultant technique"], "GR": _GREEK_PHRASES, "CY": _GREEK_PHRASES,
+    "FR": ["analyste données", "ingénieur Python", "consultant technique"], "GR": ["αναλυτής δεδομένων", "μηχανικός λογισμικού"],
     "ES": ["analista de datos", "ingeniero software"], "IT": ["analista dati", "sviluppatore Python"],
     "IL": ["data analyst", "software engineer"], "DE": _GERMAN_PHRASES, "CH": _GERMAN_PHRASES,
     "NL": ["data-analist", "softwareontwikkelaar", "technisch consultant"],

@@ -191,7 +191,7 @@ def test_relocation_checks_skip_irrelevant_adverts_and_preserve_unicode(monkeypa
     assert inventory._relocation({"description": "No relocation assistance is offered."}) == "unavailable"
 
 
-@pytest.mark.parametrize("code", ["DE", "CH", "NL", "PT", "PL", "CY", "FR", "GR", "ES", "IT"])
+@pytest.mark.parametrize("code", ["DE", "CH", "NL", "PT", "PL", "FR", "GR", "ES", "IT"])
 def test_non_english_countries_add_local_language_role_phrases(code):
     settings = default_settings()
     for country, config in settings["locations"].items():
