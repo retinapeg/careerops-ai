@@ -16,9 +16,58 @@ Python controls, rather than a free-running agent. See
 screenshot of the current build. The concept pairs quick, swipe-style triage for
 routine vacancies with the full review graph for roles you can't just swipe-apply to.*
 
+![CareerOps AI Discover page on a fresh install: an empty opportunities list with the Find jobs controls, before any search has run](docs/images/discover-fresh-install.png)
+
+*Screenshot of the current build, fresh install, no jobs fetched: the local server
+was started with an empty data directory, no model CLI connected and no API keys.
+Nothing on the page is synthetic.*
+
 The UI runs on your computer. This repository contains application code and
 synthetic checks; your profile, uploaded CVs, job history and generated documents
 belong in the ignored `local_data/` directory.
+
+## System architecture
+
+![System architecture: browser UI, loopback Python server, SQLite store, discovery from public ATS feeds, the CV workflow graph and its CLI model roles](docs/images/architecture.svg)
+
+*Purple: model call · blue: deterministic code · green: human · amber: evaluation · grey: storage · dashed: external, optional, mocked or planned*
+
+The browser UI talks only to a Python server bound to 127.0.0.1, which keeps all
+state in one local SQLite file. **Find jobs** starts a bounded background worker
+that reads public Greenhouse, Lever and Ashby feeds, scores each vacancy with
+deterministic rules and saves it; paid web search and a paid-API evidence review
+exist but stay off until you configure credentials and a budget. **Prepare
+application** queues a run in the CV workflow graph, which freezes its inputs,
+calls the configured CLI models one role at a time, validates each JSON reply and
+stores receipts and CV versions before continuing. Diagram source:
+[`docs/architecture.mmd`](docs/architecture.mmd).
+
+## How AI is used
+
+- **Models and roles:** four LLM roles (generator, red, blue, purple), each an
+  exact model ID you choose for a Codex CLI or Claude CLI already signed in on your
+  machine. Defaults are Codex for generator, red and purple and Claude for blue. No
+  model is bundled, and a fresh install has none connected.
+- **Inputs and outputs:** each role receives a frozen JSON packet (advert, approved
+  profile evidence, base CV and, for reviewers, the CV version) and must return
+  schema-constrained JSON. Python builds the CV and cover letter from approved
+  evidence; a finding not anchored in the advert, CV text and approved evidence
+  becomes a question for you. See [Graph-engineered workflow](#graph-engineered-workflow).
+- **Tools and permissions:** each call is a one-shot subprocess with tools, MCP
+  servers, web search and hooks disabled and API keys removed from its environment.
+  A tool-call attempt, timeout or detected model substitution stops the stage; there
+  is no automatic retry or fallback provider.
+- **Deterministic and human-controlled:** discovery, fit scoring, shortlisting, the
+  revision limit, document export and application tracking are ordinary code. You
+  supply the facts, answer open questions and send applications yourself.
+- **Optional paid route (off by default):** with an API key in the server
+  environment plus a model ID, prices and a positive budget in Settings, discovery
+  can send admitted vacancies and verified evidence to the OpenAI Responses or Anthropic Messages API for an advisory review.
+  Quotes and evidence IDs are checked locally (`providers.py`).
+- **Evaluation and limits:** the test suite uses synthetic data and mocked model
+  calls, which are never recorded as live receipts. There is no benchmark of CV
+  quality or hiring outcomes; only a completed receipt shows that a real model call
+  happened.
 
 ## Graph-engineered workflow
 
