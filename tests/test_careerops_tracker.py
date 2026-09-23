@@ -140,6 +140,22 @@ def test_strategy_weights_reject_invalid_numbers(value):
         validate_settings({'strategy': {'weights': {'skills': value}}})
 
 
+@pytest.mark.parametrize('value', [None, '', -1, True, float('nan')])
+def test_blank_exceptional_base_is_rejected_and_the_workspace_still_opens(tmp_path, value):
+    # Clearing "Verified annual base trigger" in Settings sends null. That was
+    # saved, then rescoring a job with a known salary failed on every start.
+    path = tmp_path / 'tracker.sqlite3'
+    store = Store(path)
+    job = store.upsert_job(dict(role(), description='Implementation Analyst. London. Python support. Base salary £50,000 to £60,000 per year.'))['job']
+    assert job['salary_min'] == 50000 and job['salary_type'] == 'base'
+    before = store.settings()['exceptional']['base_gbp']
+    with pytest.raises(ValueError, match='Verified annual base trigger'):
+        store.update_settings({'exceptional': {'base_gbp': value}})
+    reopened = Store(path)
+    assert reopened.settings()['exceptional']['base_gbp'] == before
+    assert reopened.update_settings({'exceptional': {'base_gbp': 0}})['exceptional']['base_gbp'] == 0
+
+
 def test_professional_queue_rebuilds_from_full_candidates_without_old_pins(store, monkeypatch):
     first = store.upsert_job(role())['job']
     second = store.upsert_job({'title': 'Other', 'company': 'Two', 'url': 'https://example.org/jobs/2', 'description': 'Different London technical role.'})['job']
