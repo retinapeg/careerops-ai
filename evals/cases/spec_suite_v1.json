@@ -2911,6 +2911,289 @@
           "rationale": "The evidence is physics research with Python pipelines and validation, strongly supporting the quantitative statement, but with no integration work the software statement is unsupported, and TensorFlow is never used."
         }
       ]
+    },
+    "g5_altered_documents.json": {
+      "gate": "G5",
+      "cases": [
+        {
+          "case_id": "G5-01",
+          "profile_id": "support_to_analytics",
+          "alteration": {
+            "type": "append_text",
+            "section_id": "employment:rep",
+            "paragraph_index": 0,
+            "text": "Led the migration of all 42 stores to a new data warehouse."
+          },
+          "expected": "should_reject",
+          "rationale": "The appended sentence is a claim that no admitted evidence supports, so the document is no longer grounded."
+        },
+        {
+          "case_id": "G5-02",
+          "profile_id": "logistics_coordinator",
+          "alteration": {
+            "type": "append_text",
+            "section_id": "projects:foodbank",
+            "paragraph_index": 1,
+            "text": "Secured £50,000 of grant funding for a second van."
+          },
+          "expected": "should_reject",
+          "rationale": "The appended grant-funding claim has no supporting evidence in the profile."
+        },
+        {
+          "case_id": "G5-03",
+          "profile_id": "junior_developer",
+          "alteration": {
+            "type": "replace_paragraph",
+            "section_id": "employment:bookshop",
+            "paragraph_index": 1,
+            "text": "Managed stock ordering and supplier accounts for the whole shop."
+          },
+          "expected": "should_reject",
+          "rationale": "The replacement paragraph is an unsupported claim that overstates the stockroom evidence."
+        },
+        {
+          "case_id": "G5-04",
+          "profile_id": "logistics_coordinator",
+          "alteration": {
+            "type": "set_subheading",
+            "section_id": "employment:transport",
+            "subheading": "2014 – 2020"
+          },
+          "expected": "should_reject",
+          "rationale": "The start date of the Transport Planner role no longer matches the profile record of 2016."
+        },
+        {
+          "case_id": "G5-05",
+          "profile_id": "junior_developer",
+          "alteration": {
+            "type": "set_subheading",
+            "section_id": "employment:junior_dev",
+            "subheading": "2020 – Present"
+          },
+          "expected": "should_reject",
+          "rationale": "The start date of the developer role is moved two years earlier than the profile record of 2022."
+        },
+        {
+          "case_id": "G5-06",
+          "profile_id": "support_to_analytics",
+          "alteration": {
+            "type": "set_heading",
+            "section_id": "employment:ops",
+            "heading": "Service Reporting Manager | Northbrook Housing Trust"
+          },
+          "expected": "should_reject",
+          "rationale": "The job title is changed from Service Reporting Officer to a more senior title the profile does not record."
+        },
+        {
+          "case_id": "G5-07",
+          "profile_id": "junior_developer",
+          "alteration": {
+            "type": "set_heading",
+            "section_id": "employment:junior_dev",
+            "heading": "Junior Software Developer | Quillon Health Systems Ltd"
+          },
+          "expected": "should_reject",
+          "rationale": "The employer is renamed to a company that does not appear in the profile."
+        },
+        {
+          "case_id": "G5-08",
+          "profile_id": "support_to_analytics",
+          "alteration": {
+            "type": "inject_skill",
+            "skill": "Tableau"
+          },
+          "expected": "should_reject",
+          "rationale": "Tableau is listed on the profile but no admitted evidence shows it being used, so adding it to the Skills section is unsupported."
+        },
+        {
+          "case_id": "G5-09",
+          "profile_id": "junior_developer",
+          "alteration": {
+            "type": "inject_skill",
+            "skill": "Kubernetes"
+          },
+          "expected": "should_reject",
+          "rationale": "Kubernetes is neither a listed skill nor mentioned in any evidence, so the injected skill is unsupported."
+        },
+        {
+          "case_id": "G5-10",
+          "profile_id": "support_to_analytics",
+          "alteration": {
+            "type": "set_education_paragraphs",
+            "paragraphs": [
+              "Hollowmere University — BA (Hons) Geography, First Class",
+              "Eastgate College — Certificate in Data Analysis"
+            ]
+          },
+          "expected": "should_reject",
+          "rationale": "The degree classification is raised from Upper Second Class to First Class, which the profile does not record."
+        },
+        {
+          "case_id": "G5-11",
+          "profile_id": "logistics_coordinator",
+          "alteration": {
+            "type": "set_education_paragraphs",
+            "paragraphs": [
+              "Westvale College — Foundation Degree in Logistics Operations, Distinction",
+              "Examplar Transport Training — Certificate of Professional Competence in Road Haulage"
+            ]
+          },
+          "expected": "should_reject",
+          "rationale": "The Level 3 Diploma is replaced by a Foundation Degree, a qualification the candidate does not hold."
+        },
+        {
+          "case_id": "G5-12",
+          "profile_id": "support_to_analytics",
+          "alteration": {
+            "type": "move_evidence",
+            "evidence_id": "bank:rep1",
+            "from_section_id": "employment:rep",
+            "to_section_id": "employment:ops"
+          },
+          "expected": "should_reject",
+          "rationale": "The Power BI dashboard statement belongs to the Fernlea role, so placing it under the earlier Northbrook role misattributes the work."
+        },
+        {
+          "case_id": "G5-13",
+          "profile_id": "logistics_coordinator",
+          "alteration": {
+            "type": "move_evidence",
+            "evidence_id": "bank:tp1",
+            "from_section_id": "employment:transport",
+            "to_section_id": "employment:coordinator"
+          },
+          "expected": "should_reject",
+          "rationale": "The route-scheduling statement belongs to Carrow Freight, so moving it under Dunmore Distribution misattributes the work."
+        },
+        {
+          "case_id": "G5-14",
+          "profile_id": "junior_developer",
+          "alteration": {
+            "type": "move_evidence",
+            "evidence_id": "bank:tt1",
+            "from_section_id": "projects:timetable",
+            "to_section_id": "employment:junior_dev"
+          },
+          "expected": "should_reject",
+          "rationale": "The timetable statement comes from a course team project, so presenting it as employed work at Quillon misattributes it."
+        },
+        {
+          "case_id": "G5-15",
+          "profile_id": "support_to_analytics",
+          "alteration": {
+            "type": "replace_in_paragraph",
+            "section_id": "employment:desk",
+            "paragraph_index": 0,
+            "old": "350",
+            "new": "3,500"
+          },
+          "expected": "should_reject",
+          "rationale": "The number of staff supported is inflated tenfold from the evidence."
+        },
+        {
+          "case_id": "G5-16",
+          "profile_id": "logistics_coordinator",
+          "alteration": {
+            "type": "replace_in_paragraph",
+            "section_id": "employment:coordinator",
+            "paragraph_index": 0,
+            "old": "25 suppliers",
+            "new": "250 suppliers"
+          },
+          "expected": "should_reject",
+          "rationale": "The number of suppliers is inflated tenfold from the evidence."
+        },
+        {
+          "case_id": "G5-17",
+          "profile_id": "junior_developer",
+          "alteration": {
+            "type": "replace_in_paragraph",
+            "section_id": "employment:junior_dev",
+            "paragraph_index": 1,
+            "old": "55 to 80 per cent",
+            "new": "55 to 95 per cent"
+          },
+          "expected": "should_reject",
+          "rationale": "The test coverage figure is inflated beyond what the evidence records."
+        },
+        {
+          "case_id": "G5-18",
+          "profile_id": "support_to_analytics",
+          "alteration": {
+            "type": "unaltered"
+          },
+          "expected": "should_accept",
+          "rationale": "The reference document is unchanged and every statement in it is admitted evidence."
+        },
+        {
+          "case_id": "G5-19",
+          "profile_id": "logistics_coordinator",
+          "alteration": {
+            "type": "unaltered"
+          },
+          "expected": "should_accept",
+          "rationale": "The reference document is unchanged and every statement in it is admitted evidence."
+        },
+        {
+          "case_id": "G5-20",
+          "profile_id": "junior_developer",
+          "alteration": {
+            "type": "unaltered"
+          },
+          "expected": "should_accept",
+          "rationale": "The reference document is unchanged and every statement in it is admitted evidence."
+        },
+        {
+          "case_id": "G5-21",
+          "profile_id": "logistics_coordinator",
+          "alteration": {
+            "type": "reorder_paragraphs",
+            "section_id": "employment:transport",
+            "order": [
+              2,
+              0,
+              1
+            ]
+          },
+          "expected": "should_accept",
+          "rationale": "Reordering supported paragraphs within their own section adds or alters no fact."
+        },
+        {
+          "case_id": "G5-22",
+          "profile_id": "support_to_analytics",
+          "alteration": {
+            "type": "remove_paragraph",
+            "section_id": "employment:desk",
+            "paragraph_index": 2
+          },
+          "expected": "should_accept",
+          "rationale": "Removing a supported paragraph leaves only admitted statements and adds no fact."
+        },
+        {
+          "case_id": "G5-23",
+          "profile_id": "junior_developer",
+          "alteration": {
+            "type": "remove_paragraph",
+            "section_id": "projects:allotment",
+            "paragraph_index": 1
+          },
+          "expected": "should_accept",
+          "rationale": "Removing a supported paragraph leaves only admitted statements and adds no fact."
+        },
+        {
+          "case_id": "G5-24",
+          "profile_id": "junior_developer",
+          "alteration": {
+            "type": "set_education_paragraphs",
+            "paragraphs": [
+              "Ravensholt University — BSc Computing, Second Class Honours (Upper Division)",
+              "Northgate Coding School — Certificate in Web Development"
+            ]
+          },
+          "expected": "should_accept",
+          "rationale": "This is the Education form printed before award dates were recorded; it omits the date but alters no fact."
+        }
+      ]
     }
   }
 }
