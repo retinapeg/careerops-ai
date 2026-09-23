@@ -818,9 +818,11 @@ def test_default_query_budgets_cover_multiple_cities_early_and_all_pairs_eventua
     from careerops.policy import default_settings
     config = default_settings()
     config["search"]["scope"] = "overseas"
+    # A fresh install enables no overseas country, so supply four with three cities each.
+    config["locations"] = {c: {"enabled": True, "cities": [f"{c}-A", f"{c}-B", f"{c}-C"]} for c in ("ES", "FR", "GR", "IT")}
     for mode in ("normal", "deep", "bootstrap"):
         queries = d._volume_queries(config, d.coverage_limits(config, mode)["query_objective"])
-        for country in ("il", "gr", "fr", "cy"):
+        for country in ("es", "fr", "gr", "it"):
             assert len({q["where"] for q in queries if q["country"] == country}) >= 2
     for city_count, role_count in ((2, 2), (3, 3), (3, 6), (4, 3)):
         settings = volume_settings(role_families=[f"Role{i}" for i in range(role_count)])

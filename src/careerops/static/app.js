@@ -6,7 +6,7 @@ const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 const state = {data: null, token: '', page: 'all', workflowJobId: null, returnToJobs: null, restoreInventory: false, selectedJob: null, skipJob: null, loading: false, poll: null};
 const laneNames = {mediterranean: 'Mediterranean', overseas_quant: 'Overseas quant', london: 'London professional', exceptional: 'Exceptional upside', cashflow: 'Immediate income', overseas_quant_worldwide: 'Overseas quant worldwide'};
 const statusNames = {new: 'New discovery', saved: 'Saved', materials_ready: 'Materials ready', applied: 'Applied', interview: 'Interview', offer: 'Offer', closed: 'Closed', dismissed: 'Skipped'};
-const countryNames = {IL: 'Israel', GR: 'Greece', FR: 'France', CY: 'Cyprus', MT: 'Malta', ES: 'Spain', IT: 'Italy', GB: 'United Kingdom'};
+const countryNames = {CH: 'Switzerland', CY: 'Cyprus', DE: 'Germany', ES: 'Spain', FR: 'France', GB: 'United Kingdom', GR: 'Greece', IE: 'Ireland', IL: 'Israel', IT: 'Italy', MT: 'Malta', NL: 'Netherlands', PL: 'Poland', PT: 'Portugal', SG: 'Singapore', US: 'United States'};
 const activeStatuses = ['saved', 'materials_ready', 'applied', 'interview', 'offer'];
 let profileDraft = {};
 let settingsDraft = {};

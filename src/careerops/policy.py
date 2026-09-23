@@ -43,6 +43,18 @@ CITIES = {
     "SG": ("Singapore",), "PL": ("Kraków", "Krakow", "Warsaw", "Warszawa"),
     "PT": ("Lisbon", "Lisboa", "Porto"), "NL": ("Amsterdam",), "IE": ("Dublin",),
 }
+# Neutral starting cities for each overseas country: well-known cities listed
+# alphabetically, drawn from CITIES so each one is recognised in adverts. The
+# order of CITIES itself drives classification and is deliberately separate.
+DEFAULT_CITIES = {
+    "IL": ("Haifa", "Jerusalem", "Tel Aviv"), "GR": ("Athens", "Thessaloniki"),
+    "FR": ("Marseille", "Paris", "Toulouse"), "CY": ("Larnaca", "Nicosia", "Paphos"),
+    "MT": ("Sliema", "St Julian's", "Valletta"), "ES": ("Barcelona", "Madrid", "Valencia"),
+    "IT": ("Milan", "Naples", "Rome"), "US": ("Chicago", "New York", "San Francisco"),
+    "DE": ("Berlin", "Munich"), "CH": ("Geneva", "Zurich"), "SG": ("Singapore",),
+    "PL": ("Krakow", "Warsaw"), "PT": ("Lisbon", "Porto"), "NL": ("Amsterdam",), "IE": ("Dublin",),
+}
+COUNTRY_CURRENCIES = {"IL": "ILS", "US": "USD", "CH": "CHF", "SG": "SGD", "PL": "PLN"}
 CITY_ALIASES = {
     "תל אביב": "Tel Aviv", "תל-אביב": "Tel Aviv", "חיפה": "Haifa", "הרצליה": "Herzliya", "ירושלים": "Jerusalem",
     "Ηράκλειο": "Heraklion", "Κρήτη": "Crete", "Χανιά": "Chania", "Αθήνα": "Athens", "Athina": "Athens", "Θεσσαλονίκη": "Thessaloniki",
@@ -119,17 +131,18 @@ def _source_says_closed(text: str) -> bool:
 
 def default_settings() -> dict:
     """Return an independent editable settings document; no execution is enabled."""
-    priorities = {"IL": 100, "GR": 100, "FR": 95, "CY": 80, "MT": 80, "ES": 80, "IT": 80}
     from .professional import STRATEGY_DEFAULTS
     return {
         "version": 1, "policy_version": POLICY_VERSION,
         "strategy": deepcopy(STRATEGY_DEFAULTS),
         "lanes": {"mediterranean": True, "overseas_quant": True, "london": True,
                   "exceptional": True, "cashflow": False, "overseas_quant_worldwide": False},
-        "locations": {country: {"enabled": True, "cities": list(CITIES[country][:3]),
-                                "excluded_cities": [], "priority": priority, "salary_min": None,
-                                "currency": "ILS" if country == "IL" else "EUR"}
-                      for country, priority in priorities.items()},
+        # Every overseas country is listed but none is enabled: the user chooses
+        # which markets to search, with equal priority until they say otherwise.
+        "locations": {country: {"enabled": False, "cities": list(DEFAULT_CITIES[country]),
+                                "excluded_cities": [], "priority": 50, "salary_min": None,
+                                "currency": COUNTRY_CURRENCIES.get(country, "EUR")}
+                      for country in sorted(COUNTRIES) if country != "GB"},
         # Illustrative salary figures for a fresh install, not recommendations;
         # each user sets their own floors and exceptional trigger in Settings.
         "london": {"salary_remote_one_day": 35000, "salary_two_days": 38000,

@@ -43,6 +43,19 @@ def test_fresh_install_fetches_public_starter_boards_without_credentials(monkeyp
     assert all(record["response_byte_limit"] == discovery.BOARD_MAX_BYTES for record in result["pagination"].values())
 
 
+def test_fresh_install_lists_every_overseas_country_disabled_with_recognised_cities():
+    from careerops.policy import COUNTRIES, country_codes
+    from careerops.store import validate_settings
+    settings = default_settings()
+    validate_settings(settings)
+    locations = settings["locations"]
+    assert set(locations) == set(COUNTRIES) - {"GB"}
+    assert not any(config["enabled"] for config in locations.values())
+    assert len({config["priority"] for config in locations.values()}) == 1
+    for code, config in locations.items():
+        assert config["cities"] and all(country_codes(city) == [code] for city in config["cities"])
+
+
 def test_empty_or_disabled_sources_require_setup_without_silent_fallback(monkeypatch):
     def forbidden(*args, **kwargs):
         raise AssertionError("A disabled or absent source must not make a request")
