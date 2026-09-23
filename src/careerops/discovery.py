@@ -762,7 +762,7 @@ def _volume_queries(settings, maximum):
     locations = [("GB", ["London"])] if scope == "london" else [(c, v.get("cities") or [c]) for c, v in settings.get("locations", {}).items() if isinstance(v, dict) and v.get("enabled", True) and c != "GB"]
     from .policy import COUNTRIES
     names = {code: aliases[0] for code, aliases in COUNTRIES.items()}
-    roles = search.get("role_families") or ["Python software engineer", "data analyst", "research engineer", "implementation consultant", "technical support", "solutions engineer", "quantitative analyst", "QA analyst"]
+    roles = search.get("role_families") or ["software engineer", "data analyst", "solutions engineer", "technical support", "QA analyst"]
     local = {"FR": ["analyste données", "ingénieur Python", "consultant technique"], "GR": ["αναλυτής δεδομένων", "μηχανικός λογισμικού"], "ES": ["analista de datos", "ingeniero software"], "IT": ["analista dati", "sviluppatore Python"], "IL": ["data analyst", "software engineer"]}
     result, seen_queries = [], set()
     for index in range(maximum):
