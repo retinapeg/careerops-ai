@@ -33,7 +33,7 @@ def document():
             {"id": "bank:degree", "status": "DIRECT", "text": "Example University — BSc Economics, First Class Honours"}],
         employment=[
             {"record_id": "old", "title": "Office Clerk", "employer": "Example Office", "start": "2020", "end": "2021", "evidence_ids": ["old"]},
-            {"record_id": "recent", "title": "Call Handler", "employer": "Example Service", "start": "2022", "end": "2023", "evidence_ids": ["work1", "work2"]}],
+            {"record_id": "recent", "title": "Customer Service Adviser", "employer": "Example Service", "start": "2022", "end": "2023", "evidence_ids": ["work1", "work2"]}],
         projects=[{"record_id": "project", "name": "Example AI Integration", "period": "2025", "evidence_ids": ["project", "future"]},
                   {"record_id": "team", "name": "Team Research Tool", "period": "2024", "team_project": True, "evidence_ids": ["team"]}],
         research=[{"record_id": "research", "name": "Statistics research", "period": "2019", "evidence_ids": ["research"]}])
@@ -56,7 +56,7 @@ def test_coherent_document_preserves_identity_history_team_scope_and_qualificati
     assert headings[:3] == ["Profile", "Skills", "Experience"]
     assert "Selected projects" in headings and "Education" in headings
     assert "Relevant strengths" not in material["cv_text"]
-    assert headings.index("Call Handler | Example Service") < headings.index("Office Clerk | Example Office")
+    assert headings.index("Customer Service Adviser | Example Service") < headings.index("Office Clerk | Example Office")
     assert "Team project · 2024" in material["cv_text"] and "another member implemented the interface" in material["cv_text"]
     assert "Will implement" not in material["cv_text"] and "200 commercial" not in material["cv_text"]
     assert "Postgraduate Certificate" in material["cv_text"] and "First Class Honours" in material["cv_text"]

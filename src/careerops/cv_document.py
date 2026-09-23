@@ -144,7 +144,7 @@ def _profile_statements(profile, evidence, job=None):
               "AI and language-model tools": r"\bAI\b|\bLLM\b|language.model|agentic",
               "workflow automation": r"automat|workflow", "data analysis": r"data analys|analys.*data|pandas",
               "quantitative research": r"quantum|numerical|physics|scientific research",
-              "testing and validation": r"test|validat", "customer problem-solving": r"customer|client|call handl"}
+              "testing and validation": r"test|validat", "customer problem-solving": r"customer|client"}
     advert = str((job or {}).get("title", "")) + " " + str((job or {}).get("description", ""))
     matched = [(name, [i for i, r in evidence.items() if re.search(pattern, r["text"], re.I)])
                for name, pattern in themes.items() if re.search(pattern, advert, re.I)]
@@ -158,8 +158,8 @@ def _profile_statements(profile, evidence, job=None):
     result += [{"id": "example:" + r["id"], "text": r["text"], "evidence_ids": [r["id"]]} for r in examples]
     definitions = [
         ("technical", "Practical technical experience spans software development, integration and testing.", [r"software|Python|programming|application", r"integrat|\bAPI\b", r"test|validat"]),
-        ("quantitative", "Quantitative problem-solving grounded in physics and scientific research.", [r"physics|quantum", r"research|numerical|scientific"]),
-        ("communication", "Customer-facing experience combines clear communication with practical problem-solving.", [r"customer|client|caller|call handl", r"communicat|explain|present", r"troubleshoot|problem.solv|investigat|call handl"]),
+        ("quantitative", "Quantitative problem-solving grounded in scientific or numerical research.", [r"physics|quantum", r"research|numerical|scientific"]),
+        ("communication", "Customer-facing experience combines clear communication with practical problem-solving.", [r"customer|client", r"communicat|explain|present", r"troubleshoot|problem.solv|investigat"]),
     ]
     for identity, text, patterns in definitions:
         matches = [[i for i, r in evidence.items() if re.search(pattern, r["text"], re.I)] for pattern in patterns]
