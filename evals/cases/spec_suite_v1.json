@@ -1657,7 +1657,7 @@
             {
               "id": "bank:g4-03-2",
               "status": "DIRECT",
-              "text": "Kept pupil attendance registers up to date and followed up unexplained absences with families."
+              "text": "Kept pupil attendance registers up to date and followed up unexplained non-attendance with families by phone."
             },
             {
               "id": "bank:g4-03-3",
@@ -1672,7 +1672,7 @@
             {
               "id": "bank:g4-03-5",
               "status": "DIRECT",
-              "text": "Arranged supply cover for staff absence from the agency list."
+              "text": "Booked supply teachers from the agency list to cover staff leave."
             }
           ],
           "labels": {
@@ -2498,7 +2498,7 @@
             }
           ],
           "labels": {
-            "technical": true,
+            "technical": false,
             "quantitative": false,
             "communication": false,
             "tools": {
@@ -2518,7 +2518,7 @@
               "customer problem-solving": false
             }
           },
-          "rationale": "The tester writes automated tests in Java and tests APIs, which supports the technical statement and testing, but does not use Python or JavaScript, integrate systems or deal with customers."
+          "rationale": "The tester writes automated tests in Java and tests other people's APIs, which supports testing, but testing an integration is not building one, so the development-integration-testing statement is unsupported, and there is no Python, JavaScript or customer work."
         },
         {
           "case_id": "G4-17",
@@ -2759,7 +2759,7 @@
           ],
           "labels": {
             "technical": false,
-            "quantitative": true,
+            "quantitative": false,
             "communication": false,
             "tools": {
               "R": true,
@@ -2778,7 +2778,7 @@
               "customer problem-solving": false
             }
           },
-          "rationale": "The researcher does scientific research with statistical models and a tested Python package, but no integration work, so the broad software statement is unsupported; presenting to farmers is not customer-facing work and SPSS is never used."
+          "rationale": "The researcher does environmental science with statistical models and a tested Python package, which supports quantitative research as a capability, but the quantitative statement claims a grounding in physics that the evidence lacks, there is no integration work for the software statement, presenting to farmers is not customer-facing work and SPSS is never used."
         },
         {
           "case_id": "G4-21",
@@ -3174,8 +3174,8 @@
           "profile_id": "junior_developer",
           "alteration": {
             "type": "remove_paragraph",
-            "section_id": "projects:allotment",
-            "paragraph_index": 1
+            "section_id": "employment:bookshop",
+            "paragraph_index": 0
           },
           "expected": "should_accept",
           "rationale": "Removing a supported paragraph leaves only admitted statements and adds no fact."
