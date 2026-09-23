@@ -17,7 +17,7 @@ DIRECTIONS = [{'value': key, 'label': label} for key, label in (
     ('client_solutions', 'Client-facing solutions'), ('technical_depth', 'Technical depth / engineering'),
     ('quantitative', 'Quantitative problem-solving'), ('concise', 'More concise'))]
 ACTIVE = {'queued', 'running'}
-DEFAULT_POSITIONING = 'Applied AI Engineer | AI Solutions & Implementation'
+DEFAULT_POSITIONING = 'Professional profile'
 _REGISTRY, _REGISTRY_LOCK = {}, threading.Lock()
 
 
