@@ -130,10 +130,12 @@ def default_settings() -> dict:
                                 "excluded_cities": [], "priority": priority, "salary_min": None,
                                 "currency": "ILS" if country == "IL" else "EUR"}
                       for country, priority in priorities.items()},
-        "london": {"salary_remote_one_day": 45000, "salary_two_days": 50000,
-                   "salary_three_plus_days": 60000, "unknown_salary_min_fit": 80,
+        # Illustrative salary figures for a fresh install, not recommendations;
+        # each user sets their own floors and exceptional trigger in Settings.
+        "london": {"salary_remote_one_day": 35000, "salary_two_days": 38000,
+                   "salary_three_plus_days": 42000, "unknown_salary_min_fit": 80,
                    "unknown_salary_min_priority": 80},
-        "exceptional": {"base_gbp": 100000, "markets": {}},
+        "exceptional": {"base_gbp": 80000, "markets": {}},
         "thresholds": {"mediterranean": {"fit": 45, "priority": 60},
                        "overseas_quant": {"fit": 35, "priority": 55},
                        "london": {"fit": 65, "priority": 75},
@@ -163,8 +165,7 @@ def default_settings() -> dict:
                        {"type": "greenhouse", "company": "Anthropic", "url": "https://job-boards.greenhouse.io/anthropic", "enabled": True},
                        {"type": "ashby", "company": "OpenAI", "url": "https://jobs.ashbyhq.com/openai", "enabled": True},
                        {"type": "lever", "company": "Palantir", "url": "https://jobs.lever.co/palantir", "enabled": True},
-                   ], "role_families": ["Python engineer", "AI automation", "technical support", "implementation consultant",
-                                                      "data analyst", "AI evaluation", "API integration", "research engineer", "quantitative analyst"],
+                   ], "role_families": ["software engineer", "data analyst", "solutions engineer", "technical support", "QA analyst"],
                    "normal": {"max_pages": 12, "max_jobs": 80, "max_queries": 6, "max_turns": 6,
                               "concurrency": 2, "timeout_seconds": 90, "max_retries": 1},
                    "deep": {"max_pages": 36, "max_jobs": 240, "max_queries": 18, "max_turns": 16,
@@ -789,7 +790,7 @@ def evaluate_job(job: dict, profile: dict, settings: dict) -> dict:
     """Return transparent scores and lane-specific decisions without mutating inputs.
 
     Skills: matched named skills / named advert skills (50 when unspecified).
-    Domain: explicit physics/quantum/numerical overlap 100, other quant 85,
+    Domain: overlap between the advert duties and profile domains 100, other quant 85,
     technical work with evidenced projects 75, unknown 50, unrelated work 20.
     Responsibility: entry/junior 85, ordinary 75, senior 45, leadership 10;
     a title alone never becomes an eligibility blocker.
@@ -952,7 +953,7 @@ def evaluate_job(job: dict, profile: dict, settings: dict) -> dict:
     if required_locations:
         alternatives.update(country_codes(str(job.get("location") or "")))
     # A permitted London alternative must not be discarded in favour of a
-    # Mediterranean location where the candidate lacks authorisation.
+    # configured overseas location where the candidate lacks authorisation.
     auth_countries = sorted(alternatives) or ([country] if country else [])
     auth_values = [_known_boolean(profile.get("work_authorisation", {}).get(code)) for code in auth_countries]
     if required_locations:

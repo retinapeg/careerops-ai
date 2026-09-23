@@ -457,7 +457,7 @@ def _queries(settings, maximum):
     explicit = search.get("web", {}).get("queries") or []
     if explicit:
         return [str(q)[:350] for q in explicit[:maximum] if q]
-    roles = search.get("role_families") or ["Python research engineer", "quantitative analyst", "technical implementation analyst"]
+    roles = search.get("role_families") or ["software engineer", "data analyst", "solutions engineer", "technical support", "QA analyst"]
     locations = []
     for country, config in settings.get("locations", {}).items():
         if isinstance(config, dict) and config.get("enabled", True):
