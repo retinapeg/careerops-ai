@@ -47,9 +47,6 @@ traces/
 *.dump
 *.backup
 
-# Private reports copied from Gmail; publish synthetic fixtures instead
-examples/*real*canary*.json
-
 # CV/document files
 *.docx
 *.pdf
@@ -57,3 +54,6 @@ examples/*real*canary*.json
 *.xls
 *.csv
 *.tsv
+
+# Local reports; publish synthetic fixtures instead
+examples/*real*

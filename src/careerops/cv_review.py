@@ -82,6 +82,11 @@ def _snapshot(job, profile, material):
                    "profile": profile, "cv": {k: material.get(k) for k in ("id", "cv_text", "sections", "text")}})
 
 
+def _check_version(material):
+    from .cv_document import check_document_version
+    check_document_version(material)
+
+
 def _check_base(material, profile):
     base = material.get("cv_base") or {}
     if not isinstance(base, dict) or base.get("key") != digest([profile, base.get("family"), PROMPT_VERSION]):
@@ -93,6 +98,7 @@ def _current(store, review):
     job, profile = store.get_job(review["job_id"]), store.profile()
     if review["snapshot"] != _snapshot(job, profile, material):
         raise ValueError("The advert, candidate evidence or CV changed. Generate a current CV and start a fresh review.")
+    _check_version(material)
     _check_base(material, profile)
     return material, job, profile
 
@@ -275,6 +281,7 @@ def start_review(store, material_id, *, explicit=False, job_id=None):
         if material.get("formats") == ["txt"] or material.get("validation", {}).get("status") != "passed":
             raise ValueError("Generate an evidence-validated CV before structured review. Manual text edits remain unverified.")
         job, profile = store.get_job(job_id), store.profile()
+        _check_version(material)
         _check_base(material, profile)
         validate_draft(material, profile)
         reviews = _reviews(store, job_id)

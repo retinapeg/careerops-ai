@@ -26,7 +26,7 @@ findings only. Quote the job text verbatim for each finding and cite only provid
 candidate evidence IDs. UNKNOWN is preferable to inventing eligibility. A source
 quote supports an observation, not an assumption of citizenship, language ability,
 sponsorship, hiring speed or permission to work remotely from another country.
-Do not infer qualifications. In particular, a PGCert is not an MSc, PGDip or PhD.
+Do not infer qualifications. Never upgrade a certificate or diploma to a higher award.
 For UNKNOWN findings use an empty job_quote if no relevant advert evidence exists.
 """
 

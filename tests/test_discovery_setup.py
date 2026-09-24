@@ -9,10 +9,14 @@ from careerops.policy import default_settings
 from careerops.registry import board_identity
 
 
-def test_fresh_install_fetches_public_starter_boards_without_credentials(monkeypatch):
+def test_public_boards_fetch_without_credentials(monkeypatch):
     settings = default_settings()
-    sources = settings["search"]["sources"]
-    assert len(sources) == 4
+    assert settings["search"]["sources"] == []
+    sources = [{"type": "greenhouse", "company": "Example A", "url": "https://job-boards.greenhouse.io/example-a", "enabled": True},
+               {"type": "greenhouse", "company": "Example B", "url": "https://job-boards.greenhouse.io/example-b", "enabled": True},
+               {"type": "ashby", "company": "Example C", "url": "https://jobs.ashbyhq.com/example-c", "enabled": True},
+               {"type": "lever", "company": "Example D", "url": "https://jobs.lever.co/example-d", "enabled": True}]
+    settings["search"]["sources"] = sources
     assert {board_identity(source["url"])["type"] for source in sources} == {"greenhouse", "ashby", "lever"}
     calls = []
 
@@ -41,6 +45,35 @@ def test_fresh_install_fetches_public_starter_boards_without_credentials(monkeyp
     assert result["coverage"]["max_requests"] == 120
     assert result["coverage"]["timeout_seconds"] == 180
     assert all(record["response_byte_limit"] == discovery.BOARD_MAX_BYTES for record in result["pagination"].values())
+
+
+def test_fresh_install_lists_every_overseas_country_disabled_with_recognised_cities():
+    from careerops.policy import COUNTRIES, country_codes
+    from careerops.store import validate_settings
+    settings = default_settings()
+    validate_settings(settings)
+    locations = settings["locations"]
+    assert set(locations) == set(COUNTRIES) - {"GB"}
+    assert not any(config["enabled"] for config in locations.values())
+    assert len({config["priority"] for config in locations.values()}) == 1
+    for code, config in locations.items():
+        assert config["cities"] and all(country_codes(city) == [code] for city in config["cities"])
+
+
+def test_city_order_leads_with_major_cities_and_every_city_keeps_its_country_and_label():
+    # The order of CITIES only chooses the label when one location names several
+    # cities of a country. Each city on its own keeps its country and its label.
+    from careerops.policy import CITIES, CITY_ALIASES, country_codes, location_options
+    assert CITIES["GR"][0] == "Athens" and CITIES["FR"][0] == "Paris"
+    assert CITIES["ES"][0] == "Madrid" and CITIES["IT"][0] == "Rome" and CITIES["PL"][0] == "Warsaw"
+    # Accent-folded spellings match each other, so the first one listed labels both.
+    first_spelling = {"Málaga": "Malaga", "Zürich": "Zurich", "Krakow": "Kraków"}
+    for code, names in CITIES.items():
+        for name in names:
+            assert country_codes(name) == [code], name
+            label = first_spelling.get(name, CITY_ALIASES.get(name, name))
+            assert [(o["country"], o["city"]) for o in location_options({"location": name})] == [(code, label)], name
+    assert country_codes("Nice, France") == ["FR"] and country_codes("Berlin, with nice offices") == ["DE"]
 
 
 def test_empty_or_disabled_sources_require_setup_without_silent_fallback(monkeypatch):
@@ -156,3 +189,15 @@ def test_relocation_checks_skip_irrelevant_adverts_and_preserve_unicode(monkeypa
     assert patterns == ["relocation"]
     assert inventory._relocation({"description": "RELOCATİON SUPPORT IS PROVIDED"}) == "advertised"
     assert inventory._relocation({"description": "No relocation assistance is offered."}) == "unavailable"
+
+
+@pytest.mark.parametrize("code", ["DE", "CH", "NL", "PT", "PL", "FR", "GR", "ES", "IT"])
+def test_non_english_countries_add_local_language_role_phrases(code):
+    settings = default_settings()
+    for country, config in settings["locations"].items():
+        config["enabled"] = country == code
+    settings["search"]["scope"] = "overseas"
+    queries = discovery._volume_queries(settings, 12)
+    phrases = discovery.LOCAL_ROLE_PHRASES[code]
+    assert queries and {q["country"] for q in queries} == {code.lower()}
+    assert any(q["what"] in phrases for q in queries)

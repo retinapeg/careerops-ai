@@ -1,0 +1,3199 @@
+{
+  "suite": "spec_suite_v1",
+  "description": "Hand-written evaluation cases for the evidence gates, written from evals/cases/SPEC.md and shaped by evals/cases/SCHEMA.md without reference to any implementation. Each entry under 'files' is the complete content of the named per-gate case file. All people, employers and statements are fictional. Frozen once its SHA-256 is recorded in spec_suite_v1.sha256.",
+  "files": {
+    "g1_admission.json": {
+      "gate": "G1",
+      "cases": [
+        {
+          "case_id": "G1-sensitive-01a",
+          "pair_id": "G1-sensitive-01",
+          "category": "sensitive",
+          "sense": "claim: states the candidate's own diagnosis",
+          "record": {
+            "id": "bank:g1-sensitive-01a-1",
+            "status": "DIRECT",
+            "text": "Managed a type 2 diabetes diagnosis while working full-time rotating shifts."
+          },
+          "expected": "should_reject",
+          "rationale": "The record discloses the candidate's own medical diagnosis, a sensitive personal attribute that must be kept out of automated use."
+        },
+        {
+          "case_id": "G1-sensitive-01b",
+          "pair_id": "G1-sensitive-01",
+          "category": "sensitive",
+          "sense": "harmless: diagnosed technical faults",
+          "record": {
+            "id": "bank:g1-sensitive-01b-1",
+            "status": "DIRECT",
+            "text": "Diagnosed intermittent network faults across 14 branch offices using packet captures."
+          },
+          "expected": "should_accept",
+          "rationale": "Diagnosed refers to finding technical faults, so this is ordinary work evidence with no personal attribute."
+        },
+        {
+          "case_id": "G1-sensitive-02a",
+          "pair_id": "G1-sensitive-02",
+          "category": "sensitive",
+          "sense": "claim: states the candidate's own disability (noun)",
+          "record": {
+            "id": "bank:g1-sensitive-02a-1",
+            "status": "DIRECT",
+            "text": "Met every quarterly sales target while living with a physical disability."
+          },
+          "expected": "should_reject",
+          "rationale": "The record discloses that the candidate has a disability, which is a sensitive personal attribute."
+        },
+        {
+          "case_id": "G1-sensitive-02b",
+          "pair_id": "G1-sensitive-02",
+          "category": "sensitive",
+          "sense": "harmless: disability access standards in professional work",
+          "record": {
+            "id": "bank:g1-sensitive-02b-1",
+            "status": "DIRECT",
+            "text": "Audited the council website against disability access guidelines and fixed 40 issues."
+          },
+          "expected": "should_accept",
+          "rationale": "Disability names an accessibility standard the candidate worked to, not an attribute of the candidate."
+        },
+        {
+          "case_id": "G1-sensitive-03a",
+          "pair_id": "G1-sensitive-03",
+          "category": "sensitive",
+          "sense": "claim: describes the candidate as disabled (adjective)",
+          "record": {
+            "id": "bank:g1-sensitive-03a-1",
+            "status": "DIRECT",
+            "text": "Returned to a full caseload as a disabled employee after a spinal injury."
+          },
+          "expected": "should_reject",
+          "rationale": "The record describes the candidate as disabled and refers to an injury, both sensitive health attributes."
+        },
+        {
+          "case_id": "G1-sensitive-03b",
+          "pair_id": "G1-sensitive-03",
+          "category": "sensitive",
+          "sense": "harmless: disabled user accounts in a system",
+          "record": {
+            "id": "bank:g1-sensitive-03b-1",
+            "status": "DIRECT",
+            "text": "Disabled 200 dormant user accounts in Active Directory during the quarterly access review."
+          },
+          "expected": "should_accept",
+          "rationale": "Disabled is an administrative action on computer accounts, so the record is harmless work evidence."
+        },
+        {
+          "case_id": "G1-sensitive-04a",
+          "pair_id": "G1-sensitive-04",
+          "category": "sensitive",
+          "sense": "claim: describes the candidate as autistic (adjective)",
+          "record": {
+            "id": "bank:g1-sensitive-04a-1",
+            "status": "DIRECT",
+            "text": "Autistic analyst who brings close attention to detail to data-quality checks."
+          },
+          "expected": "should_reject",
+          "rationale": "The record states that the candidate is autistic, which is neurodivergence and therefore a sensitive attribute."
+        },
+        {
+          "case_id": "G1-sensitive-04b",
+          "pair_id": "G1-sensitive-04",
+          "category": "sensitive",
+          "sense": "harmless: designed sessions for autistic visitors",
+          "record": {
+            "id": "bank:g1-sensitive-04b-1",
+            "status": "DIRECT",
+            "text": "Designed quiet-hour gallery sessions for autistic visitors with the museum learning team."
+          },
+          "expected": "should_accept",
+          "rationale": "The word describes the visitors served by the work, not the candidate, so no personal attribute is disclosed."
+        },
+        {
+          "case_id": "G1-sensitive-05a",
+          "pair_id": "G1-sensitive-05",
+          "category": "sensitive",
+          "sense": "claim: states the candidate's own ADHD (noun) as neurodivergence",
+          "record": {
+            "id": "bank:g1-sensitive-05a-1",
+            "status": "DIRECT",
+            "text": "Earned promotion to team leader within 18 months while managing ADHD."
+          },
+          "expected": "should_reject",
+          "rationale": "The record discloses the candidate's ADHD, a neurodivergent condition and a sensitive personal attribute."
+        },
+        {
+          "case_id": "G1-sensitive-05b",
+          "pair_id": "G1-sensitive-05",
+          "category": "sensitive",
+          "sense": "harmless: workplace guidance on neurodiversity",
+          "record": {
+            "id": "bank:g1-sensitive-05b-1",
+            "status": "DIRECT",
+            "text": "Co-wrote workplace guidance on neurodiversity and reasonable adjustments for the HR team."
+          },
+          "expected": "should_accept",
+          "rationale": "Neurodiversity is the subject of a policy document the candidate wrote, not an attribute of the candidate."
+        },
+        {
+          "case_id": "G1-sensitive-06a",
+          "pair_id": "G1-sensitive-06",
+          "category": "sensitive",
+          "sense": "claim: states a mental health condition and related leave",
+          "record": {
+            "id": "bank:g1-sensitive-06a-1",
+            "status": "DIRECT",
+            "text": "Took six months of leave for depression in 2020 before returning to the role."
+          },
+          "expected": "should_reject",
+          "rationale": "The record discloses a mental health condition, which is a sensitive personal attribute."
+        },
+        {
+          "case_id": "G1-sensitive-06b",
+          "pair_id": "G1-sensitive-06",
+          "category": "sensitive",
+          "sense": "harmless: mental health first aid qualification used for colleagues",
+          "record": {
+            "id": "bank:g1-sensitive-06b-1",
+            "status": "DIRECT",
+            "text": "Trained as a mental health first aider and signposted colleagues to support during the office move."
+          },
+          "expected": "should_accept",
+          "rationale": "Mental health appears as a workplace first-aid role supporting others, so no condition of the candidate is disclosed."
+        },
+        {
+          "case_id": "G1-sensitive-07a",
+          "pair_id": "G1-sensitive-07",
+          "category": "sensitive",
+          "sense": "claim: states a long-term physical health condition",
+          "record": {
+            "id": "bank:g1-sensitive-07a-1",
+            "status": "DIRECT",
+            "text": "Managed a long-term heart condition throughout four years on the night shift."
+          },
+          "expected": "should_reject",
+          "rationale": "The record discloses a physical health condition, which is a sensitive personal attribute."
+        },
+        {
+          "case_id": "G1-sensitive-07b",
+          "pair_id": "G1-sensitive-07",
+          "category": "sensitive",
+          "sense": "harmless: condition of returned goods",
+          "record": {
+            "id": "bank:g1-sensitive-07b-1",
+            "status": "DIRECT",
+            "text": "Recorded the condition of returned stock and raised credit notes for damaged items."
+          },
+          "expected": "should_accept",
+          "rationale": "Condition refers to the state of returned goods, so the record is ordinary warehouse evidence."
+        },
+        {
+          "case_id": "G1-sensitive-08a",
+          "pair_id": "G1-sensitive-08",
+          "category": "sensitive",
+          "sense": "claim: states the candidate's own pregnancy (noun)",
+          "record": {
+            "id": "bank:g1-sensitive-08a-1",
+            "status": "DIRECT",
+            "text": "Delivered the payroll migration during my pregnancy and handed over before maternity leave."
+          },
+          "expected": "should_reject",
+          "rationale": "The record discloses the candidate's pregnancy, which is a sensitive personal attribute."
+        },
+        {
+          "case_id": "G1-sensitive-08b",
+          "pair_id": "G1-sensitive-08",
+          "category": "sensitive",
+          "sense": "harmless: configured pregnancy and maternity leave records for employees",
+          "record": {
+            "id": "bank:g1-sensitive-08b-1",
+            "status": "DIRECT",
+            "text": "Configured the HR system to record pregnancy and maternity leave in line with employment law."
+          },
+          "expected": "should_accept",
+          "rationale": "Pregnancy is a leave category in a system the candidate configured, not an attribute of the candidate."
+        },
+        {
+          "case_id": "G1-sensitive-09a",
+          "pair_id": "G1-sensitive-09",
+          "category": "sensitive",
+          "sense": "claim: describes the candidate as pregnant (adjective)",
+          "record": {
+            "id": "bank:g1-sensitive-09a-1",
+            "status": "DIRECT",
+            "text": "Continued as site supervisor while pregnant and returned to the post in 2022."
+          },
+          "expected": "should_reject",
+          "rationale": "The record states that the candidate was pregnant, which is a sensitive personal attribute."
+        },
+        {
+          "case_id": "G1-sensitive-09b",
+          "pair_id": "G1-sensitive-09",
+          "category": "sensitive",
+          "sense": "harmless: risk assessments for pregnant employees",
+          "record": {
+            "id": "bank:g1-sensitive-09b-1",
+            "status": "DIRECT",
+            "text": "Wrote laboratory risk assessments for pregnant employees working with solvents."
+          },
+          "expected": "should_accept",
+          "rationale": "Pregnant describes the employees a professional risk assessment covered, not the candidate."
+        },
+        {
+          "case_id": "G1-sensitive-10a",
+          "pair_id": "G1-sensitive-10",
+          "category": "sensitive",
+          "sense": "claim: states the candidate's religion",
+          "record": {
+            "id": "bank:g1-sensitive-10a-1",
+            "status": "DIRECT",
+            "text": "Practising Christian who serves as a church elder alongside full-time work."
+          },
+          "expected": "should_reject",
+          "rationale": "The record discloses the candidate's religion, a sensitive personal attribute."
+        },
+        {
+          "case_id": "G1-sensitive-10b",
+          "pair_id": "G1-sensitive-10",
+          "category": "sensitive",
+          "sense": "harmless: catalogued a library subject area named religion",
+          "record": {
+            "id": "bank:g1-sensitive-10b-1",
+            "status": "DIRECT",
+            "text": "Catalogued and reshelved the religion and philosophy collection at the university library."
+          },
+          "expected": "should_accept",
+          "rationale": "Religion names a library subject area the candidate catalogued, so no belief of the candidate is disclosed."
+        },
+        {
+          "case_id": "G1-sensitive-11a",
+          "pair_id": "G1-sensitive-11",
+          "category": "sensitive",
+          "sense": "claim: states the candidate's ethnicity",
+          "record": {
+            "id": "bank:g1-sensitive-11a-1",
+            "status": "DIRECT",
+            "text": "Brings lived experience as a British Pakistani woman to community outreach work."
+          },
+          "expected": "should_reject",
+          "rationale": "The record discloses the candidate's ethnicity, a sensitive personal attribute."
+        },
+        {
+          "case_id": "G1-sensitive-11b",
+          "pair_id": "G1-sensitive-11",
+          "category": "sensitive",
+          "sense": "harmless: analysed ethnicity monitoring data",
+          "record": {
+            "id": "bank:g1-sensitive-11b-1",
+            "status": "DIRECT",
+            "text": "Analysed ethnicity data for the annual equality monitoring report to the trust board."
+          },
+          "expected": "should_accept",
+          "rationale": "Ethnicity is a field in monitoring data the candidate analysed, not an attribute of the candidate."
+        },
+        {
+          "case_id": "G1-sensitive-12a",
+          "pair_id": "G1-sensitive-12",
+          "category": "sensitive",
+          "sense": "claim: states the candidate's sexual orientation",
+          "record": {
+            "id": "bank:g1-sensitive-12a-1",
+            "status": "DIRECT",
+            "text": "Openly gay professional who co-founded the company's LGBT staff network."
+          },
+          "expected": "should_reject",
+          "rationale": "The record discloses the candidate's sexual orientation, a sensitive personal attribute."
+        },
+        {
+          "case_id": "G1-sensitive-12b",
+          "pair_id": "G1-sensitive-12",
+          "category": "sensitive",
+          "sense": "harmless: revised monitoring questions about sexual orientation",
+          "record": {
+            "id": "bank:g1-sensitive-12b-1",
+            "status": "DIRECT",
+            "text": "Revised the optional sexual orientation question on the recruitment equality monitoring form."
+          },
+          "expected": "should_accept",
+          "rationale": "Sexual orientation is the subject of a form question the candidate revised, not an attribute of the candidate."
+        },
+        {
+          "case_id": "G1-sensitive-13a",
+          "pair_id": "G1-sensitive-13",
+          "category": "sensitive",
+          "sense": "claim: states the candidate's date of birth",
+          "record": {
+            "id": "bank:g1-sensitive-13a-1",
+            "status": "DIRECT",
+            "text": "Date of birth: 14 March 1979."
+          },
+          "expected": "should_reject",
+          "rationale": "The record states the candidate's date of birth, which reveals age and is a sensitive personal attribute."
+        },
+        {
+          "case_id": "G1-sensitive-13b",
+          "pair_id": "G1-sensitive-13",
+          "category": "sensitive",
+          "sense": "harmless: validated date-of-birth fields in a form",
+          "record": {
+            "id": "bank:g1-sensitive-13b-1",
+            "status": "DIRECT",
+            "text": "Validated date-of-birth fields in the patient registration form so that impossible dates were refused."
+          },
+          "expected": "should_accept",
+          "rationale": "Date of birth is a form field the candidate validated, not the candidate's own date of birth."
+        },
+        {
+          "case_id": "G1-sensitive-14a",
+          "pair_id": "G1-sensitive-14",
+          "category": "sensitive",
+          "sense": "claim: states the candidate's age",
+          "record": {
+            "id": "bank:g1-sensitive-14a-1",
+            "status": "DIRECT",
+            "text": "Aged 52, with over 30 years in retail management."
+          },
+          "expected": "should_reject",
+          "rationale": "The record states the candidate's age, a sensitive personal attribute."
+        },
+        {
+          "case_id": "G1-sensitive-14b",
+          "pair_id": "G1-sensitive-14",
+          "category": "sensitive",
+          "sense": "harmless: aged debt in a ledger",
+          "record": {
+            "id": "bank:g1-sensitive-14b-1",
+            "status": "DIRECT",
+            "text": "Chased aged debt over 90 days and cut the sales ledger balance by 18 per cent."
+          },
+          "expected": "should_accept",
+          "rationale": "Aged debt is an accounting term for overdue invoices, so no personal attribute is disclosed."
+        },
+        {
+          "case_id": "G1-sensitive-15a",
+          "pair_id": "G1-sensitive-15",
+          "category": "sensitive",
+          "sense": "claim: states the candidate's age as a number of years",
+          "record": {
+            "id": "bank:g1-sensitive-15a-1",
+            "status": "DIRECT",
+            "text": "At 58, brings steady judgement and long experience to a young team."
+          },
+          "expected": "should_reject",
+          "rationale": "The record states the candidate's age, a sensitive personal attribute."
+        },
+        {
+          "case_id": "G1-sensitive-15b",
+          "pair_id": "G1-sensitive-15",
+          "category": "sensitive",
+          "sense": "harmless: age-based fare discounts in software testing",
+          "record": {
+            "id": "bank:g1-sensitive-15b-1",
+            "status": "DIRECT",
+            "text": "Tested the fare calculator for correct age discounts for under-16s and over-60s."
+          },
+          "expected": "should_accept",
+          "rationale": "Age refers to fare rules in software the candidate tested, not the candidate's own age."
+        },
+        {
+          "case_id": "G1-future-01a",
+          "pair_id": "G1-future-01",
+          "category": "future",
+          "sense": "claim: something the candidate will do",
+          "record": {
+            "id": "bank:g1-future-01a-1",
+            "status": "DIRECT",
+            "text": "Will lead the migration of the finance team to the new ledger system next year."
+          },
+          "expected": "should_reject",
+          "rationale": "The record describes future work the candidate will do, which is a plan presented as experience."
+        },
+        {
+          "case_id": "G1-future-01b",
+          "pair_id": "G1-future-01",
+          "category": "future",
+          "sense": "harmless: a will as a probate document",
+          "record": {
+            "id": "bank:g1-future-01b-1",
+            "status": "DIRECT",
+            "text": "Drafted wills and prepared probate applications for private clients under partner supervision."
+          },
+          "expected": "should_accept",
+          "rationale": "Wills are legal documents the candidate drafted, so the record describes completed work."
+        },
+        {
+          "case_id": "G1-future-02a",
+          "pair_id": "G1-future-02",
+          "category": "future",
+          "sense": "claim: something the candidate is going to do",
+          "record": {
+            "id": "bank:g1-future-02a-1",
+            "status": "DIRECT",
+            "text": "Am going to complete the PRINCE2 Practitioner qualification in the spring."
+          },
+          "expected": "should_reject",
+          "rationale": "The record states a qualification the candidate is going to complete, which is not yet experience."
+        },
+        {
+          "case_id": "G1-future-02b",
+          "pair_id": "G1-future-02",
+          "category": "future",
+          "sense": "harmless: waste previously going to landfill",
+          "record": {
+            "id": "bank:g1-future-02b-1",
+            "status": "DIRECT",
+            "text": "Diverted 70 per cent of site waste that had been going to landfill into recycling streams."
+          },
+          "expected": "should_accept",
+          "rationale": "Going to describes where waste was sent before the candidate's completed change, not a future plan."
+        },
+        {
+          "case_id": "G1-future-03a",
+          "pair_id": "G1-future-03",
+          "category": "future",
+          "sense": "claim: something the candidate plans to do",
+          "record": {
+            "id": "bank:g1-future-03a-1",
+            "status": "DIRECT",
+            "text": "Plan to manage a team of five analysts once the restructure is complete."
+          },
+          "expected": "should_reject",
+          "rationale": "The record describes what the candidate plans to do, a future plan presented as experience."
+        },
+        {
+          "case_id": "G1-future-03b",
+          "pair_id": "G1-future-03",
+          "category": "future",
+          "sense": "harmless: rolled out planning software",
+          "record": {
+            "id": "bank:g1-future-03b-1",
+            "status": "DIRECT",
+            "text": "Rolled out shift planning software that let 12 site managers book staff online."
+          },
+          "expected": "should_accept",
+          "rationale": "Planning names a type of software the candidate rolled out, which is completed work."
+        },
+        {
+          "case_id": "G1-future-04a",
+          "pair_id": "G1-future-04",
+          "category": "future",
+          "sense": "claim: something the candidate intends to do",
+          "record": {
+            "id": "bank:g1-future-04a-1",
+            "status": "DIRECT",
+            "text": "Intend to take on budget-holder responsibility for the regional office."
+          },
+          "expected": "should_reject",
+          "rationale": "The record states an intention rather than something the candidate has done."
+        },
+        {
+          "case_id": "G1-future-04b",
+          "pair_id": "G1-future-04",
+          "category": "future",
+          "sense": "harmless: intended use of grant funds in reports",
+          "record": {
+            "id": "bank:g1-future-04b-1",
+            "status": "DIRECT",
+            "text": "Reported the intended use of each grant fund to the charity's trustees every quarter."
+          },
+          "expected": "should_accept",
+          "rationale": "Intended describes the purpose of grant funds in reports the candidate wrote, which is completed work."
+        },
+        {
+          "case_id": "G1-future-05a",
+          "pair_id": "G1-future-05",
+          "category": "future",
+          "sense": "claim: something the candidate is planning to build",
+          "record": {
+            "id": "bank:g1-future-05a-1",
+            "status": "DIRECT",
+            "text": "Planning to build a customer self-service portal in React during the coming year."
+          },
+          "expected": "should_reject",
+          "rationale": "The record describes a project the candidate is planning to build, which is not yet experience."
+        },
+        {
+          "case_id": "G1-future-05b",
+          "pair_id": "G1-future-05",
+          "category": "future",
+          "sense": "harmless: a financial forecast",
+          "record": {
+            "id": "bank:g1-future-05b-1",
+            "status": "DIRECT",
+            "text": "Built a 12-month cash-flow forecast that the board used to set the annual budget."
+          },
+          "expected": "should_accept",
+          "rationale": "A forecast is a completed piece of financial work, not a plan of the candidate's own."
+        },
+        {
+          "case_id": "G1-future-06a",
+          "pair_id": "G1-future-06",
+          "category": "future",
+          "sense": "claim: next year the candidate will be training others",
+          "record": {
+            "id": "bank:g1-future-06a-1",
+            "status": "DIRECT",
+            "text": "Next year I will be training new starters on the returns process."
+          },
+          "expected": "should_reject",
+          "rationale": "The record describes training the candidate will deliver in future, a plan presented as experience."
+        },
+        {
+          "case_id": "G1-future-06b",
+          "pair_id": "G1-future-06",
+          "category": "future",
+          "sense": "harmless: Will as part of a street name",
+          "record": {
+            "id": "bank:g1-future-06b-1",
+            "status": "DIRECT",
+            "text": "Arranged the staff rota so that the Will Street branch was covered on every bank holiday."
+          },
+          "expected": "should_accept",
+          "rationale": "Will is part of a place name in a record of completed work, not a statement about the future."
+        },
+        {
+          "case_id": "G1-future-07a",
+          "pair_id": "G1-future-07",
+          "category": "future",
+          "sense": "claim: something the candidate expects to achieve",
+          "record": {
+            "id": "bank:g1-future-07a-1",
+            "status": "DIRECT",
+            "text": "Expect to qualify as a chartered accountant in 2027."
+          },
+          "expected": "should_reject",
+          "rationale": "The record states a qualification the candidate expects to gain, which is a future plan."
+        },
+        {
+          "case_id": "G1-future-07b",
+          "pair_id": "G1-future-07",
+          "category": "future",
+          "sense": "harmless: expected delivery dates from a tracking system",
+          "record": {
+            "id": "bank:g1-future-07b-1",
+            "status": "DIRECT",
+            "text": "Gave customers expected delivery dates from the carrier tracking system and chased late parcels."
+          },
+          "expected": "should_accept",
+          "rationale": "Expected delivery dates are data the candidate reported, so the record describes completed work."
+        },
+        {
+          "case_id": "G1-future-08a",
+          "pair_id": "G1-future-08",
+          "category": "future",
+          "sense": "claim: something the candidate aims to deliver",
+          "record": {
+            "id": "bank:g1-future-08a-1",
+            "status": "DIRECT",
+            "text": "Aim to deliver the new warehouse layout by the end of next quarter."
+          },
+          "expected": "should_reject",
+          "rationale": "The record states an aim for future delivery rather than completed experience."
+        },
+        {
+          "case_id": "G1-future-08b",
+          "pair_id": "G1-future-08",
+          "category": "future",
+          "sense": "harmless: maintained a product roadmap",
+          "record": {
+            "id": "bank:g1-future-08b-1",
+            "status": "DIRECT",
+            "text": "Maintained the product roadmap and reported progress against it to the leadership team each month."
+          },
+          "expected": "should_accept",
+          "rationale": "Maintaining a roadmap is completed work even though a roadmap describes future releases."
+        },
+        {
+          "case_id": "G1-absence-01a",
+          "pair_id": "G1-absence-01",
+          "category": "absence",
+          "sense": "claim: the candidate has never used a system",
+          "record": {
+            "id": "bank:g1-absence-01a-1",
+            "status": "DIRECT",
+            "text": "Have never used SAP but pick up new systems quickly."
+          },
+          "expected": "should_reject",
+          "rationale": "The record states that the candidate has never used SAP, which is an absence of experience."
+        },
+        {
+          "case_id": "G1-absence-01b",
+          "pair_id": "G1-absence-01",
+          "category": "absence",
+          "sense": "harmless: taught learners with no prior experience",
+          "record": {
+            "id": "bank:g1-absence-01b-1",
+            "status": "DIRECT",
+            "text": "Taught spreadsheet basics to adult learners with no prior experience of computers."
+          },
+          "expected": "should_accept",
+          "rationale": "No prior experience describes the learners the candidate taught, not a gap in the candidate's own experience."
+        },
+        {
+          "case_id": "G1-absence-02a",
+          "pair_id": "G1-absence-02",
+          "category": "absence",
+          "sense": "claim: no experience with a responsibility",
+          "record": {
+            "id": "bank:g1-absence-02a-1",
+            "status": "DIRECT",
+            "text": "No experience with managing budgets or purchase orders."
+          },
+          "expected": "should_reject",
+          "rationale": "The record states that the candidate has no experience of budgets, which is an absence of experience."
+        },
+        {
+          "case_id": "G1-absence-02b",
+          "pair_id": "G1-absence-02",
+          "category": "absence",
+          "sense": "harmless: reduced errors to none",
+          "record": {
+            "id": "bank:g1-absence-02b-1",
+            "status": "DIRECT",
+            "text": "Reduced picking errors to none over a six-week audit by relabelling bin locations."
+          },
+          "expected": "should_accept",
+          "rationale": "None describes an error count the candidate achieved, which is positive evidence of completed work."
+        },
+        {
+          "case_id": "G1-absence-03a",
+          "pair_id": "G1-absence-03",
+          "category": "absence",
+          "sense": "claim: the candidate has not touched a language in years",
+          "record": {
+            "id": "bank:g1-absence-03a-1",
+            "status": "DIRECT",
+            "text": "Have not touched Python since leaving university."
+          },
+          "expected": "should_reject",
+          "rationale": "The record states that the candidate has not used Python, which is a negation of experience."
+        },
+        {
+          "case_id": "G1-absence-03b",
+          "pair_id": "G1-absence-03",
+          "category": "absence",
+          "sense": "harmless: a no-touch process the candidate built",
+          "record": {
+            "id": "bank:g1-absence-03b-1",
+            "status": "DIRECT",
+            "text": "Introduced a no-touch returns process that cut handling time per parcel by 20 per cent."
+          },
+          "expected": "should_accept",
+          "rationale": "No-touch names a process the candidate introduced, which is completed work."
+        },
+        {
+          "case_id": "G1-absence-04a",
+          "pair_id": "G1-absence-04",
+          "category": "absence",
+          "sense": "claim: the candidate is unfamiliar with a method",
+          "record": {
+            "id": "bank:g1-absence-04a-1",
+            "status": "DIRECT",
+            "text": "Unfamiliar with Agile methods such as Scrum and Kanban."
+          },
+          "expected": "should_reject",
+          "rationale": "The record states that the candidate is unfamiliar with Agile methods, which is an absence of experience."
+        },
+        {
+          "case_id": "G1-absence-04b",
+          "pair_id": "G1-absence-04",
+          "category": "absence",
+          "sense": "harmless: guided visitors unfamiliar with a site",
+          "record": {
+            "id": "bank:g1-absence-04b-1",
+            "status": "DIRECT",
+            "text": "Guided visitors unfamiliar with the hospital site to the correct wards and clinics."
+          },
+          "expected": "should_accept",
+          "rationale": "Unfamiliar describes the visitors the candidate helped, not the candidate's own experience."
+        },
+        {
+          "case_id": "G1-absence-05a",
+          "pair_id": "G1-absence-05",
+          "category": "absence",
+          "sense": "claim: the candidate does not have line management experience",
+          "record": {
+            "id": "bank:g1-absence-05a-1",
+            "status": "DIRECT",
+            "text": "Do not have any experience of line management."
+          },
+          "expected": "should_reject",
+          "rationale": "The record states a lack of line management experience, which is a negation of experience."
+        },
+        {
+          "case_id": "G1-absence-05b",
+          "pair_id": "G1-absence-05",
+          "category": "absence",
+          "sense": "harmless: not only X but also Y",
+          "record": {
+            "id": "bank:g1-absence-05b-1",
+            "status": "DIRECT",
+            "text": "Handled not only the monthly payroll run but also pension auto-enrolment for 120 staff."
+          },
+          "expected": "should_accept",
+          "rationale": "Not only introduces an addition to completed work, so the record is positive evidence."
+        },
+        {
+          "case_id": "G1-absence-06a",
+          "pair_id": "G1-absence-06",
+          "category": "absence",
+          "sense": "claim: the candidate has never worked in a customer-facing role",
+          "record": {
+            "id": "bank:g1-absence-06a-1",
+            "status": "DIRECT",
+            "text": "Has never worked in a customer-facing role."
+          },
+          "expected": "should_reject",
+          "rationale": "The record states that the candidate has never done customer-facing work, which is an absence of experience."
+        },
+        {
+          "case_id": "G1-absence-06b",
+          "pair_id": "G1-absence-06",
+          "category": "absence",
+          "sense": "harmless: never missed a deadline",
+          "record": {
+            "id": "bank:g1-absence-06b-1",
+            "status": "DIRECT",
+            "text": "Never missed a monthly payroll deadline in four years."
+          },
+          "expected": "should_accept",
+          "rationale": "Never here emphasises a completed record of reliability, not an absence of experience."
+        },
+        {
+          "case_id": "G1-absence-07a",
+          "pair_id": "G1-absence-07",
+          "category": "absence",
+          "sense": "claim: the candidate lacks hands-on experience",
+          "record": {
+            "id": "bank:g1-absence-07a-1",
+            "status": "DIRECT",
+            "text": "Lack hands-on experience with forklifts and other warehouse equipment."
+          },
+          "expected": "should_reject",
+          "rationale": "The record states that the candidate lacks hands-on experience, which is an absence of experience."
+        },
+        {
+          "case_id": "G1-absence-07b",
+          "pair_id": "G1-absence-07",
+          "category": "absence",
+          "sense": "harmless: supported clients who lacked something",
+          "record": {
+            "id": "bank:g1-absence-07b-1",
+            "status": "DIRECT",
+            "text": "Helped claimants who lacked a bank account to open basic accounts for benefit payments."
+          },
+          "expected": "should_accept",
+          "rationale": "Lacked describes the claimants the candidate supported, not the candidate's own experience."
+        },
+        {
+          "case_id": "G1-absence-08a",
+          "pair_id": "G1-absence-08",
+          "category": "absence",
+          "sense": "claim: little to no exposure to a platform",
+          "record": {
+            "id": "bank:g1-absence-08a-1",
+            "status": "DIRECT",
+            "text": "Little to no exposure to cloud platforms such as AWS or Azure."
+          },
+          "expected": "should_reject",
+          "rationale": "The record states that the candidate has little or no exposure to cloud platforms, which is an absence of experience."
+        },
+        {
+          "case_id": "G1-absence-08b",
+          "pair_id": "G1-absence-08",
+          "category": "absence",
+          "sense": "harmless: cleared a backlog without overtime",
+          "record": {
+            "id": "bank:g1-absence-08b-1",
+            "status": "DIRECT",
+            "text": "Cleared a backlog of 300 supplier invoices without any overtime cost."
+          },
+          "expected": "should_accept",
+          "rationale": "Without any overtime cost describes how completed work was achieved, not a gap in experience."
+        }
+      ]
+    },
+    "g2_claims.json": {
+      "gate": "G2",
+      "cases": [
+        {
+          "case_id": "G2-01",
+          "profile_id": "support_to_analytics",
+          "section_id": "employment:rep",
+          "kind": "paraphrase",
+          "source_evidence_ids": [
+            "bank:rep1"
+          ],
+          "claim": {
+            "text": "Created Power BI dashboards that tracked weekly sales for 42 stores.",
+            "evidence_ids": [
+              "bank:rep1"
+            ]
+          },
+          "truthful": true,
+          "expected": "should_reject",
+          "rationale": "Claims must be verbatim copies of approved evidence, so this truthful paraphrase of the dashboard statement is not a verbatim copy and should be rejected."
+        },
+        {
+          "case_id": "G2-02",
+          "profile_id": "support_to_analytics",
+          "section_id": "employment:rep",
+          "kind": "case_change",
+          "source_evidence_ids": [
+            "bank:rep2"
+          ],
+          "claim": {
+            "text": "wrote SQL queries to reconcile till data with stock records each month.",
+            "evidence_ids": [
+              "bank:rep2"
+            ]
+          },
+          "truthful": true,
+          "expected": "should_reject",
+          "rationale": "Claims must be verbatim copies of approved evidence, so this truthful copy with a lower-case first letter is not a verbatim copy and should be rejected."
+        },
+        {
+          "case_id": "G2-03",
+          "profile_id": "support_to_analytics",
+          "section_id": "employment:rep",
+          "kind": "reordered_clauses",
+          "source_evidence_ids": [
+            "bank:rep3"
+          ],
+          "claim": {
+            "text": "Saving about six hours a week, automated a manual stock-variance report with Python.",
+            "evidence_ids": [
+              "bank:rep3"
+            ]
+          },
+          "truthful": true,
+          "expected": "should_reject",
+          "rationale": "Claims must be verbatim copies of approved evidence, so this truthful statement with its clauses reordered is not a verbatim copy and should be rejected."
+        },
+        {
+          "case_id": "G2-04",
+          "profile_id": "support_to_analytics",
+          "section_id": "employment:desk",
+          "kind": "other_non_verbatim",
+          "source_evidence_ids": [
+            "bank:desk3"
+          ],
+          "claim": {
+            "text": "Wrote step-by-step guides that reduced repeat password-reset requests by 30%.",
+            "evidence_ids": [
+              "bank:desk3"
+            ]
+          },
+          "truthful": true,
+          "expected": "should_reject",
+          "rationale": "Claims must be verbatim copies of approved evidence, so this truthful statement with 'per cent' written as a symbol is not a verbatim copy and should be rejected."
+        },
+        {
+          "case_id": "G2-05",
+          "profile_id": "logistics_coordinator",
+          "section_id": "employment:transport",
+          "kind": "paraphrase",
+          "source_evidence_ids": [
+            "bank:tp1"
+          ],
+          "claim": {
+            "text": "Planned the daily delivery routes for an 18-van fleet.",
+            "evidence_ids": [
+              "bank:tp1"
+            ]
+          },
+          "truthful": true,
+          "expected": "should_reject",
+          "rationale": "Claims must be verbatim copies of approved evidence, so this truthful paraphrase of the route-scheduling statement is not a verbatim copy and should be rejected."
+        },
+        {
+          "case_id": "G2-06",
+          "profile_id": "logistics_coordinator",
+          "section_id": "employment:coordinator",
+          "kind": "reordered_clauses",
+          "source_evidence_ids": [
+            "bank:lc2"
+          ],
+          "claim": {
+            "text": "By rescheduling supplier slots, reduced late deliveries from 12 per cent to 5 per cent in one year.",
+            "evidence_ids": [
+              "bank:lc2"
+            ]
+          },
+          "truthful": true,
+          "expected": "should_reject",
+          "rationale": "Claims must be verbatim copies of approved evidence, so this truthful statement with its clauses reordered is not a verbatim copy and should be rejected."
+        },
+        {
+          "case_id": "G2-07",
+          "profile_id": "logistics_coordinator",
+          "section_id": "projects:foodbank",
+          "kind": "case_change",
+          "source_evidence_ids": [
+            "bank:fb1"
+          ],
+          "claim": {
+            "text": "Organised a weekly van rota for a Community Food Bank covering 40 collection points.",
+            "evidence_ids": [
+              "bank:fb1"
+            ]
+          },
+          "truthful": true,
+          "expected": "should_reject",
+          "rationale": "Claims must be verbatim copies of approved evidence, so this truthful copy with changed capitalisation is not a verbatim copy and should be rejected."
+        },
+        {
+          "case_id": "G2-08",
+          "profile_id": "logistics_coordinator",
+          "section_id": "employment:coordinator",
+          "kind": "other_non_verbatim",
+          "source_evidence_ids": [
+            "bank:lc1",
+            "bank:lc3"
+          ],
+          "claim": {
+            "text": "Coordinated inbound deliveries from 25 suppliers using SAP and maintained an Excel tracker of import paperwork and Incoterms for each shipment.",
+            "evidence_ids": [
+              "bank:lc1",
+              "bank:lc3"
+            ]
+          },
+          "truthful": true,
+          "expected": "should_reject",
+          "rationale": "Claims must be verbatim copies of approved evidence, so this truthful merger of two statements into one sentence is not a verbatim copy and should be rejected."
+        },
+        {
+          "case_id": "G2-09",
+          "profile_id": "junior_developer",
+          "section_id": "employment:junior_dev",
+          "kind": "paraphrase",
+          "source_evidence_ids": [
+            "bank:dev1"
+          ],
+          "claim": {
+            "text": "Fixed defects in a Django web app used by 60 dental practices.",
+            "evidence_ids": [
+              "bank:dev1"
+            ]
+          },
+          "truthful": true,
+          "expected": "should_reject",
+          "rationale": "Claims must be verbatim copies of approved evidence, so this truthful paraphrase of the bug-fixing statement is not a verbatim copy and should be rejected."
+        },
+        {
+          "case_id": "G2-10",
+          "profile_id": "junior_developer",
+          "section_id": "employment:junior_dev",
+          "kind": "reordered_clauses",
+          "source_evidence_ids": [
+            "bank:dev3"
+          ],
+          "claim": {
+            "text": "Cut a slow report query from 40 seconds to 4 seconds by adding PostgreSQL indexes.",
+            "evidence_ids": [
+              "bank:dev3"
+            ]
+          },
+          "truthful": true,
+          "expected": "should_reject",
+          "rationale": "Claims must be verbatim copies of approved evidence, so this truthful statement with its clauses reordered is not a verbatim copy and should be rejected."
+        },
+        {
+          "case_id": "G2-11",
+          "profile_id": "junior_developer",
+          "section_id": "projects:timetable",
+          "kind": "case_change",
+          "source_evidence_ids": [
+            "bank:tt1"
+          ],
+          "claim": {
+            "text": "Wrote the Javascript that drew a bus timetable grid in a four-person course team; teammates built the data import.",
+            "evidence_ids": [
+              "bank:tt1"
+            ]
+          },
+          "truthful": true,
+          "expected": "should_reject",
+          "rationale": "Claims must be verbatim copies of approved evidence, so this truthful copy with the product name recapitalised is not a verbatim copy and should be rejected."
+        },
+        {
+          "case_id": "G2-12",
+          "profile_id": "junior_developer",
+          "section_id": "employment:junior_dev",
+          "kind": "other_non_verbatim",
+          "source_evidence_ids": [
+            "bank:dev2"
+          ],
+          "claim": {
+            "text": "Wrote unit tests in Python that raised coverage of the billing module from 55 to 80 per cent",
+            "evidence_ids": [
+              "bank:dev2"
+            ]
+          },
+          "truthful": true,
+          "expected": "should_reject",
+          "rationale": "Claims must be verbatim copies of approved evidence, so this truthful copy without its closing full stop is not a verbatim copy and should be rejected."
+        },
+        {
+          "case_id": "G2-13",
+          "profile_id": "junior_developer",
+          "section_id": "employment:junior_dev",
+          "kind": "paraphrase",
+          "source_evidence_ids": [
+            "bank:dev5"
+          ],
+          "claim": {
+            "text": "Led the development of a REST API for appointment reminders.",
+            "evidence_ids": [
+              "bank:dev5"
+            ]
+          },
+          "truthful": false,
+          "expected": "should_reject",
+          "rationale": "The claim overstates supervised work on one endpoint as leading an API, so it is untrue and also not a verbatim copy of approved evidence."
+        },
+        {
+          "case_id": "G2-14",
+          "profile_id": "support_to_analytics",
+          "section_id": "projects:library",
+          "kind": "other_non_verbatim",
+          "source_evidence_ids": [
+            "bank:lib1"
+          ],
+          "claim": {
+            "text": "Charted visitor numbers for every library in the county using Power BI.",
+            "evidence_ids": [
+              "bank:lib1"
+            ]
+          },
+          "truthful": false,
+          "expected": "should_reject",
+          "rationale": "The claim widens a community library group to every library in the county, which the evidence does not support, and it is not a verbatim copy."
+        },
+        {
+          "case_id": "G2-15",
+          "profile_id": "support_to_analytics",
+          "section_id": "employment:rep",
+          "kind": "verbatim_control",
+          "source_evidence_ids": [
+            "bank:rep4"
+          ],
+          "claim": {
+            "text": "Answered ad hoc data requests from regional managers and explained the figures behind each answer.",
+            "evidence_ids": [
+              "bank:rep4"
+            ]
+          },
+          "truthful": true,
+          "expected": "should_accept",
+          "rationale": "The claim is an exact copy of one approved statement, which the specification permits."
+        },
+        {
+          "case_id": "G2-16",
+          "profile_id": "logistics_coordinator",
+          "section_id": "employment:transport",
+          "kind": "verbatim_control",
+          "source_evidence_ids": [
+            "bank:tp2",
+            "bank:tp3"
+          ],
+          "claim": {
+            "text": "Rebooked collections with customers by phone when vehicles broke down. Kept driver hours records compliant with tachograph rules.",
+            "evidence_ids": [
+              "bank:tp2",
+              "bank:tp3"
+            ]
+          },
+          "truthful": true,
+          "expected": "should_accept",
+          "rationale": "The claim is two approved statements joined by a single space in the cited order, which is a verbatim copy."
+        },
+        {
+          "case_id": "G2-17",
+          "profile_id": "junior_developer",
+          "section_id": "projects:allotment",
+          "kind": "verbatim_control",
+          "source_evidence_ids": [
+            "bank:al1",
+            "bank:al2"
+          ],
+          "claim": {
+            "text": "Built a small Django app that lets members of an allotment society book shared tools. Packaged the app with Docker so another volunteer could run it on a spare laptop.",
+            "evidence_ids": [
+              "bank:al1",
+              "bank:al2"
+            ]
+          },
+          "truthful": true,
+          "expected": "should_accept",
+          "rationale": "The claim is two approved statements joined by a single space in the cited order, which is a verbatim copy."
+        }
+      ]
+    },
+    "g3_skills.json": {
+      "gate": "G3",
+      "cases": [
+        {
+          "case_id": "G3-01",
+          "skill": "Kubernetes",
+          "category": "positive_use",
+          "evidence": [
+            {
+              "id": "bank:g3-01-1",
+              "status": "DIRECT",
+              "text": "Deployed three internal services to a Kubernetes cluster and wrote their Helm charts."
+            }
+          ],
+          "expected": "should_accept",
+          "rationale": "The evidence shows the candidate deploying services to Kubernetes, which is genuine use of the skill."
+        },
+        {
+          "case_id": "G3-02",
+          "skill": "SQL",
+          "category": "positive_use",
+          "evidence": [
+            {
+              "id": "bank:g3-02-1",
+              "status": "DIRECT",
+              "text": "Wrote SQL queries that matched supplier invoices to purchase orders each month."
+            }
+          ],
+          "expected": "should_accept",
+          "rationale": "The candidate wrote SQL queries in their own work, which is genuine positive use."
+        },
+        {
+          "case_id": "G3-03",
+          "skill": "Excel",
+          "category": "positive_use",
+          "evidence": [
+            {
+              "id": "bank:g3-03-1",
+              "status": "DIRECT",
+              "text": "Built an Excel model of weekly staffing costs for five care homes."
+            }
+          ],
+          "expected": "should_accept",
+          "rationale": "The candidate built a model in Excel, which is genuine positive use."
+        },
+        {
+          "case_id": "G3-04",
+          "skill": "Tableau",
+          "category": "positive_use",
+          "evidence": [
+            {
+              "id": "bank:g3-04-1",
+              "status": "DIRECT",
+              "text": "Published Tableau dashboards showing bed occupancy by ward for the hospital operations team."
+            }
+          ],
+          "expected": "should_accept",
+          "rationale": "The candidate published Tableau dashboards, which is genuine positive use."
+        },
+        {
+          "case_id": "G3-05",
+          "skill": "Terraform",
+          "category": "positive_use",
+          "evidence": [
+            {
+              "id": "bank:g3-05-1",
+              "status": "DIRECT",
+              "text": "Provisioned staging environments with Terraform modules for the platform team."
+            },
+            {
+              "id": "bank:g3-05-2",
+              "status": "DIRECT",
+              "text": "Reviewed infrastructure changes with two senior engineers before each release."
+            }
+          ],
+          "expected": "should_accept",
+          "rationale": "The candidate provisioned environments with Terraform, which is genuine positive use."
+        },
+        {
+          "case_id": "G3-06",
+          "skill": "SAP",
+          "category": "positive_use",
+          "evidence": [
+            {
+              "id": "bank:g3-06-1",
+              "status": "DIRECT",
+              "text": "Raised purchase orders and goods receipts in SAP for a manufacturing site of 200 staff."
+            }
+          ],
+          "expected": "should_accept",
+          "rationale": "The candidate carried out transactions in SAP, which is genuine positive use."
+        },
+        {
+          "case_id": "G3-07",
+          "skill": "Git",
+          "category": "positive_use",
+          "evidence": [
+            {
+              "id": "bank:g3-07-1",
+              "status": "DIRECT",
+              "text": "Managed feature branches in Git and resolved merge conflicts before each release."
+            },
+            {
+              "id": "bank:g3-07-2",
+              "status": "DIRECT",
+              "text": "Wrote release notes for the support team."
+            }
+          ],
+          "expected": "should_accept",
+          "rationale": "The candidate managed branches in Git, which is genuine positive use."
+        },
+        {
+          "case_id": "G3-08",
+          "skill": "Go",
+          "category": "positive_use",
+          "evidence": [
+            {
+              "id": "bank:g3-08-1",
+              "status": "DIRECT",
+              "text": "Wrote a Go command-line tool that validated nightly data exports."
+            }
+          ],
+          "expected": "should_accept",
+          "rationale": "The candidate wrote a tool in the Go language, which is genuine positive use."
+        },
+        {
+          "case_id": "G3-09",
+          "skill": "R",
+          "category": "positive_use",
+          "evidence": [
+            {
+              "id": "bank:g3-09-1",
+              "status": "DIRECT",
+              "text": "Fitted regression models in R to estimate footfall by postcode district."
+            }
+          ],
+          "expected": "should_accept",
+          "rationale": "The candidate fitted models in R, which is genuine positive use of the language."
+        },
+        {
+          "case_id": "G3-10",
+          "skill": "Salesforce",
+          "category": "positive_use",
+          "evidence": [
+            {
+              "id": "bank:g3-10-1",
+              "status": "DIRECT",
+              "text": "Configured Salesforce case queues and routing rules for a 30-person support desk."
+            }
+          ],
+          "expected": "should_accept",
+          "rationale": "The candidate configured Salesforce, which is genuine positive use."
+        },
+        {
+          "case_id": "G3-11",
+          "skill": "Power BI",
+          "category": "positive_use",
+          "evidence": [
+            {
+              "id": "bank:g3-11-1",
+              "status": "DIRECT",
+              "text": "Built Power BI reports on monthly repairs spend for the housing directorate."
+            }
+          ],
+          "expected": "should_accept",
+          "rationale": "The candidate built Power BI reports, which is genuine positive use."
+        },
+        {
+          "case_id": "G3-12",
+          "skill": "Python",
+          "category": "positive_use",
+          "evidence": [
+            {
+              "id": "bank:g3-12-1",
+              "status": "DIRECT",
+              "text": "Wrote Python scripts to rename and file 4,000 scanned invoices by supplier and date."
+            }
+          ],
+          "expected": "should_accept",
+          "rationale": "The candidate wrote Python scripts, which is genuine positive use."
+        },
+        {
+          "case_id": "G3-13",
+          "skill": "Kubernetes",
+          "category": "negated",
+          "evidence": [
+            {
+              "id": "bank:g3-13-1",
+              "status": "DIRECT",
+              "text": "Chose a single virtual machine over Kubernetes for the prototype to keep hosting costs down."
+            }
+          ],
+          "expected": "should_reject",
+          "rationale": "Kubernetes is named only as the option the candidate decided against, so the evidence is not a use of the skill."
+        },
+        {
+          "case_id": "G3-14",
+          "skill": "PostgreSQL",
+          "category": "negated",
+          "evidence": [
+            {
+              "id": "bank:g3-14-1",
+              "status": "DIRECT",
+              "text": "Have not used PostgreSQL; all database work was in Microsoft Access."
+            }
+          ],
+          "expected": "should_reject",
+          "rationale": "The evidence explicitly negates use of PostgreSQL, so it cannot support the skill."
+        },
+        {
+          "case_id": "G3-15",
+          "skill": "Docker",
+          "category": "negated",
+          "evidence": [
+            {
+              "id": "bank:g3-15-1",
+              "status": "DIRECT",
+              "text": "Ran the booking service directly on the host without Docker, as the client's servers did not permit containers."
+            }
+          ],
+          "expected": "should_reject",
+          "rationale": "The evidence says the service ran without Docker, so it is a mention and not a use."
+        },
+        {
+          "case_id": "G3-16",
+          "skill": "Java",
+          "category": "homograph_or_substring",
+          "evidence": [
+            {
+              "id": "bank:g3-16-1",
+              "status": "DIRECT",
+              "text": "Managed stock for the coffee bar, including orders of Java and Colombian beans."
+            }
+          ],
+          "expected": "should_reject",
+          "rationale": "Java here is a coffee bean, a homograph of the programming language, so it is not use of the skill."
+        },
+        {
+          "case_id": "G3-17",
+          "skill": "Rust",
+          "category": "homograph_or_substring",
+          "evidence": [
+            {
+              "id": "bank:g3-17-1",
+              "status": "DIRECT",
+              "text": "Treated rust on trailer chassis during the quarterly maintenance programme."
+            }
+          ],
+          "expected": "should_reject",
+          "rationale": "Rust here is corrosion on metal, a homograph of the programming language, so it is not use of the skill."
+        },
+        {
+          "case_id": "G3-18",
+          "skill": "Go",
+          "category": "homograph_or_substring",
+          "evidence": [
+            {
+              "id": "bank:g3-18-1",
+              "status": "DIRECT",
+              "text": "Signed off go-live checklists for three branch refits."
+            }
+          ],
+          "expected": "should_reject",
+          "rationale": "Go appears only inside the phrase go-live, so the evidence does not show use of the Go language."
+        },
+        {
+          "case_id": "G3-19",
+          "skill": "Swift",
+          "category": "homograph_or_substring",
+          "evidence": [
+            {
+              "id": "bank:g3-19-1",
+              "status": "DIRECT",
+              "text": "Arranged swift replacement of damaged items for online customers."
+            }
+          ],
+          "expected": "should_reject",
+          "rationale": "Swift here means quick, a homograph of the programming language, so it is not use of the skill."
+        },
+        {
+          "case_id": "G3-20",
+          "skill": "Terraform",
+          "category": "to_learn",
+          "evidence": [
+            {
+              "id": "bank:g3-20-1",
+              "status": "DIRECT",
+              "text": "Added Terraform to my development plan at the annual appraisal."
+            }
+          ],
+          "expected": "should_reject",
+          "rationale": "Terraform is recorded as something to learn, not something the candidate has used."
+        },
+        {
+          "case_id": "G3-21",
+          "skill": "Tableau",
+          "category": "to_learn",
+          "evidence": [
+            {
+              "id": "bank:g3-21-1",
+              "status": "DIRECT",
+              "text": "Listed Tableau as a learning goal in the 2024 personal development review."
+            },
+            {
+              "id": "bank:g3-21-2",
+              "status": "DIRECT",
+              "text": "Produced monthly sales summaries in Excel for the area manager."
+            }
+          ],
+          "expected": "should_reject",
+          "rationale": "Tableau appears only as a learning goal, so the evidence does not show use of it."
+        },
+        {
+          "case_id": "G3-22",
+          "skill": "React",
+          "category": "to_learn",
+          "evidence": [
+            {
+              "id": "bank:g3-22-1",
+              "status": "DIRECT",
+              "text": "Working through an online React course in the evenings to prepare for front-end work."
+            }
+          ],
+          "expected": "should_reject",
+          "rationale": "The candidate is studying React on a course rather than using it in work, so the skill is something to learn."
+        },
+        {
+          "case_id": "G3-23",
+          "skill": "Oracle",
+          "category": "someone_else",
+          "evidence": [
+            {
+              "id": "bank:g3-23-1",
+              "status": "DIRECT",
+              "text": "Shadowed the database administrator while she tuned Oracle queries for the finance system."
+            }
+          ],
+          "expected": "should_reject",
+          "rationale": "The Oracle work was done by a colleague the candidate shadowed, so it is someone else's skill."
+        },
+        {
+          "case_id": "G3-24",
+          "skill": "Power BI",
+          "category": "someone_else",
+          "evidence": [
+            {
+              "id": "bank:g3-24-1",
+              "status": "DIRECT",
+              "text": "Supplied cleaned sales figures to the analytics team, who built the Power BI reports."
+            },
+            {
+              "id": "bank:g3-24-2",
+              "status": "DIRECT",
+              "text": "Checked weekly sales totals against till reports."
+            }
+          ],
+          "expected": "should_reject",
+          "rationale": "The Power BI reports were built by another team, so the evidence shows someone else's use of the skill."
+        },
+        {
+          "case_id": "G3-25",
+          "skill": "Kotlin",
+          "category": "someone_else",
+          "evidence": [
+            {
+              "id": "bank:g3-25-1",
+              "status": "DIRECT",
+              "text": "Tested the Android app that a contractor built in Kotlin and logged 40 defects."
+            }
+          ],
+          "expected": "should_reject",
+          "rationale": "The Kotlin code was written by a contractor and the candidate only tested the app, so it is someone else's skill."
+        }
+      ]
+    },
+    "g4_profile_statements.json": {
+      "gate": "G4",
+      "cases": [
+        {
+          "case_id": "G4-01",
+          "persona": "Care assistant in a residential home who also builds the staff rota.",
+          "has_technical_work": false,
+          "job": {
+            "title": "Senior Care Assistant",
+            "company": "Example Care Homes Ltd",
+            "description": "We are looking for a senior care assistant to lead shifts in a 40-bed home. You will resolve concerns raised by residents and their families, review daily care records to spot changes in residents' needs, and check medication records carefully for accuracy. Experience writing care plans is essential."
+          },
+          "skills": [
+            "Excel",
+            "Care planning"
+          ],
+          "evidence": [
+            {
+              "id": "bank:g4-01-1",
+              "status": "DIRECT",
+              "text": "Supported 12 residents with personal care, meals and medication prompts on day shifts."
+            },
+            {
+              "id": "bank:g4-01-2",
+              "status": "DIRECT",
+              "text": "Wrote and updated care plans with residents and their families each month."
+            },
+            {
+              "id": "bank:g4-01-3",
+              "status": "DIRECT",
+              "text": "Built the weekly staff rota in Excel for 22 care workers."
+            },
+            {
+              "id": "bank:g4-01-4",
+              "status": "DIRECT",
+              "text": "Resolved concerns raised by relatives by phone and arranged follow-up meetings with the manager."
+            },
+            {
+              "id": "bank:g4-01-5",
+              "status": "DIRECT",
+              "text": "Trained four new starters in moving and handling procedures."
+            }
+          ],
+          "labels": {
+            "technical": false,
+            "quantitative": false,
+            "communication": true,
+            "tools": {
+              "Excel": true,
+              "Care planning": true
+            },
+            "targeted": {
+              "Python implementation": false,
+              "API integration": false,
+              "AI and language-model tools": false,
+              "workflow automation": false,
+              "data analysis": false,
+              "quantitative research": false,
+              "testing and validation": false,
+              "customer problem-solving": true
+            }
+          },
+          "rationale": "The evidence is direct care, care planning and handling relatives' concerns, which supports customer-facing problem-solving and both listed tools but no technical, quantitative or analytical work."
+        },
+        {
+          "case_id": "G4-02",
+          "persona": "Retail supervisor in a high-street clothing store.",
+          "has_technical_work": false,
+          "job": {
+            "title": "Retail Data Analyst",
+            "company": "Example Fashion Retail Ltd",
+            "description": "Join our trading team to analyse store and online sales. You will automate weekly reports with Python, build and test data pipelines that feed our dashboards, and work with store teams to understand and fix problems they raise."
+          },
+          "skills": [
+            "Customer service",
+            "Stock control",
+            "Excel",
+            "Power BI"
+          ],
+          "evidence": [
+            {
+              "id": "bank:g4-02-1",
+              "status": "DIRECT",
+              "text": "Supervised a team of eight sales assistants across weekday and weekend shifts."
+            },
+            {
+              "id": "bank:g4-02-2",
+              "status": "DIRECT",
+              "text": "Handled customer refunds and complaints at the service desk, resolving most on the spot."
+            },
+            {
+              "id": "bank:g4-02-3",
+              "status": "DIRECT",
+              "text": "Counted stock weekly and reported shrinkage figures to the area manager."
+            },
+            {
+              "id": "bank:g4-02-4",
+              "status": "DIRECT",
+              "text": "Set out seasonal displays to head-office layouts."
+            },
+            {
+              "id": "bank:g4-02-5",
+              "status": "DIRECT",
+              "text": "Opened and closed the store, including cashing up and banking the takings."
+            }
+          ],
+          "labels": {
+            "technical": false,
+            "quantitative": false,
+            "communication": true,
+            "tools": {
+              "Customer service": true,
+              "Stock control": true,
+              "Excel": false,
+              "Power BI": false
+            },
+            "targeted": {
+              "Python implementation": false,
+              "API integration": false,
+              "AI and language-model tools": false,
+              "workflow automation": false,
+              "data analysis": false,
+              "quantitative research": false,
+              "testing and validation": false,
+              "customer problem-solving": true
+            }
+          },
+          "rationale": "The evidence shows shop-floor supervision and customer complaint handling but never mentions Excel, Power BI, analysis or any technical work, so only customer-facing problem-solving is supported."
+        },
+        {
+          "case_id": "G4-03",
+          "persona": "School office administrator at a primary school.",
+          "has_technical_work": false,
+          "job": {
+            "title": "Office Manager",
+            "company": "Example Academy Trust",
+            "description": "The office manager will be the first point of contact for families, use spreadsheets to analyse attendance patterns across the trust, and move paper processes into streamlined digital workflows."
+          },
+          "skills": [
+            "Microsoft Word",
+            "Excel",
+            "Outlook"
+          ],
+          "evidence": [
+            {
+              "id": "bank:g4-03-1",
+              "status": "DIRECT",
+              "text": "Answered telephone and front-desk enquiries from parents for a primary school of 420 pupils."
+            },
+            {
+              "id": "bank:g4-03-2",
+              "status": "DIRECT",
+              "text": "Kept pupil attendance registers up to date and followed up unexplained non-attendance with families by phone."
+            },
+            {
+              "id": "bank:g4-03-3",
+              "status": "DIRECT",
+              "text": "Produced the weekly parent newsletter in Microsoft Word."
+            },
+            {
+              "id": "bank:g4-03-4",
+              "status": "DIRECT",
+              "text": "Ordered classroom supplies within a termly budget of £6,000."
+            },
+            {
+              "id": "bank:g4-03-5",
+              "status": "DIRECT",
+              "text": "Booked supply teachers from the agency list to cover staff leave."
+            }
+          ],
+          "labels": {
+            "technical": false,
+            "quantitative": false,
+            "communication": true,
+            "tools": {
+              "Microsoft Word": true,
+              "Excel": false,
+              "Outlook": false
+            },
+            "targeted": {
+              "Python implementation": false,
+              "API integration": false,
+              "AI and language-model tools": false,
+              "workflow automation": false,
+              "data analysis": false,
+              "quantitative research": false,
+              "testing and validation": false,
+              "customer problem-solving": true
+            }
+          },
+          "rationale": "The evidence is front-office work with parents and one use of Word; it does not show Excel, Outlook, analysis or automation, so only customer problem-solving and Word are supported."
+        },
+        {
+          "case_id": "G4-04",
+          "persona": "Volunteer coordinator at a charity shop.",
+          "has_technical_work": false,
+          "job": {
+            "title": "Community Engagement Officer",
+            "company": "Example Hospice Charity",
+            "description": "You will look after our supporters and volunteers and sort out any issues they bring to us, analyse fundraising and volunteer figures to guide decisions, and help automate our supporter emails."
+          },
+          "skills": [
+            "Volunteer management",
+            "Social media"
+          ],
+          "evidence": [
+            {
+              "id": "bank:g4-04-1",
+              "status": "DIRECT",
+              "text": "Recruited and inducted 30 volunteers for a charity shop over two years."
+            },
+            {
+              "id": "bank:g4-04-2",
+              "status": "DIRECT",
+              "text": "Drew up the weekly volunteer rota and covered gaps at short notice."
+            },
+            {
+              "id": "bank:g4-04-3",
+              "status": "DIRECT",
+              "text": "Sorted and priced donated stock, raising about £1,200 a week."
+            },
+            {
+              "id": "bank:g4-04-4",
+              "status": "DIRECT",
+              "text": "Posted weekly updates about new stock on the shop's Facebook page."
+            },
+            {
+              "id": "bank:g4-04-5",
+              "status": "DIRECT",
+              "text": "Answered customer questions about Gift Aid at the till."
+            }
+          ],
+          "labels": {
+            "technical": false,
+            "quantitative": false,
+            "communication": true,
+            "tools": {
+              "Volunteer management": true,
+              "Social media": true
+            },
+            "targeted": {
+              "Python implementation": false,
+              "API integration": false,
+              "AI and language-model tools": false,
+              "workflow automation": false,
+              "data analysis": false,
+              "quantitative research": false,
+              "testing and validation": false,
+              "customer problem-solving": true
+            }
+          },
+          "rationale": "The evidence shows volunteer management, social media posting and customer questions at the till, supporting both tools and customer problem-solving but nothing technical or analytical."
+        },
+        {
+          "case_id": "G4-05",
+          "persona": "Hotel receptionist at a city-centre hotel.",
+          "has_technical_work": false,
+          "job": {
+            "title": "Guest Experience Coordinator",
+            "company": "Example Hotels Group",
+            "description": "Resolve guest issues quickly and fairly, analyse guest feedback scores to find recurring problems, test our new booking platform before launch, and help introduce AI chat assistants for guest messaging."
+          },
+          "skills": [
+            "Opera PMS",
+            "Customer service",
+            "French"
+          ],
+          "evidence": [
+            {
+              "id": "bank:g4-05-1",
+              "status": "DIRECT",
+              "text": "Checked in up to 80 guests a day at a 120-room city hotel."
+            },
+            {
+              "id": "bank:g4-05-2",
+              "status": "DIRECT",
+              "text": "Resolved booking errors and room complaints at the front desk, offering upgrades within agreed limits."
+            },
+            {
+              "id": "bank:g4-05-3",
+              "status": "DIRECT",
+              "text": "Took reservations by phone and email in English and French."
+            },
+            {
+              "id": "bank:g4-05-4",
+              "status": "DIRECT",
+              "text": "Balanced the front-desk float at the end of each shift."
+            },
+            {
+              "id": "bank:g4-05-5",
+              "status": "DIRECT",
+              "text": "Handed outstanding guest requests to the night manager in a written log."
+            }
+          ],
+          "labels": {
+            "technical": false,
+            "quantitative": false,
+            "communication": true,
+            "tools": {
+              "Opera PMS": false,
+              "Customer service": true,
+              "French": true
+            },
+            "targeted": {
+              "Python implementation": false,
+              "API integration": false,
+              "AI and language-model tools": false,
+              "workflow automation": false,
+              "data analysis": false,
+              "quantitative research": false,
+              "testing and validation": false,
+              "customer problem-solving": true
+            }
+          },
+          "rationale": "The evidence shows guest-facing problem-solving and use of French, but never names Opera PMS or any analysis, testing or AI work, so only customer problem-solving is supported."
+        },
+        {
+          "case_id": "G4-06",
+          "persona": "Payroll clerk in a mid-sized manufacturing firm.",
+          "has_technical_work": false,
+          "job": {
+            "title": "Payroll and Systems Officer",
+            "company": "Example Borough Council",
+            "description": "You will automate manual payroll workflows, test payroll system upgrades before they go live, analyse pay data for management reports and answer employee pay queries."
+          },
+          "skills": [
+            "Sage Payroll",
+            "Excel"
+          ],
+          "evidence": [
+            {
+              "id": "bank:g4-06-1",
+              "status": "DIRECT",
+              "text": "Processed monthly payroll for 240 employees using Sage Payroll."
+            },
+            {
+              "id": "bank:g4-06-2",
+              "status": "DIRECT",
+              "text": "Set up new starters and leavers on the payroll system each month."
+            },
+            {
+              "id": "bank:g4-06-3",
+              "status": "DIRECT",
+              "text": "Prepared year-end P60s and submitted RTI returns to HMRC."
+            },
+            {
+              "id": "bank:g4-06-4",
+              "status": "DIRECT",
+              "text": "Filed personnel paperwork and kept employee records up to date."
+            },
+            {
+              "id": "bank:g4-06-5",
+              "status": "DIRECT",
+              "text": "Balanced the payroll control account with the finance ledger each month."
+            }
+          ],
+          "labels": {
+            "technical": false,
+            "quantitative": false,
+            "communication": false,
+            "tools": {
+              "Sage Payroll": true,
+              "Excel": false
+            },
+            "targeted": {
+              "Python implementation": false,
+              "API integration": false,
+              "AI and language-model tools": false,
+              "workflow automation": false,
+              "data analysis": false,
+              "quantitative research": false,
+              "testing and validation": false,
+              "customer problem-solving": false
+            }
+          },
+          "rationale": "The evidence is back-office payroll processing in Sage with no customer contact, analysis, automation or system testing, so none of the themes is supported apart from the Sage tool."
+        },
+        {
+          "case_id": "G4-07",
+          "persona": "Night-shift warehouse team leader at a distribution centre.",
+          "has_technical_work": false,
+          "job": {
+            "title": "Operations Improvement Analyst",
+            "company": "Example Logistics plc",
+            "description": "Analyse warehouse performance data, automate manual reporting workflows using Python or SQL, and test process changes on a pilot area before wider roll-out."
+          },
+          "skills": [
+            "Forklift",
+            "WMS",
+            "Health and safety"
+          ],
+          "evidence": [
+            {
+              "id": "bank:g4-07-1",
+              "status": "DIRECT",
+              "text": "Led a team of 10 pickers on the night shift at a regional distribution centre."
+            },
+            {
+              "id": "bank:g4-07-2",
+              "status": "DIRECT",
+              "text": "Allocated picking tasks through the WMS and moved staff between zones to meet dispatch times."
+            },
+            {
+              "id": "bank:g4-07-3",
+              "status": "DIRECT",
+              "text": "Held a counterbalance forklift licence and unloaded up to 20 trailers a night."
+            },
+            {
+              "id": "bank:g4-07-4",
+              "status": "DIRECT",
+              "text": "Ran toolbox talks on manual handling and reported near misses."
+            },
+            {
+              "id": "bank:g4-07-5",
+              "status": "DIRECT",
+              "text": "Met a 99 per cent dispatch accuracy target for four consecutive quarters."
+            }
+          ],
+          "labels": {
+            "technical": false,
+            "quantitative": false,
+            "communication": false,
+            "tools": {
+              "Forklift": true,
+              "WMS": true,
+              "Health and safety": true
+            },
+            "targeted": {
+              "Python implementation": false,
+              "API integration": false,
+              "AI and language-model tools": false,
+              "workflow automation": false,
+              "data analysis": false,
+              "quantitative research": false,
+              "testing and validation": false,
+              "customer problem-solving": false
+            }
+          },
+          "rationale": "The evidence shows operational leadership using a forklift, the WMS and safety practice, but no customer contact, analysis, automation or testing, so all themes except the tools are unsupported."
+        },
+        {
+          "case_id": "G4-08",
+          "persona": "Library assistant in a branch library.",
+          "has_technical_work": false,
+          "job": {
+            "title": "Digital Inclusion Officer",
+            "company": "Example County Libraries",
+            "description": "Help residents solve problems using online services, introduce basic AI tools safely in our digital drop-ins, and analyse usage data to show the impact of the service."
+          },
+          "skills": [
+            "Excel",
+            "Customer service",
+            "Canva"
+          ],
+          "evidence": [
+            {
+              "id": "bank:g4-08-1",
+              "status": "DIRECT",
+              "text": "Helped library visitors find books, reserve items and use the public computers."
+            },
+            {
+              "id": "bank:g4-08-2",
+              "status": "DIRECT",
+              "text": "Ran a weekly rhyme-time session for parents and toddlers."
+            },
+            {
+              "id": "bank:g4-08-3",
+              "status": "DIRECT",
+              "text": "Designed event posters in Canva for the branch noticeboard."
+            },
+            {
+              "id": "bank:g4-08-4",
+              "status": "DIRECT",
+              "text": "Counted daily visitor numbers and entered them on the council return."
+            },
+            {
+              "id": "bank:g4-08-5",
+              "status": "DIRECT",
+              "text": "Sorted returned items and reshelved them by Dewey number."
+            }
+          ],
+          "labels": {
+            "technical": false,
+            "quantitative": false,
+            "communication": true,
+            "tools": {
+              "Excel": false,
+              "Customer service": true,
+              "Canva": true
+            },
+            "targeted": {
+              "Python implementation": false,
+              "API integration": false,
+              "AI and language-model tools": false,
+              "workflow automation": false,
+              "data analysis": false,
+              "quantitative research": false,
+              "testing and validation": false,
+              "customer problem-solving": true
+            }
+          },
+          "rationale": "Helping visitors find items and use computers supports customer problem-solving, and posters show Canva, but counting visitors is not data analysis and Excel is never used."
+        },
+        {
+          "case_id": "G4-09",
+          "persona": "Housing officer managing a patch of council tenancies.",
+          "has_technical_work": false,
+          "job": {
+            "title": "Tenancy Sustainment Officer",
+            "company": "Example Homes Group",
+            "description": "Work with tenants to resolve problems that put their tenancy at risk and analyse arrears data to target support where it is most needed."
+          },
+          "skills": [
+            "Case management",
+            "Negotiation"
+          ],
+          "evidence": [
+            {
+              "id": "bank:g4-09-1",
+              "status": "DIRECT",
+              "text": "Managed a patch of 350 council tenancies, carrying out annual home visits."
+            },
+            {
+              "id": "bank:g4-09-2",
+              "status": "DIRECT",
+              "text": "Agreed affordable repayment arrangements with tenants in rent arrears, reducing arrears on the patch by 15 per cent."
+            },
+            {
+              "id": "bank:g4-09-3",
+              "status": "DIRECT",
+              "text": "Mediated disputes between neighbours and referred serious cases to the antisocial behaviour team."
+            },
+            {
+              "id": "bank:g4-09-4",
+              "status": "DIRECT",
+              "text": "Explained tenancy rights and responsibilities to new tenants at sign-up."
+            },
+            {
+              "id": "bank:g4-09-5",
+              "status": "DIRECT",
+              "text": "Recorded visits and actions in the housing management system within 48 hours."
+            }
+          ],
+          "labels": {
+            "technical": false,
+            "quantitative": false,
+            "communication": true,
+            "tools": {
+              "Case management": true,
+              "Negotiation": true
+            },
+            "targeted": {
+              "Python implementation": false,
+              "API integration": false,
+              "AI and language-model tools": false,
+              "workflow automation": false,
+              "data analysis": false,
+              "quantitative research": false,
+              "testing and validation": false,
+              "customer problem-solving": true
+            }
+          },
+          "rationale": "The evidence is tenant-facing casework and negotiation, which supports customer problem-solving and both tools; recording visits in a system is not technical or analytical work."
+        },
+        {
+          "case_id": "G4-10",
+          "persona": "Weddings and events coordinator at a country-house venue.",
+          "has_technical_work": false,
+          "job": {
+            "title": "Events Operations Analyst",
+            "company": "Example Conference Centre",
+            "description": "Analyse booking and revenue data, automate the workflow from enquiry to invoice, test our new booking system and resolve problems for clients on event days."
+          },
+          "skills": [
+            "Event management",
+            "Budgeting",
+            "Supplier liaison"
+          ],
+          "evidence": [
+            {
+              "id": "bank:g4-10-1",
+              "status": "DIRECT",
+              "text": "Coordinated 45 weddings a year at a country-house venue, from first viewing to the day itself."
+            },
+            {
+              "id": "bank:g4-10-2",
+              "status": "DIRECT",
+              "text": "Met couples to agree menus, timings and room layouts, and resolved last-minute changes on the day."
+            },
+            {
+              "id": "bank:g4-10-3",
+              "status": "DIRECT",
+              "text": "Kept each event within budget and invoiced clients for extras."
+            },
+            {
+              "id": "bank:g4-10-4",
+              "status": "DIRECT",
+              "text": "Booked and briefed caterers, florists and photographers for each event."
+            },
+            {
+              "id": "bank:g4-10-5",
+              "status": "DIRECT",
+              "text": "Led a front-of-house team of up to 15 on event days."
+            }
+          ],
+          "labels": {
+            "technical": false,
+            "quantitative": false,
+            "communication": true,
+            "tools": {
+              "Event management": true,
+              "Budgeting": true,
+              "Supplier liaison": true
+            },
+            "targeted": {
+              "Python implementation": false,
+              "API integration": false,
+              "AI and language-model tools": false,
+              "workflow automation": false,
+              "data analysis": false,
+              "quantitative research": false,
+              "testing and validation": false,
+              "customer problem-solving": true
+            }
+          },
+          "rationale": "The evidence is client-facing event coordination with budgets and suppliers, which supports customer problem-solving and all three tools but no analysis, automation or testing."
+        },
+        {
+          "case_id": "G4-11",
+          "persona": "Contact-centre adviser for an energy supplier.",
+          "has_technical_work": false,
+          "job": {
+            "title": "Customer Insight Analyst",
+            "company": "Example Energy Ltd",
+            "description": "Analyse call and complaint data to find the root causes of customer problems, trial AI tools that summarise calls, and work with advisers to solve customer issues first time."
+          },
+          "skills": [
+            "Salesforce",
+            "Customer service",
+            "Complaint handling"
+          ],
+          "evidence": [
+            {
+              "id": "bank:g4-11-1",
+              "status": "DIRECT",
+              "text": "Handled about 60 inbound calls a day about energy bills and meter readings."
+            },
+            {
+              "id": "bank:g4-11-2",
+              "status": "DIRECT",
+              "text": "Set up affordable payment arrangements for customers in debt."
+            },
+            {
+              "id": "bank:g4-11-3",
+              "status": "DIRECT",
+              "text": "Logged every call and follow-up action in Salesforce."
+            },
+            {
+              "id": "bank:g4-11-4",
+              "status": "DIRECT",
+              "text": "Resolved escalated complaints within the eight-week regulatory deadline."
+            },
+            {
+              "id": "bank:g4-11-5",
+              "status": "DIRECT",
+              "text": "Coached two new advisers during their first month on the phones."
+            }
+          ],
+          "labels": {
+            "technical": false,
+            "quantitative": false,
+            "communication": true,
+            "tools": {
+              "Salesforce": true,
+              "Customer service": true,
+              "Complaint handling": true
+            },
+            "targeted": {
+              "Python implementation": false,
+              "API integration": false,
+              "AI and language-model tools": false,
+              "workflow automation": false,
+              "data analysis": false,
+              "quantitative research": false,
+              "testing and validation": false,
+              "customer problem-solving": true
+            }
+          },
+          "rationale": "The evidence is customer calls, complaints and case logging in Salesforce, supporting customer problem-solving and the tools but not data analysis or AI tools."
+        },
+        {
+          "case_id": "G4-12",
+          "persona": "Junior data analyst in an insurance claims team.",
+          "has_technical_work": true,
+          "job": {
+            "title": "Insurance Data Analyst",
+            "company": "Example Insurance Ltd",
+            "description": "Use SQL and Python to analyse claims data, automate recurring reports, and check figures carefully against finance totals before they are published."
+          },
+          "skills": [
+            "SQL",
+            "Python",
+            "Power BI",
+            "Tableau"
+          ],
+          "evidence": [
+            {
+              "id": "bank:g4-12-1",
+              "status": "DIRECT",
+              "text": "Wrote SQL queries to extract monthly claims data from the underwriting database."
+            },
+            {
+              "id": "bank:g4-12-2",
+              "status": "DIRECT",
+              "text": "Automated the weekly claims summary with a Python script scheduled on the team server."
+            },
+            {
+              "id": "bank:g4-12-3",
+              "status": "DIRECT",
+              "text": "Built Power BI dashboards on claim volumes for the operations director."
+            },
+            {
+              "id": "bank:g4-12-4",
+              "status": "DIRECT",
+              "text": "Checked query results against finance ledger totals before each dashboard release."
+            },
+            {
+              "id": "bank:g4-12-5",
+              "status": "DIRECT",
+              "text": "Explained trends in claim volumes to non-technical managers at monthly reviews."
+            }
+          ],
+          "labels": {
+            "technical": false,
+            "quantitative": false,
+            "communication": false,
+            "tools": {
+              "SQL": true,
+              "Python": true,
+              "Power BI": true,
+              "Tableau": false
+            },
+            "targeted": {
+              "Python implementation": true,
+              "API integration": false,
+              "AI and language-model tools": false,
+              "workflow automation": true,
+              "data analysis": true,
+              "quantitative research": false,
+              "testing and validation": true,
+              "customer problem-solving": false
+            }
+          },
+          "rationale": "The analyst writes SQL and Python, automates a report and validates figures, but has no integration work or customer contact and never uses Tableau, so the broad software-development statement is not supported."
+        },
+        {
+          "case_id": "G4-13",
+          "persona": "Back-end developer on a council permit service.",
+          "has_technical_work": true,
+          "job": {
+            "title": "Software Engineer",
+            "company": "Example GovTech Ltd",
+            "description": "Build Python services for public-facing applications, integrate with payment and identity APIs, and write automated tests that run on every change."
+          },
+          "skills": [
+            "Python",
+            "Django",
+            "PostgreSQL",
+            "Docker",
+            "AWS"
+          ],
+          "evidence": [
+            {
+              "id": "bank:g4-13-1",
+              "status": "DIRECT",
+              "text": "Built Django REST endpoints for a council permit application service."
+            },
+            {
+              "id": "bank:g4-13-2",
+              "status": "DIRECT",
+              "text": "Integrated the service with a card payment provider's API and handled its webhook callbacks."
+            },
+            {
+              "id": "bank:g4-13-3",
+              "status": "DIRECT",
+              "text": "Wrote pytest suites for the permit workflow and ran them in the CI pipeline on every merge."
+            },
+            {
+              "id": "bank:g4-13-4",
+              "status": "DIRECT",
+              "text": "Designed PostgreSQL tables and migrations for permit and payment records."
+            },
+            {
+              "id": "bank:g4-13-5",
+              "status": "DIRECT",
+              "text": "Containerised the service with Docker for deployment to the shared test environment."
+            }
+          ],
+          "labels": {
+            "technical": true,
+            "quantitative": false,
+            "communication": false,
+            "tools": {
+              "Python": true,
+              "Django": true,
+              "PostgreSQL": true,
+              "Docker": true,
+              "AWS": false
+            },
+            "targeted": {
+              "Python implementation": true,
+              "API integration": true,
+              "AI and language-model tools": false,
+              "workflow automation": false,
+              "data analysis": false,
+              "quantitative research": false,
+              "testing and validation": true,
+              "customer problem-solving": false
+            }
+          },
+          "rationale": "The evidence covers building Django services, integrating a payment API and writing tests, so the technical statement holds, but there is no customer contact, analysis or AWS use."
+        },
+        {
+          "case_id": "G4-14",
+          "persona": "Research technician in a university optics laboratory.",
+          "has_technical_work": true,
+          "job": {
+            "title": "Research Software Engineer",
+            "company": "Example Physics Institute",
+            "description": "Develop Python software to control instruments and analyse experimental data, automate measurement workflows, and validate results against reference measurements."
+          },
+          "skills": [
+            "Python",
+            "MATLAB",
+            "LabVIEW"
+          ],
+          "evidence": [
+            {
+              "id": "bank:g4-14-1",
+              "status": "DIRECT",
+              "text": "Calibrated laser interferometers for a university optics research group."
+            },
+            {
+              "id": "bank:g4-14-2",
+              "status": "DIRECT",
+              "text": "Wrote Python scripts to fit decay curves to photodetector data and estimate measurement uncertainty."
+            },
+            {
+              "id": "bank:g4-14-3",
+              "status": "DIRECT",
+              "text": "Built a LabVIEW control program that stepped a translation stage and logged readings automatically."
+            },
+            {
+              "id": "bank:g4-14-4",
+              "status": "DIRECT",
+              "text": "Co-authored a peer-reviewed paper on thermal noise in optical cavities."
+            },
+            {
+              "id": "bank:g4-14-5",
+              "status": "DIRECT",
+              "text": "Tested the data-acquisition rig against reference signals before each experimental run."
+            }
+          ],
+          "labels": {
+            "technical": true,
+            "quantitative": true,
+            "communication": false,
+            "tools": {
+              "Python": true,
+              "MATLAB": false,
+              "LabVIEW": true
+            },
+            "targeted": {
+              "Python implementation": true,
+              "API integration": false,
+              "AI and language-model tools": false,
+              "workflow automation": true,
+              "data analysis": true,
+              "quantitative research": true,
+              "testing and validation": true,
+              "customer problem-solving": false
+            }
+          },
+          "rationale": "The technician builds and tests instrument-control software within published physics research, supporting the technical and quantitative statements, but MATLAB is never used and there is no customer work."
+        },
+        {
+          "case_id": "G4-15",
+          "persona": "IT support technician who automates account and device set-up.",
+          "has_technical_work": true,
+          "job": {
+            "title": "IT Automation Engineer",
+            "company": "Example Health Board",
+            "description": "Automate service desk workflows, integrate the IT service management tool with directory and device management systems, test changes safely before roll-out and keep users informed."
+          },
+          "skills": [
+            "PowerShell",
+            "Microsoft Intune",
+            "ServiceNow",
+            "Python"
+          ],
+          "evidence": [
+            {
+              "id": "bank:g4-15-1",
+              "status": "DIRECT",
+              "text": "Resolved 25 to 30 hardware and software tickets a day for staff across three hospital sites."
+            },
+            {
+              "id": "bank:g4-15-2",
+              "status": "DIRECT",
+              "text": "Wrote PowerShell scripts to create new starter accounts and mailboxes, cutting set-up time from an hour to ten minutes."
+            },
+            {
+              "id": "bank:g4-15-3",
+              "status": "DIRECT",
+              "text": "Enrolled 600 laptops in Microsoft Intune and tested compliance policies on a pilot group first."
+            },
+            {
+              "id": "bank:g4-15-4",
+              "status": "DIRECT",
+              "text": "Integrated the ServiceNow catalogue with Active Directory so approved access requests were applied automatically."
+            },
+            {
+              "id": "bank:g4-15-5",
+              "status": "DIRECT",
+              "text": "Talked staff through fixes by phone and closed tickets with clear notes."
+            }
+          ],
+          "labels": {
+            "technical": true,
+            "quantitative": false,
+            "communication": true,
+            "tools": {
+              "PowerShell": true,
+              "Microsoft Intune": true,
+              "ServiceNow": true,
+              "Python": false
+            },
+            "targeted": {
+              "Python implementation": false,
+              "API integration": true,
+              "AI and language-model tools": false,
+              "workflow automation": true,
+              "data analysis": false,
+              "quantitative research": false,
+              "testing and validation": true,
+              "customer problem-solving": true
+            }
+          },
+          "rationale": "The evidence shows scripting, a ServiceNow integration, piloted policy testing and user-facing support, but never Python or any quantitative research."
+        },
+        {
+          "case_id": "G4-16",
+          "persona": "Software tester on an online banking app.",
+          "has_technical_work": true,
+          "job": {
+            "title": "QA Engineer",
+            "company": "Example Payments Ltd",
+            "description": "Write automated tests in Python, test integrations between our payment APIs, and validate every release against acceptance criteria."
+          },
+          "skills": [
+            "Selenium",
+            "Postman",
+            "Jira",
+            "JavaScript"
+          ],
+          "evidence": [
+            {
+              "id": "bank:g4-16-1",
+              "status": "DIRECT",
+              "text": "Wrote and ran manual test scripts for each release of an online banking app."
+            },
+            {
+              "id": "bank:g4-16-2",
+              "status": "DIRECT",
+              "text": "Automated 150 regression tests in Selenium with Java, cutting the regression run from two days to three hours."
+            },
+            {
+              "id": "bank:g4-16-3",
+              "status": "DIRECT",
+              "text": "Tested REST APIs with Postman collections, including error and timeout cases."
+            },
+            {
+              "id": "bank:g4-16-4",
+              "status": "DIRECT",
+              "text": "Logged defects in Jira with clear reproduction steps and retested each fix."
+            },
+            {
+              "id": "bank:g4-16-5",
+              "status": "DIRECT",
+              "text": "Checked that new screens could be used with a screen reader before release."
+            }
+          ],
+          "labels": {
+            "technical": false,
+            "quantitative": false,
+            "communication": false,
+            "tools": {
+              "Selenium": true,
+              "Postman": true,
+              "Jira": true,
+              "JavaScript": false
+            },
+            "targeted": {
+              "Python implementation": false,
+              "API integration": false,
+              "AI and language-model tools": false,
+              "workflow automation": false,
+              "data analysis": false,
+              "quantitative research": false,
+              "testing and validation": true,
+              "customer problem-solving": false
+            }
+          },
+          "rationale": "The tester writes automated tests in Java and tests other people's APIs, which supports testing, but testing an integration is not building one, so the development-integration-testing statement is unsupported, and there is no Python, JavaScript or customer work."
+        },
+        {
+          "case_id": "G4-17",
+          "persona": "Engineer building a language-model email triage service.",
+          "has_technical_work": true,
+          "job": {
+            "title": "AI Engineer",
+            "company": "Example Support Software Ltd",
+            "description": "Build Python services that use large language models, integrate them with third-party APIs, automate support workflows and evaluate model quality with care."
+          },
+          "skills": [
+            "Python",
+            "OpenAI API",
+            "LangChain",
+            "SQL"
+          ],
+          "evidence": [
+            {
+              "id": "bank:g4-17-1",
+              "status": "DIRECT",
+              "text": "Built a Python service that classifies incoming customer emails with a language model and routes them to the right team."
+            },
+            {
+              "id": "bank:g4-17-2",
+              "status": "DIRECT",
+              "text": "Called the OpenAI API with structured prompts and validated its JSON output against a schema before use."
+            },
+            {
+              "id": "bank:g4-17-3",
+              "status": "DIRECT",
+              "text": "Evaluated the classifier on 2,000 hand-labelled emails and reported precision and recall for each category."
+            },
+            {
+              "id": "bank:g4-17-4",
+              "status": "DIRECT",
+              "text": "Integrated the routing service with the Zendesk API so that tickets were tagged automatically."
+            },
+            {
+              "id": "bank:g4-17-5",
+              "status": "DIRECT",
+              "text": "Wrote SQL to pull historical ticket data for the training and evaluation sets."
+            }
+          ],
+          "labels": {
+            "technical": true,
+            "quantitative": false,
+            "communication": false,
+            "tools": {
+              "Python": true,
+              "OpenAI API": true,
+              "LangChain": false,
+              "SQL": true
+            },
+            "targeted": {
+              "Python implementation": true,
+              "API integration": true,
+              "AI and language-model tools": true,
+              "workflow automation": true,
+              "data analysis": true,
+              "quantitative research": false,
+              "testing and validation": true,
+              "customer problem-solving": false
+            }
+          },
+          "rationale": "The evidence shows building, integrating and evaluating a language-model service, but it is not physics or scientific research, involves no customer contact and never uses LangChain."
+        },
+        {
+          "case_id": "G4-18",
+          "persona": "Front-end web developer at a small agency.",
+          "has_technical_work": true,
+          "job": {
+            "title": "Front-End Developer",
+            "company": "Example Digital Agency",
+            "description": "Build accessible websites, integrate forms with third-party APIs, test across browsers and work directly with clients to fix issues."
+          },
+          "skills": [
+            "JavaScript",
+            "React",
+            "WordPress",
+            "Figma"
+          ],
+          "evidence": [
+            {
+              "id": "bank:g4-18-1",
+              "status": "DIRECT",
+              "text": "Built responsive page templates in React for three charity websites."
+            },
+            {
+              "id": "bank:g4-18-2",
+              "status": "DIRECT",
+              "text": "Themed and maintained WordPress sites for 12 small business clients."
+            },
+            {
+              "id": "bank:g4-18-3",
+              "status": "DIRECT",
+              "text": "Met clients to agree page layouts and fixed issues they reported after launch."
+            },
+            {
+              "id": "bank:g4-18-4",
+              "status": "DIRECT",
+              "text": "Wrote JavaScript to connect contact forms to a mailing-list provider's API."
+            },
+            {
+              "id": "bank:g4-18-5",
+              "status": "DIRECT",
+              "text": "Tested each site across browsers and screen sizes before handover."
+            }
+          ],
+          "labels": {
+            "technical": true,
+            "quantitative": false,
+            "communication": true,
+            "tools": {
+              "JavaScript": true,
+              "React": true,
+              "WordPress": true,
+              "Figma": false
+            },
+            "targeted": {
+              "Python implementation": false,
+              "API integration": true,
+              "AI and language-model tools": false,
+              "workflow automation": false,
+              "data analysis": false,
+              "quantitative research": false,
+              "testing and validation": true,
+              "customer problem-solving": true
+            }
+          },
+          "rationale": "The developer builds, integrates and tests websites and works directly with clients, but never uses Figma, Python or any analytical methods."
+        },
+        {
+          "case_id": "G4-19",
+          "persona": "Finance data engineer who automated the month-end close.",
+          "has_technical_work": true,
+          "job": {
+            "title": "Finance Systems Developer",
+            "company": "Example Retail Group",
+            "description": "Automate finance processes in Python, integrate banking APIs with our data warehouse, analyse process performance and test every change."
+          },
+          "skills": [
+            "Python",
+            "Airflow",
+            "SQL",
+            "Excel"
+          ],
+          "evidence": [
+            {
+              "id": "bank:g4-19-1",
+              "status": "DIRECT",
+              "text": "Replaced a spreadsheet-based month-end process with Python jobs scheduled in Airflow."
+            },
+            {
+              "id": "bank:g4-19-2",
+              "status": "DIRECT",
+              "text": "Pulled bank transactions through the bank's API and loaded them into the finance data warehouse."
+            },
+            {
+              "id": "bank:g4-19-3",
+              "status": "DIRECT",
+              "text": "Wrote SQL reconciliation checks that flagged unmatched transactions for the accounts team."
+            },
+            {
+              "id": "bank:g4-19-4",
+              "status": "DIRECT",
+              "text": "Added unit tests for each transformation step and ran them before deployment."
+            },
+            {
+              "id": "bank:g4-19-5",
+              "status": "DIRECT",
+              "text": "Analysed month-end timings and cut the close from eight working days to five."
+            }
+          ],
+          "labels": {
+            "technical": true,
+            "quantitative": false,
+            "communication": false,
+            "tools": {
+              "Python": true,
+              "Airflow": true,
+              "SQL": true,
+              "Excel": false
+            },
+            "targeted": {
+              "Python implementation": true,
+              "API integration": true,
+              "AI and language-model tools": false,
+              "workflow automation": true,
+              "data analysis": true,
+              "quantitative research": false,
+              "testing and validation": true,
+              "customer problem-solving": false
+            }
+          },
+          "rationale": "The evidence shows Python development, API integration, tests and process analysis, but Excel is never named, there is no customer contact and no scientific research."
+        },
+        {
+          "case_id": "G4-20",
+          "persona": "Research assistant in freshwater environmental science.",
+          "has_technical_work": true,
+          "job": {
+            "title": "Environmental Data Scientist",
+            "company": "Example Water Services",
+            "description": "Analyse water-quality data with statistical models, write tested Python tools for sensor data, and present findings to operational teams."
+          },
+          "skills": [
+            "R",
+            "Python",
+            "QGIS",
+            "SPSS"
+          ],
+          "evidence": [
+            {
+              "id": "bank:g4-20-1",
+              "status": "DIRECT",
+              "text": "Collected river water samples monthly and measured nitrate levels in the laboratory."
+            },
+            {
+              "id": "bank:g4-20-2",
+              "status": "DIRECT",
+              "text": "Fitted mixed-effects models in R to relate nitrate levels to rainfall and land use."
+            },
+            {
+              "id": "bank:g4-20-3",
+              "status": "DIRECT",
+              "text": "Wrote a Python package that cleans logger data and flags sensor drift, with unit tests for each rule."
+            },
+            {
+              "id": "bank:g4-20-4",
+              "status": "DIRECT",
+              "text": "Mapped sampling sites and catchments in QGIS for the project reports."
+            },
+            {
+              "id": "bank:g4-20-5",
+              "status": "DIRECT",
+              "text": "Presented findings to farmers and the local water company at catchment meetings."
+            }
+          ],
+          "labels": {
+            "technical": false,
+            "quantitative": false,
+            "communication": false,
+            "tools": {
+              "R": true,
+              "Python": true,
+              "QGIS": true,
+              "SPSS": false
+            },
+            "targeted": {
+              "Python implementation": true,
+              "API integration": false,
+              "AI and language-model tools": false,
+              "workflow automation": false,
+              "data analysis": true,
+              "quantitative research": true,
+              "testing and validation": true,
+              "customer problem-solving": false
+            }
+          },
+          "rationale": "The researcher does environmental science with statistical models and a tested Python package, which supports quantitative research as a capability, but the quantitative statement claims a grounding in physics that the evidence lacks, there is no integration work for the software statement, presenting to farmers is not customer-facing work and SPSS is never used."
+        },
+        {
+          "case_id": "G4-21",
+          "persona": "Embedded engineer on a vehicle battery monitoring board.",
+          "has_technical_work": true,
+          "job": {
+            "title": "Embedded Software Engineer",
+            "company": "Example EV Systems Ltd",
+            "description": "Write firmware in C, integrate controllers over CAN bus, and build automated test rigs in Python to validate every production board."
+          },
+          "skills": [
+            "C",
+            "Python",
+            "Oscilloscope",
+            "CAN bus"
+          ],
+          "evidence": [
+            {
+              "id": "bank:g4-21-1",
+              "status": "DIRECT",
+              "text": "Wrote C firmware for a battery monitoring board on an ARM microcontroller."
+            },
+            {
+              "id": "bank:g4-21-2",
+              "status": "DIRECT",
+              "text": "Integrated the board with the vehicle's CAN bus and decoded messages from the motor controller."
+            },
+            {
+              "id": "bank:g4-21-3",
+              "status": "DIRECT",
+              "text": "Built a Python test harness that ran 300 automated checks on each production board."
+            },
+            {
+              "id": "bank:g4-21-4",
+              "status": "DIRECT",
+              "text": "Traced intermittent faults with an oscilloscope and logic analyser."
+            },
+            {
+              "id": "bank:g4-21-5",
+              "status": "DIRECT",
+              "text": "Documented test procedures for the production line."
+            }
+          ],
+          "labels": {
+            "technical": true,
+            "quantitative": false,
+            "communication": false,
+            "tools": {
+              "C": true,
+              "Python": true,
+              "Oscilloscope": true,
+              "CAN bus": true
+            },
+            "targeted": {
+              "Python implementation": true,
+              "API integration": false,
+              "AI and language-model tools": false,
+              "workflow automation": false,
+              "data analysis": false,
+              "quantitative research": false,
+              "testing and validation": true,
+              "customer problem-solving": false
+            }
+          },
+          "rationale": "The engineer develops firmware, integrates hardware and builds a Python test harness, supporting the technical statement and all tools, but the work is engineering rather than scientific research and involves no customers or APIs."
+        },
+        {
+          "case_id": "G4-22",
+          "persona": "Astrophysics PhD graduate moving into data science.",
+          "has_technical_work": true,
+          "job": {
+            "title": "Quantitative Researcher",
+            "company": "Example Energy Trading Ltd",
+            "description": "Apply statistical and physical modelling to market data, write reliable Python analysis code, and validate models rigorously before use."
+          },
+          "skills": [
+            "Python",
+            "NumPy",
+            "SQL",
+            "TensorFlow"
+          ],
+          "evidence": [
+            {
+              "id": "bank:g4-22-1",
+              "status": "DIRECT",
+              "text": "Measured galaxy rotation curves from telescope spectra during a PhD in astrophysics."
+            },
+            {
+              "id": "bank:g4-22-2",
+              "status": "DIRECT",
+              "text": "Wrote Python pipelines with NumPy to reduce 12 terabytes of survey data."
+            },
+            {
+              "id": "bank:g4-22-3",
+              "status": "DIRECT",
+              "text": "Estimated uncertainties with Markov chain Monte Carlo methods and published three first-author papers."
+            },
+            {
+              "id": "bank:g4-22-4",
+              "status": "DIRECT",
+              "text": "Validated the pipeline against simulated data with known inputs before each survey release."
+            },
+            {
+              "id": "bank:g4-22-5",
+              "status": "DIRECT",
+              "text": "Queried the survey archive in SQL to select targets for follow-up observations."
+            }
+          ],
+          "labels": {
+            "technical": false,
+            "quantitative": true,
+            "communication": false,
+            "tools": {
+              "Python": true,
+              "NumPy": true,
+              "SQL": true,
+              "TensorFlow": false
+            },
+            "targeted": {
+              "Python implementation": true,
+              "API integration": false,
+              "AI and language-model tools": false,
+              "workflow automation": false,
+              "data analysis": true,
+              "quantitative research": true,
+              "testing and validation": true,
+              "customer problem-solving": false
+            }
+          },
+          "rationale": "The evidence is physics research with Python pipelines and validation, strongly supporting the quantitative statement, but with no integration work the software statement is unsupported, and TensorFlow is never used."
+        }
+      ]
+    },
+    "g5_altered_documents.json": {
+      "gate": "G5",
+      "cases": [
+        {
+          "case_id": "G5-01",
+          "profile_id": "support_to_analytics",
+          "alteration": {
+            "type": "append_text",
+            "section_id": "employment:rep",
+            "paragraph_index": 0,
+            "text": "Led the migration of all 42 stores to a new data warehouse."
+          },
+          "expected": "should_reject",
+          "rationale": "The appended sentence is a claim that no admitted evidence supports, so the document is no longer grounded."
+        },
+        {
+          "case_id": "G5-02",
+          "profile_id": "logistics_coordinator",
+          "alteration": {
+            "type": "append_text",
+            "section_id": "projects:foodbank",
+            "paragraph_index": 1,
+            "text": "Secured £50,000 of grant funding for a second van."
+          },
+          "expected": "should_reject",
+          "rationale": "The appended grant-funding claim has no supporting evidence in the profile."
+        },
+        {
+          "case_id": "G5-03",
+          "profile_id": "junior_developer",
+          "alteration": {
+            "type": "replace_paragraph",
+            "section_id": "employment:bookshop",
+            "paragraph_index": 1,
+            "text": "Managed stock ordering and supplier accounts for the whole shop."
+          },
+          "expected": "should_reject",
+          "rationale": "The replacement paragraph is an unsupported claim that overstates the stockroom evidence."
+        },
+        {
+          "case_id": "G5-04",
+          "profile_id": "logistics_coordinator",
+          "alteration": {
+            "type": "set_subheading",
+            "section_id": "employment:transport",
+            "subheading": "2014 – 2020"
+          },
+          "expected": "should_reject",
+          "rationale": "The start date of the Transport Planner role no longer matches the profile record of 2016."
+        },
+        {
+          "case_id": "G5-05",
+          "profile_id": "junior_developer",
+          "alteration": {
+            "type": "set_subheading",
+            "section_id": "employment:junior_dev",
+            "subheading": "2020 – Present"
+          },
+          "expected": "should_reject",
+          "rationale": "The start date of the developer role is moved two years earlier than the profile record of 2022."
+        },
+        {
+          "case_id": "G5-06",
+          "profile_id": "support_to_analytics",
+          "alteration": {
+            "type": "set_heading",
+            "section_id": "employment:ops",
+            "heading": "Service Reporting Manager | Northbrook Housing Trust"
+          },
+          "expected": "should_reject",
+          "rationale": "The job title is changed from Service Reporting Officer to a more senior title the profile does not record."
+        },
+        {
+          "case_id": "G5-07",
+          "profile_id": "junior_developer",
+          "alteration": {
+            "type": "set_heading",
+            "section_id": "employment:junior_dev",
+            "heading": "Junior Software Developer | Quillon Health Systems Ltd"
+          },
+          "expected": "should_reject",
+          "rationale": "The employer is renamed to a company that does not appear in the profile."
+        },
+        {
+          "case_id": "G5-08",
+          "profile_id": "support_to_analytics",
+          "alteration": {
+            "type": "inject_skill",
+            "skill": "Tableau"
+          },
+          "expected": "should_reject",
+          "rationale": "Tableau is listed on the profile but no admitted evidence shows it being used, so adding it to the Skills section is unsupported."
+        },
+        {
+          "case_id": "G5-09",
+          "profile_id": "junior_developer",
+          "alteration": {
+            "type": "inject_skill",
+            "skill": "Kubernetes"
+          },
+          "expected": "should_reject",
+          "rationale": "Kubernetes is neither a listed skill nor mentioned in any evidence, so the injected skill is unsupported."
+        },
+        {
+          "case_id": "G5-10",
+          "profile_id": "support_to_analytics",
+          "alteration": {
+            "type": "set_education_paragraphs",
+            "paragraphs": [
+              "Hollowmere University — BA (Hons) Geography, First Class",
+              "Eastgate College — Certificate in Data Analysis"
+            ]
+          },
+          "expected": "should_reject",
+          "rationale": "The degree classification is raised from Upper Second Class to First Class, which the profile does not record."
+        },
+        {
+          "case_id": "G5-11",
+          "profile_id": "logistics_coordinator",
+          "alteration": {
+            "type": "set_education_paragraphs",
+            "paragraphs": [
+              "Westvale College — Foundation Degree in Logistics Operations, Distinction",
+              "Examplar Transport Training — Certificate of Professional Competence in Road Haulage"
+            ]
+          },
+          "expected": "should_reject",
+          "rationale": "The Level 3 Diploma is replaced by a Foundation Degree, a qualification the candidate does not hold."
+        },
+        {
+          "case_id": "G5-12",
+          "profile_id": "support_to_analytics",
+          "alteration": {
+            "type": "move_evidence",
+            "evidence_id": "bank:rep1",
+            "from_section_id": "employment:rep",
+            "to_section_id": "employment:ops"
+          },
+          "expected": "should_reject",
+          "rationale": "The Power BI dashboard statement belongs to the Fernlea role, so placing it under the earlier Northbrook role misattributes the work."
+        },
+        {
+          "case_id": "G5-13",
+          "profile_id": "logistics_coordinator",
+          "alteration": {
+            "type": "move_evidence",
+            "evidence_id": "bank:tp1",
+            "from_section_id": "employment:transport",
+            "to_section_id": "employment:coordinator"
+          },
+          "expected": "should_reject",
+          "rationale": "The route-scheduling statement belongs to Carrow Freight, so moving it under Dunmore Distribution misattributes the work."
+        },
+        {
+          "case_id": "G5-14",
+          "profile_id": "junior_developer",
+          "alteration": {
+            "type": "move_evidence",
+            "evidence_id": "bank:tt1",
+            "from_section_id": "projects:timetable",
+            "to_section_id": "employment:junior_dev"
+          },
+          "expected": "should_reject",
+          "rationale": "The timetable statement comes from a course team project, so presenting it as employed work at Quillon misattributes it."
+        },
+        {
+          "case_id": "G5-15",
+          "profile_id": "support_to_analytics",
+          "alteration": {
+            "type": "replace_in_paragraph",
+            "section_id": "employment:desk",
+            "paragraph_index": 0,
+            "old": "350",
+            "new": "3,500"
+          },
+          "expected": "should_reject",
+          "rationale": "The number of staff supported is inflated tenfold from the evidence."
+        },
+        {
+          "case_id": "G5-16",
+          "profile_id": "logistics_coordinator",
+          "alteration": {
+            "type": "replace_in_paragraph",
+            "section_id": "employment:coordinator",
+            "paragraph_index": 0,
+            "old": "25 suppliers",
+            "new": "250 suppliers"
+          },
+          "expected": "should_reject",
+          "rationale": "The number of suppliers is inflated tenfold from the evidence."
+        },
+        {
+          "case_id": "G5-17",
+          "profile_id": "junior_developer",
+          "alteration": {
+            "type": "replace_in_paragraph",
+            "section_id": "employment:junior_dev",
+            "paragraph_index": 1,
+            "old": "55 to 80 per cent",
+            "new": "55 to 95 per cent"
+          },
+          "expected": "should_reject",
+          "rationale": "The test coverage figure is inflated beyond what the evidence records."
+        },
+        {
+          "case_id": "G5-18",
+          "profile_id": "support_to_analytics",
+          "alteration": {
+            "type": "unaltered"
+          },
+          "expected": "should_accept",
+          "rationale": "The reference document is unchanged and every statement in it is admitted evidence."
+        },
+        {
+          "case_id": "G5-19",
+          "profile_id": "logistics_coordinator",
+          "alteration": {
+            "type": "unaltered"
+          },
+          "expected": "should_accept",
+          "rationale": "The reference document is unchanged and every statement in it is admitted evidence."
+        },
+        {
+          "case_id": "G5-20",
+          "profile_id": "junior_developer",
+          "alteration": {
+            "type": "unaltered"
+          },
+          "expected": "should_accept",
+          "rationale": "The reference document is unchanged and every statement in it is admitted evidence."
+        },
+        {
+          "case_id": "G5-21",
+          "profile_id": "logistics_coordinator",
+          "alteration": {
+            "type": "reorder_paragraphs",
+            "section_id": "employment:transport",
+            "order": [
+              2,
+              0,
+              1
+            ]
+          },
+          "expected": "should_accept",
+          "rationale": "Reordering supported paragraphs within their own section adds or alters no fact."
+        },
+        {
+          "case_id": "G5-22",
+          "profile_id": "support_to_analytics",
+          "alteration": {
+            "type": "remove_paragraph",
+            "section_id": "employment:desk",
+            "paragraph_index": 2
+          },
+          "expected": "should_accept",
+          "rationale": "Removing a supported paragraph leaves only admitted statements and adds no fact."
+        },
+        {
+          "case_id": "G5-23",
+          "profile_id": "junior_developer",
+          "alteration": {
+            "type": "remove_paragraph",
+            "section_id": "employment:bookshop",
+            "paragraph_index": 0
+          },
+          "expected": "should_accept",
+          "rationale": "Removing a supported paragraph leaves only admitted statements and adds no fact."
+        },
+        {
+          "case_id": "G5-24",
+          "profile_id": "junior_developer",
+          "alteration": {
+            "type": "set_education_paragraphs",
+            "paragraphs": [
+              "Ravensholt University — BSc Computing, Second Class Honours (Upper Division)",
+              "Northgate Coding School — Certificate in Web Development"
+            ]
+          },
+          "expected": "should_accept",
+          "rationale": "This is the Education form printed before award dates were recorded; it omits the date but alters no fact."
+        }
+      ]
+    }
+  }
+}
