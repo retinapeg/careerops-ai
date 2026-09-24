@@ -242,10 +242,7 @@ def soffice_path():
     if found:
         return found
     mac = Path("/Applications/LibreOffice.app/Contents/MacOS/soffice")
-    if mac.is_file():
-        return str(mac)
-    bundled = Path.home() / ".cache/codex-runtimes/codex-primary-runtime/dependencies/bin/override/soffice"
-    return str(bundled) if bundled.is_file() else None
+    return str(mac) if mac.is_file() else None
 
 
 def render_docx(material, target):
