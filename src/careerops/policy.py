@@ -29,20 +29,35 @@ COUNTRIES = {
     "DE": ("Germany", "Deutschland", "Allemagne"), "CH": ("Switzerland", "Suisse"), "SG": ("Singapore",),
     "PL": ("Poland", "Polska", "Pologne"), "PT": ("Portugal",), "NL": ("Netherlands",), "IE": ("Ireland",),
 }
+# Cities recognised in advert locations. Each country lists its largest or
+# best-known city first, with regions last; a location naming several cities of
+# one country is labelled with the first listed. Countries do not depend on it.
 CITIES = {
     "GB": ("London", "Canary Wharf", "Londres", "לונדון", "Λονδίνο"),
     "IL": ("Tel Aviv", "Tel-Aviv", "Haifa", "Herzliya", "Jerusalem", "תל אביב", "תל-אביב", "חיפה", "הרצליה", "ירושלים"),
-    "GR": ("Crete", "Heraklion", "Chania", "Athens", "Thessaloniki", "Athina", "Ηράκλειο", "Κρήτη", "Χανιά", "Αθήνα", "Θεσσαλονίκη"),
-    "FR": ("Nice", "Sophia Antipolis", "Marseille", "Montpellier", "Toulouse", "Paris", "Sophia-Antipolis", "Aix-en-Provence", "Côte d'Azur", "Île-de-France"),
+    "GR": ("Athens", "Athina", "Thessaloniki", "Heraklion", "Chania", "Crete", "Αθήνα", "Θεσσαλονίκη", "Ηράκλειο", "Χανιά", "Κρήτη"),
+    "FR": ("Paris", "Marseille", "Toulouse", "Nice", "Montpellier", "Aix-en-Provence", "Sophia Antipolis", "Sophia-Antipolis", "Île-de-France", "Côte d'Azur"),
     "CY": ("Nicosia", "Limassol", "Larnaca", "Paphos"),
     "MT": ("Valletta", "Sliema", "St Julian's"),
-    "ES": ("Barcelona", "Valencia", "Malaga", "Málaga", "Alicante", "Madrid"),
-    "IT": ("Milan", "Rome", "Naples", "Bologna", "Turin", "Trieste"),
+    "ES": ("Madrid", "Barcelona", "Valencia", "Malaga", "Málaga", "Alicante"),
+    "IT": ("Rome", "Milan", "Naples", "Turin", "Bologna", "Trieste"),
     "US": ("New York", "Chicago", "Boston", "San Francisco", "San Jose"),
     "DE": ("Berlin", "Munich"), "CH": ("Zurich", "Zürich", "Geneva"),
-    "SG": ("Singapore",), "PL": ("Kraków", "Krakow", "Warsaw", "Warszawa"),
+    "SG": ("Singapore",), "PL": ("Warsaw", "Warszawa", "Kraków", "Krakow"),
     "PT": ("Lisbon", "Lisboa", "Porto"), "NL": ("Amsterdam",), "IE": ("Dublin",),
 }
+# Neutral starting cities for each overseas country: well-known cities listed
+# alphabetically, drawn from CITIES so each one is recognised in adverts. The
+# order of CITIES itself sets city labels and is deliberately separate.
+DEFAULT_CITIES = {
+    "IL": ("Haifa", "Jerusalem", "Tel Aviv"), "GR": ("Athens", "Thessaloniki"),
+    "FR": ("Marseille", "Paris", "Toulouse"), "CY": ("Larnaca", "Nicosia", "Paphos"),
+    "MT": ("Sliema", "St Julian's", "Valletta"), "ES": ("Barcelona", "Madrid", "Valencia"),
+    "IT": ("Milan", "Naples", "Rome"), "US": ("Chicago", "New York", "San Francisco"),
+    "DE": ("Berlin", "Munich"), "CH": ("Geneva", "Zurich"), "SG": ("Singapore",),
+    "PL": ("Krakow", "Warsaw"), "PT": ("Lisbon", "Porto"), "NL": ("Amsterdam",), "IE": ("Dublin",),
+}
+COUNTRY_CURRENCIES = {"IL": "ILS", "US": "USD", "CH": "CHF", "SG": "SGD", "PL": "PLN"}
 CITY_ALIASES = {
     "תל אביב": "Tel Aviv", "תל-אביב": "Tel Aviv", "חיפה": "Haifa", "הרצליה": "Herzliya", "ירושלים": "Jerusalem",
     "Ηράκλειο": "Heraklion", "Κρήτη": "Crete", "Χανιά": "Chania", "Αθήνα": "Athens", "Athina": "Athens", "Θεσσαλονίκη": "Thessaloniki",
@@ -119,21 +134,24 @@ def _source_says_closed(text: str) -> bool:
 
 def default_settings() -> dict:
     """Return an independent editable settings document; no execution is enabled."""
-    priorities = {"IL": 100, "GR": 100, "FR": 95, "CY": 80, "MT": 80, "ES": 80, "IT": 80}
     from .professional import STRATEGY_DEFAULTS
     return {
         "version": 1, "policy_version": POLICY_VERSION,
         "strategy": deepcopy(STRATEGY_DEFAULTS),
         "lanes": {"mediterranean": True, "overseas_quant": True, "london": True,
                   "exceptional": True, "cashflow": False, "overseas_quant_worldwide": False},
-        "locations": {country: {"enabled": True, "cities": list(CITIES[country][:3]),
-                                "excluded_cities": [], "priority": priority, "salary_min": None,
-                                "currency": "ILS" if country == "IL" else "EUR"}
-                      for country, priority in priorities.items()},
-        "london": {"salary_remote_one_day": 45000, "salary_two_days": 50000,
-                   "salary_three_plus_days": 60000, "unknown_salary_min_fit": 80,
+        # Every overseas country is listed but none is enabled: the user chooses
+        # which markets to search, with equal priority until they say otherwise.
+        "locations": {country: {"enabled": False, "cities": list(DEFAULT_CITIES[country]),
+                                "excluded_cities": [], "priority": 50, "salary_min": None,
+                                "currency": COUNTRY_CURRENCIES.get(country, "EUR")}
+                      for country in sorted(COUNTRIES) if country != "GB"},
+        # Illustrative salary figures for a fresh install, not recommendations;
+        # each user sets their own floors and exceptional trigger in Settings.
+        "london": {"salary_remote_one_day": 35000, "salary_two_days": 38000,
+                   "salary_three_plus_days": 42000, "unknown_salary_min_fit": 80,
                    "unknown_salary_min_priority": 80},
-        "exceptional": {"base_gbp": 100000, "markets": {}},
+        "exceptional": {"base_gbp": 80000, "markets": {}},
         "thresholds": {"mediterranean": {"fit": 45, "priority": 60},
                        "overseas_quant": {"fit": 35, "priority": 55},
                        "london": {"fit": 65, "priority": 75},
@@ -158,13 +176,8 @@ def default_settings() -> dict:
                                              "max_new_employer_requests": 100, "max_board_requests": 150, "max_vacancy_requests": 120,
                                              "max_historical_requests": 0, "max_ai_reviews": 15, "per_host_limit": 100, "timeout_seconds": 600},
                                     "bootstrap": {}}},
-                   "sources": [
-                       {"type": "greenhouse", "company": "Monzo", "url": "https://job-boards.greenhouse.io/monzo", "enabled": True},
-                       {"type": "greenhouse", "company": "Anthropic", "url": "https://job-boards.greenhouse.io/anthropic", "enabled": True},
-                       {"type": "ashby", "company": "OpenAI", "url": "https://jobs.ashbyhq.com/openai", "enabled": True},
-                       {"type": "lever", "company": "Palantir", "url": "https://jobs.lever.co/palantir", "enabled": True},
-                   ], "role_families": ["Python engineer", "AI automation", "technical support", "implementation consultant",
-                                                      "data analyst", "AI evaluation", "API integration", "research engineer", "quantitative analyst"],
+                   # No employer board is preconfigured; discovery asks for one in Settings.
+                   "sources": [], "role_families": ["software engineer", "data analyst", "solutions engineer", "technical support", "QA analyst"],
                    "normal": {"max_pages": 12, "max_jobs": 80, "max_queries": 6, "max_turns": 6,
                               "concurrency": 2, "timeout_seconds": 90, "max_retries": 1},
                    "deep": {"max_pages": 36, "max_jobs": 240, "max_queries": 18, "max_turns": 16,
@@ -789,7 +802,7 @@ def evaluate_job(job: dict, profile: dict, settings: dict) -> dict:
     """Return transparent scores and lane-specific decisions without mutating inputs.
 
     Skills: matched named skills / named advert skills (50 when unspecified).
-    Domain: explicit physics/quantum/numerical overlap 100, other quant 85,
+    Domain: overlap between the advert duties and profile domains 100, other quant 85,
     technical work with evidenced projects 75, unknown 50, unrelated work 20.
     Responsibility: entry/junior 85, ordinary 75, senior 45, leadership 10;
     a title alone never becomes an eligibility blocker.
@@ -952,7 +965,7 @@ def evaluate_job(job: dict, profile: dict, settings: dict) -> dict:
     if required_locations:
         alternatives.update(country_codes(str(job.get("location") or "")))
     # A permitted London alternative must not be discarded in favour of a
-    # Mediterranean location where the candidate lacks authorisation.
+    # configured overseas location where the candidate lacks authorisation.
     auth_countries = sorted(alternatives) or ([country] if country else [])
     auth_values = [_known_boolean(profile.get("work_authorisation", {}).get(code)) for code in auth_countries]
     if required_locations:

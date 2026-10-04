@@ -1,5 +1,6 @@
 import json
 import math
+import sqlite3
 
 import pytest
 
@@ -138,6 +139,35 @@ def test_cross_instance_lock_and_version_prevent_lost_write(store):
 def test_strategy_weights_reject_invalid_numbers(value):
     with pytest.raises(ValueError):
         validate_settings({'strategy': {'weights': {'skills': value}}})
+
+
+@pytest.mark.parametrize('value', [None, '', -1, True, float('nan')])
+def test_blank_exceptional_base_is_rejected_and_the_workspace_still_opens(tmp_path, value):
+    # Clearing "Verified annual base trigger" in Settings sends null. That was
+    # saved, then rescoring a job with a known salary failed on every start.
+    path = tmp_path / 'tracker.sqlite3'
+    store = Store(path)
+    job = store.upsert_job(dict(role(), description='Implementation Analyst. London. Python support. Base salary £50,000 to £60,000 per year.'))['job']
+    assert job['salary_min'] == 50000 and job['salary_type'] == 'base'
+    before = store.settings()['exceptional']['base_gbp']
+    with pytest.raises(ValueError, match='Verified annual base trigger'):
+        store.update_settings({'exceptional': {'base_gbp': value}})
+    reopened = Store(path)
+    assert reopened.settings()['exceptional']['base_gbp'] == before
+    assert reopened.update_settings({'exceptional': {'base_gbp': 0}})['exceptional']['base_gbp'] == 0
+    # A workspace where earlier code already stored the blank trigger opens,
+    # and the stored value is repaired so the default applies again.
+    stored = reopened.meta('settings')
+    stored['exceptional']['base_gbp'] = value
+    if isinstance(value, float) and math.isnan(value):
+        # JSON storage refuses NaN, so only a hand-edited database holds it.
+        with sqlite3.connect(path) as db:
+            db.execute("UPDATE metadata SET data=? WHERE key='settings'", (json.dumps(stored),))
+    else:
+        reopened.put_meta('settings', stored)
+    repaired = Store(path)
+    assert repaired.settings()['exceptional']['base_gbp'] == before
+    assert 'base_gbp' not in repaired.meta('settings')['exceptional']
 
 
 def test_professional_queue_rebuilds_from_full_candidates_without_old_pins(store, monkeypatch):

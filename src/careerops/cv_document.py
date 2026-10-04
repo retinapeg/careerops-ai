@@ -15,11 +15,27 @@ from pydantic import BaseModel, ConfigDict, Field, ValidationError
 from .materials import approved_evidence, make_draft, soffice_path
 from .store import digest, encode, now
 
-DOCUMENT_VERSION = "coherent-cv-v1"
+DOCUMENT_VERSION = "coherent-cv-v2"
+# Earlier document rules. Their profile statements and patterns have since
+# changed, so a CV stored under them cannot be checked again; the user creates
+# a new version instead. Earlier versions stay available to read.
+EARLIER_DOCUMENT_VERSIONS = ("coherent-cv-v1",)
 DEFAULT_POSITIONING = "Professional profile"
 EMPHASES = {"balanced", "applied_ai", "client_solutions", "technical_depth", "quantitative", "concise"}
 FUTURE = re.compile(r"\b(?:plans? to|planning to|intends? to|will|would like to|hopes? to|(?:future|planned|proposed) (?:feature|plan)|roadmap|not yet (?:built|implemented|available))\b", re.I)
 ABSENCE = re.compile(r"\b(?:no(?:\s+[a-z-]+){0,3}\s+(?:experience|knowledge)|lack of.{0,30}(?:experience|knowledge)|not (?:yet )?(?:used|experienced|implemented|completed)|never (?:used|built|worked)|(?:do|must) not claim)\b", re.I)
+
+
+class OutdatedDocumentError(ValueError):
+    """A stored CV was built under earlier document rules."""
+
+
+def check_document_version(material):
+    schema = material.get("document_schema")
+    if schema in EARLIER_DOCUMENT_VERSIONS:
+        raise OutdatedDocumentError(
+            f"This CV was built under earlier CV rules ({schema}); the current rules are {DOCUMENT_VERSION}, so it "
+            "cannot be checked again. Create a new version of this CV for this job. Earlier versions remain available.")
 
 
 class StrictModel(BaseModel):
@@ -144,7 +160,7 @@ def _profile_statements(profile, evidence, job=None):
               "AI and language-model tools": r"\bAI\b|\bLLM\b|language.model|agentic",
               "workflow automation": r"automat|workflow", "data analysis": r"data analys|analys.*data|pandas",
               "quantitative research": r"quantum|numerical|physics|scientific research",
-              "testing and validation": r"test|validat", "customer problem-solving": r"customer|client|call handl"}
+              "testing and validation": r"test|validat", "customer problem-solving": r"customer|client"}
     advert = str((job or {}).get("title", "")) + " " + str((job or {}).get("description", ""))
     matched = [(name, [i for i, r in evidence.items() if re.search(pattern, r["text"], re.I)])
                for name, pattern in themes.items() if re.search(pattern, advert, re.I)]
@@ -158,8 +174,8 @@ def _profile_statements(profile, evidence, job=None):
     result += [{"id": "example:" + r["id"], "text": r["text"], "evidence_ids": [r["id"]]} for r in examples]
     definitions = [
         ("technical", "Practical technical experience spans software development, integration and testing.", [r"software|Python|programming|application", r"integrat|\bAPI\b", r"test|validat"]),
-        ("quantitative", "Quantitative problem-solving grounded in physics and scientific research.", [r"physics|quantum", r"research|numerical|scientific"]),
-        ("communication", "Customer-facing experience combines clear communication with practical problem-solving.", [r"customer|client|caller|call handl", r"communicat|explain|present", r"troubleshoot|problem.solv|investigat|call handl"]),
+        ("quantitative", "Quantitative problem-solving grounded in scientific or numerical research.", [r"physics|quantum", r"research|numerical|scientific"]),
+        ("communication", "Customer-facing experience combines clear communication with practical problem-solving.", [r"customer|client", r"communicat|explain|present", r"troubleshoot|problem.solv|investigat"]),
     ]
     for identity, text, patterns in definitions:
         matches = [[i for i, r in evidence.items() if re.search(pattern, r["text"], re.I)] for pattern in patterns]
@@ -349,6 +365,7 @@ def build_document(job, profile, proposal, direction=None, base_cv=None):
 
 
 def validate_document(material, profile, job=None):
+    check_document_version(material)
     if material.get("document_schema") != DOCUMENT_VERSION or material.get("protected_profile_hash") != digest(profile):
         raise ValueError("The document does not match the frozen authoritative profile.")
     job = job or material.get("document_job") or {"title": "CV", "company": ""}
@@ -468,6 +485,7 @@ def _finding_validation(finding, material, job, profile):
 
 def apply_findings(material, findings, profile, job, accepted_ids=None):
     from .cv_review import analysis
+    check_document_version(material)
     selected = {f["id"] for f in findings if f.get("category") == "document_problem" and f.get("validation", {}).get("status") == "eligible"} if accepted_ids is None else set(accepted_ids)
     if not selected <= {f["id"] for f in findings}:
         raise ValueError("Selected change does not belong to this review.")

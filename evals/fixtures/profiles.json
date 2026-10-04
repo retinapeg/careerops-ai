@@ -1,0 +1,630 @@
+{
+  "description": "Three obviously fictional candidate profiles for offline evaluation of the evidence gates. Every name, employer, institution, contact detail and statement is invented. Load each profile exactly as stored: the reference documents carry a hash of the unmodified profile.",
+  "profiles": [
+    {
+      "profile_id": "support_to_analytics",
+      "summary": "IT service desk analyst who moved into service reporting and then retail reporting analysis.",
+      "job": {
+        "title": "Data Analyst",
+        "company": "Example Utilities Co",
+        "url": "https://example.test/jobs/data-analyst",
+        "description": "Essential skills:\nSQL and Power BI\nClear communication with non-technical stakeholders\nExperience cleaning and reconciling data\nDesirable:\nPython for report automation",
+        "requirements": []
+      },
+      "profile": {
+        "version": 1,
+        "name": "Robin Testcase",
+        "location": "Exampleton",
+        "drives": null,
+        "availability": "",
+        "contact": {
+          "email": "robin.testcase@example.test",
+          "phone": "07700900101"
+        },
+        "qualifications": [
+          {
+            "completed": true,
+            "evidence_ids": [
+              "ba"
+            ]
+          },
+          {
+            "completed": true,
+            "evidence_ids": [
+              "cert"
+            ]
+          }
+        ],
+        "qualifications_not_held": [],
+        "education": [
+          {
+            "record_id": "hollowmere_ba",
+            "qualification": "BA (Hons) Geography",
+            "institution": "Hollowmere University",
+            "classification": "Upper Second Class",
+            "automation": "AUTO"
+          },
+          {
+            "record_id": "eastgate_cert",
+            "qualification": "Certificate in Data Analysis",
+            "institution": "Eastgate College",
+            "automation": "AUTO"
+          }
+        ],
+        "employment": [
+          {
+            "record_id": "desk",
+            "title": "IT Service Desk Analyst",
+            "employer": "Northbrook Housing Trust",
+            "start": "2016",
+            "end": "2019",
+            "evidence_ids": [
+              "desk1",
+              "desk2",
+              "desk3",
+              "desk4"
+            ]
+          },
+          {
+            "record_id": "ops",
+            "title": "Service Reporting Officer",
+            "employer": "Northbrook Housing Trust",
+            "start": "2019",
+            "end": "2021",
+            "evidence_ids": [
+              "ops1",
+              "ops2",
+              "ops3"
+            ]
+          },
+          {
+            "record_id": "rep",
+            "title": "Reporting Analyst",
+            "employer": "Fernlea Home Stores",
+            "start": "2021",
+            "end": "Present",
+            "evidence_ids": [
+              "rep1",
+              "rep2",
+              "rep3",
+              "rep4",
+              "rep5"
+            ]
+          }
+        ],
+        "research": [],
+        "projects": [
+          {
+            "record_id": "library",
+            "name": "Library Visitor Dashboard",
+            "period": "2023",
+            "evidence_ids": [
+              "lib1",
+              "lib2",
+              "lib3"
+            ]
+          }
+        ],
+        "skills": [
+          "SQL",
+          "Excel",
+          "Power BI",
+          "Python",
+          "ServiceNow",
+          "Tableau"
+        ],
+        "skill_levels": {},
+        "domains": [],
+        "languages": {},
+        "work_authorisation": {},
+        "citizenships": [],
+        "currently_enrolled": null,
+        "evidence": [
+          {
+            "id": "bank:desk1",
+            "status": "DIRECT",
+            "text": "Resolved first-line hardware and software requests for 350 office staff by telephone and email."
+          },
+          {
+            "id": "bank:desk2",
+            "status": "DIRECT",
+            "text": "Logged and prioritised incidents in ServiceNow within agreed response times."
+          },
+          {
+            "id": "bank:desk3",
+            "status": "DIRECT",
+            "text": "Wrote step-by-step guides that reduced repeat password-reset requests by 30 per cent."
+          },
+          {
+            "id": "bank:desk4",
+            "status": "TRANSFERABLE",
+            "text": "Explained technical fixes to non-technical colleagues in plain language."
+          },
+          {
+            "id": "bank:ops1",
+            "status": "DIRECT",
+            "text": "Produced weekly Excel reports on ticket volumes and resolution times for the IT manager."
+          },
+          {
+            "id": "bank:ops2",
+            "status": "DIRECT",
+            "text": "Cleaned and merged incident exports from two helpdesk systems into a single SQL table."
+          },
+          {
+            "id": "bank:ops3",
+            "status": "DIRECT",
+            "text": "Presented monthly service trends to the operations board."
+          },
+          {
+            "id": "bank:rep1",
+            "status": "DIRECT",
+            "text": "Built Power BI dashboards tracking weekly sales across 42 stores."
+          },
+          {
+            "id": "bank:rep2",
+            "status": "DIRECT",
+            "text": "Wrote SQL queries to reconcile till data with stock records each month."
+          },
+          {
+            "id": "bank:rep3",
+            "status": "DIRECT",
+            "text": "Automated a manual stock-variance report with Python, saving about six hours a week."
+          },
+          {
+            "id": "bank:rep4",
+            "status": "DIRECT",
+            "text": "Answered ad hoc data requests from regional managers and explained the figures behind each answer."
+          },
+          {
+            "id": "bank:rep5",
+            "status": "VERIFY",
+            "text": "Managed a team of 12 analysts across three regions."
+          },
+          {
+            "id": "bank:lib1",
+            "status": "USER_PROVIDED",
+            "text": "Charted visitor numbers for a community library group using Power BI."
+          },
+          {
+            "id": "bank:lib2",
+            "status": "USER_PROVIDED",
+            "text": "Trained two library volunteers to refresh the dashboard each month."
+          },
+          {
+            "id": "bank:lib3",
+            "status": "VERIFY",
+            "text": "Dashboard adopted by every library in the county."
+          },
+          {
+            "id": "bank:note1",
+            "status": "DIRECT",
+            "text": "Private note held for the candidate only.",
+            "sensitive": true
+          },
+          {
+            "id": "bank:ref1",
+            "status": "DIRECT",
+            "text": "Received a written commendation from the housing trust chief executive.",
+            "automatic_use_allowed": false
+          },
+          {
+            "id": "bank:ba",
+            "status": "DIRECT",
+            "text": "Hollowmere University — BA (Hons) Geography, Upper Second Class"
+          },
+          {
+            "id": "bank:cert",
+            "status": "DIRECT",
+            "text": "Eastgate College — Certificate in Data Analysis"
+          }
+        ]
+      }
+    },
+    {
+      "profile_id": "logistics_coordinator",
+      "summary": "Warehouse operative who became a transport planner and then a logistics coordinator, with food bank volunteering.",
+      "job": {
+        "title": "Supply Chain Coordinator",
+        "company": "Example Grocers Ltd",
+        "url": "https://example.test/jobs/supply-chain-coordinator",
+        "description": "Essential:\nExperience coordinating inbound deliveries with suppliers and hauliers\nConfident with SAP and Excel\nKnowledge of import documentation and Incoterms\nDesirable:\nTransport planning experience",
+        "requirements": []
+      },
+      "profile": {
+        "version": 1,
+        "name": "Morgan Specimen",
+        "location": "Sampleford",
+        "drives": null,
+        "availability": "",
+        "contact": {
+          "email": "morgan.specimen@example.test",
+          "phone": "07700900202"
+        },
+        "qualifications": [
+          {
+            "completed": true,
+            "evidence_ids": [
+              "diploma"
+            ]
+          },
+          {
+            "completed": true,
+            "evidence_ids": [
+              "cpc"
+            ]
+          }
+        ],
+        "qualifications_not_held": [],
+        "education": [
+          {
+            "record_id": "westvale_diploma",
+            "qualification": "Level 3 Diploma in Logistics Operations",
+            "institution": "Westvale College",
+            "classification": "Distinction",
+            "automation": "AUTO"
+          },
+          {
+            "record_id": "haulage_cpc",
+            "qualification": "Certificate of Professional Competence in Road Haulage",
+            "institution": "Examplar Transport Training",
+            "automation": "AUTO"
+          }
+        ],
+        "employment": [
+          {
+            "record_id": "warehouse",
+            "title": "Warehouse Operative",
+            "employer": "Carrow Freight Ltd",
+            "start": "2013",
+            "end": "2016",
+            "evidence_ids": [
+              "wh1",
+              "wh2",
+              "wh3"
+            ]
+          },
+          {
+            "record_id": "transport",
+            "title": "Transport Planner",
+            "employer": "Carrow Freight Ltd",
+            "start": "2016",
+            "end": "2020",
+            "evidence_ids": [
+              "tp1",
+              "tp2",
+              "tp3"
+            ]
+          },
+          {
+            "record_id": "coordinator",
+            "title": "Logistics Coordinator",
+            "employer": "Dunmore Distribution",
+            "start": "2020",
+            "end": "Present",
+            "evidence_ids": [
+              "lc1",
+              "lc2",
+              "lc3",
+              "lc4",
+              "lc5"
+            ]
+          }
+        ],
+        "research": [],
+        "projects": [
+          {
+            "record_id": "foodbank",
+            "name": "Community Food Bank Van Rota",
+            "period": "2022",
+            "evidence_ids": [
+              "fb1",
+              "fb2"
+            ]
+          }
+        ],
+        "skills": [
+          "Excel",
+          "SAP",
+          "Incoterms",
+          "Forklift",
+          "WMS"
+        ],
+        "skill_levels": {},
+        "domains": [],
+        "languages": {},
+        "work_authorisation": {},
+        "citizenships": [],
+        "currently_enrolled": null,
+        "evidence": [
+          {
+            "id": "bank:wh1",
+            "status": "DIRECT",
+            "text": "Picked and packed customer orders with handheld scanners at 99.5 per cent accuracy."
+          },
+          {
+            "id": "bank:wh2",
+            "status": "DIRECT",
+            "text": "Held a counterbalance forklift licence and loaded trailers to agreed schedules."
+          },
+          {
+            "id": "bank:wh3",
+            "status": "DIRECT",
+            "text": "Completed daily vehicle and equipment safety checks."
+          },
+          {
+            "id": "bank:tp1",
+            "status": "DIRECT",
+            "text": "Scheduled daily delivery routes for a fleet of 18 vans."
+          },
+          {
+            "id": "bank:tp2",
+            "status": "DIRECT",
+            "text": "Rebooked collections with customers by phone when vehicles broke down."
+          },
+          {
+            "id": "bank:tp3",
+            "status": "DIRECT",
+            "text": "Kept driver hours records compliant with tachograph rules."
+          },
+          {
+            "id": "bank:lc1",
+            "status": "DIRECT",
+            "text": "Coordinated inbound deliveries from 25 suppliers using SAP."
+          },
+          {
+            "id": "bank:lc2",
+            "status": "DIRECT",
+            "text": "Reduced late deliveries from 12 per cent to 5 per cent in one year by rescheduling supplier slots."
+          },
+          {
+            "id": "bank:lc3",
+            "status": "DIRECT",
+            "text": "Maintained an Excel tracker of import paperwork and Incoterms for each shipment."
+          },
+          {
+            "id": "bank:lc4",
+            "status": "DIRECT",
+            "text": "Chaired a weekly call with hauliers to resolve delivery problems."
+          },
+          {
+            "id": "bank:lc5",
+            "status": "VERIFY",
+            "text": "Negotiated freight contracts worth two million pounds a year."
+          },
+          {
+            "id": "bank:fb1",
+            "status": "USER_PROVIDED",
+            "text": "Organised a weekly van rota for a community food bank covering 40 collection points."
+          },
+          {
+            "id": "bank:fb2",
+            "status": "USER_PROVIDED",
+            "text": "Recruited and briefed six volunteer drivers for the food bank."
+          },
+          {
+            "id": "bank:note2",
+            "status": "DIRECT",
+            "text": "Private note held for the candidate only.",
+            "sensitive": true
+          },
+          {
+            "id": "bank:ref2",
+            "status": "DIRECT",
+            "text": "Nominated for a regional logistics award.",
+            "automatic_use_allowed": false
+          },
+          {
+            "id": "bank:diploma",
+            "status": "DIRECT",
+            "text": "Westvale College — Level 3 Diploma in Logistics Operations, Distinction"
+          },
+          {
+            "id": "bank:cpc",
+            "status": "DIRECT",
+            "text": "Examplar Transport Training — Certificate of Professional Competence in Road Haulage"
+          }
+        ]
+      }
+    },
+    {
+      "profile_id": "junior_developer",
+      "summary": "Bookshop assistant who retrained and now works as a junior software developer, with a personal and a team project.",
+      "job": {
+        "title": "Graduate Software Engineer",
+        "company": "Example Health Software Ltd",
+        "url": "https://example.test/jobs/graduate-software-engineer",
+        "description": "Essential:\nPython and a web framework such as Django\nWriting automated tests\nWorking with relational databases\nDesirable:\nDocker and Git\nClear written communication",
+        "requirements": []
+      },
+      "profile": {
+        "version": 1,
+        "name": "Casey Placeholder",
+        "location": "Fictionbury",
+        "drives": null,
+        "availability": "",
+        "contact": {
+          "email": "casey.placeholder@example.test",
+          "phone": "07700900303"
+        },
+        "qualifications": [
+          {
+            "completed": true,
+            "evidence_ids": [
+              "bsc"
+            ]
+          },
+          {
+            "completed": true,
+            "evidence_ids": [
+              "bootcamp"
+            ]
+          }
+        ],
+        "qualifications_not_held": [],
+        "education": [
+          {
+            "record_id": "ravensholt_bsc",
+            "qualification": "Bachelor of Science in Computing",
+            "institution": "Ravensholt University",
+            "classification": "Second Class Honours (Upper Division)",
+            "automation": "AUTO",
+            "award_date": "2021-07-15",
+            "source_refs": [
+              "user_confirmed:education"
+            ]
+          },
+          {
+            "record_id": "northgate_cert",
+            "qualification": "Certificate in Web Development",
+            "institution": "Northgate Coding School",
+            "automation": "AUTO"
+          }
+        ],
+        "employment": [
+          {
+            "record_id": "bookshop",
+            "title": "Bookshop Assistant",
+            "employer": "Brightwell Books",
+            "start": "2018",
+            "end": "2021",
+            "evidence_ids": [
+              "shop1",
+              "shop2"
+            ]
+          },
+          {
+            "record_id": "junior_dev",
+            "title": "Junior Software Developer",
+            "employer": "Quillon Software Ltd",
+            "start": "2022",
+            "end": "Present",
+            "evidence_ids": [
+              "dev1",
+              "dev2",
+              "dev3",
+              "dev4",
+              "dev5",
+              "dev6"
+            ]
+          }
+        ],
+        "research": [],
+        "projects": [
+          {
+            "record_id": "allotment",
+            "name": "Allotment Tool Booking App",
+            "period": "2023",
+            "evidence_ids": [
+              "al1",
+              "al2"
+            ]
+          },
+          {
+            "record_id": "timetable",
+            "name": "Open Timetable Viewer",
+            "period": "2022",
+            "team_project": true,
+            "evidence_ids": [
+              "tt1"
+            ]
+          }
+        ],
+        "skills": [
+          "Python",
+          "Django",
+          "JavaScript",
+          "PostgreSQL",
+          "Git",
+          "Docker",
+          "REST",
+          "React"
+        ],
+        "skill_levels": {},
+        "domains": [],
+        "languages": {},
+        "work_authorisation": {},
+        "citizenships": [],
+        "currently_enrolled": null,
+        "evidence": [
+          {
+            "id": "bank:shop1",
+            "status": "DIRECT",
+            "text": "Served customers at the till and handled special orders."
+          },
+          {
+            "id": "bank:shop2",
+            "status": "DIRECT",
+            "text": "Reorganised the stockroom so deliveries were shelved within one day."
+          },
+          {
+            "id": "bank:dev1",
+            "status": "DIRECT",
+            "text": "Fixed bugs in a Django web application used by 60 dental practices."
+          },
+          {
+            "id": "bank:dev2",
+            "status": "DIRECT",
+            "text": "Wrote unit tests in Python that raised coverage of the billing module from 55 to 80 per cent."
+          },
+          {
+            "id": "bank:dev3",
+            "status": "DIRECT",
+            "text": "Added PostgreSQL indexes that cut a slow report query from 40 seconds to 4 seconds."
+          },
+          {
+            "id": "bank:dev4",
+            "status": "DIRECT",
+            "text": "Reviewed pull requests from two other junior developers using Git."
+          },
+          {
+            "id": "bank:dev5",
+            "status": "DIRECT",
+            "text": "Built a REST API endpoint for appointment reminders under supervision from a senior developer."
+          },
+          {
+            "id": "bank:dev6",
+            "status": "VERIFY",
+            "text": "Designed the company cloud architecture on AWS."
+          },
+          {
+            "id": "bank:al1",
+            "status": "CURRENT_PROJECT",
+            "text": "Built a small Django app that lets members of an allotment society book shared tools."
+          },
+          {
+            "id": "bank:al2",
+            "status": "CURRENT_PROJECT",
+            "text": "Packaged the app with Docker so another volunteer could run it on a spare laptop."
+          },
+          {
+            "id": "bank:tt1",
+            "status": "CURRENT_PROJECT",
+            "text": "Wrote the JavaScript that drew a bus timetable grid in a four-person course team; teammates built the data import."
+          },
+          {
+            "id": "bank:note3",
+            "status": "DIRECT",
+            "text": "Private note held for the candidate only.",
+            "sensitive": true
+          },
+          {
+            "id": "bank:ref3",
+            "status": "DIRECT",
+            "text": "Mentioned by name in a customer thank-you letter.",
+            "automatic_use_allowed": false
+          },
+          {
+            "id": "bank:bsc",
+            "status": "DIRECT",
+            "text": "Ravensholt University — BSc Computing, Second Class Honours (Upper Division)"
+          },
+          {
+            "id": "bank:bootcamp",
+            "status": "DIRECT",
+            "text": "Northgate Coding School — Certificate in Web Development"
+          }
+        ]
+      }
+    }
+  ]
+}

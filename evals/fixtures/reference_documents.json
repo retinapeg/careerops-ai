@@ -1,0 +1,2348 @@
+{
+  "description": "Reference documents produced by build_document from a trivial all-verbatim proposal for each profile in profiles.json. Regenerate with build_reference_documents.py; do not edit by hand.",
+  "documents": [
+    {
+      "profile_id": "support_to_analytics",
+      "job": {
+        "title": "Data Analyst",
+        "company": "Example Utilities Co",
+        "url": "https://example.test/jobs/data-analyst",
+        "description": "Essential skills:\nSQL and Power BI\nClear communication with non-technical stakeholders\nExperience cleaning and reconciling data\nDesirable:\nPython for report automation",
+        "requirements": []
+      },
+      "protected_profile_hash": "cc09517842b3ce5d473f5db9883ea877fa8155c87ce0a545d90007416b891d15",
+      "admitted_evidence": [
+        {
+          "id": "bank:desk1",
+          "status": "DIRECT",
+          "text": "Resolved first-line hardware and software requests for 350 office staff by telephone and email."
+        },
+        {
+          "id": "bank:desk2",
+          "status": "DIRECT",
+          "text": "Logged and prioritised incidents in ServiceNow within agreed response times."
+        },
+        {
+          "id": "bank:desk3",
+          "status": "DIRECT",
+          "text": "Wrote step-by-step guides that reduced repeat password-reset requests by 30 per cent."
+        },
+        {
+          "id": "bank:desk4",
+          "status": "TRANSFERABLE",
+          "text": "Explained technical fixes to non-technical colleagues in plain language."
+        },
+        {
+          "id": "bank:ops1",
+          "status": "DIRECT",
+          "text": "Produced weekly Excel reports on ticket volumes and resolution times for the IT manager."
+        },
+        {
+          "id": "bank:ops2",
+          "status": "DIRECT",
+          "text": "Cleaned and merged incident exports from two helpdesk systems into a single SQL table."
+        },
+        {
+          "id": "bank:ops3",
+          "status": "DIRECT",
+          "text": "Presented monthly service trends to the operations board."
+        },
+        {
+          "id": "bank:rep1",
+          "status": "DIRECT",
+          "text": "Built Power BI dashboards tracking weekly sales across 42 stores."
+        },
+        {
+          "id": "bank:rep2",
+          "status": "DIRECT",
+          "text": "Wrote SQL queries to reconcile till data with stock records each month."
+        },
+        {
+          "id": "bank:rep3",
+          "status": "DIRECT",
+          "text": "Automated a manual stock-variance report with Python, saving about six hours a week."
+        },
+        {
+          "id": "bank:rep4",
+          "status": "DIRECT",
+          "text": "Answered ad hoc data requests from regional managers and explained the figures behind each answer."
+        },
+        {
+          "id": "bank:lib1",
+          "status": "USER_PROVIDED",
+          "text": "Charted visitor numbers for a community library group using Power BI."
+        },
+        {
+          "id": "bank:lib2",
+          "status": "USER_PROVIDED",
+          "text": "Trained two library volunteers to refresh the dashboard each month."
+        },
+        {
+          "id": "bank:ba",
+          "status": "DIRECT",
+          "text": "Hollowmere University — BA (Hons) Geography, Upper Second Class"
+        },
+        {
+          "id": "bank:cert",
+          "status": "DIRECT",
+          "text": "Eastgate College — Certificate in Data Analysis"
+        }
+      ],
+      "held_back_evidence": [
+        {
+          "id": "bank:rep5",
+          "status": "VERIFY",
+          "text": "Managed a team of 12 analysts across three regions.",
+          "reason": "status VERIFY"
+        },
+        {
+          "id": "bank:lib3",
+          "status": "VERIFY",
+          "text": "Dashboard adopted by every library in the county.",
+          "reason": "status VERIFY"
+        },
+        {
+          "id": "bank:note1",
+          "status": "DIRECT",
+          "text": "Private note held for the candidate only.",
+          "reason": "sensitive flag set"
+        },
+        {
+          "id": "bank:ref1",
+          "status": "DIRECT",
+          "text": "Received a written commendation from the housing trust chief executive.",
+          "reason": "automatic_use_allowed is false"
+        }
+      ],
+      "skills_in_document": [
+        "SQL",
+        "Excel",
+        "Power BI",
+        "Python",
+        "ServiceNow"
+      ],
+      "listed_skills_not_in_document": [
+        "Tableau"
+      ],
+      "sections": [
+        {
+          "section_id": "profile",
+          "heading": "Profile",
+          "profile_statement_ids": [
+            "targeted",
+            "example:bank:rep3"
+          ],
+          "evidence_ids": [
+            "bank:rep3",
+            "bank:cert"
+          ],
+          "paragraphs": [
+            "Combines Python implementation, workflow automation and data analysis to solve practical problems. Automated a manual stock-variance report with Python, saving about six hours a week."
+          ]
+        },
+        {
+          "section_id": "skills",
+          "heading": "Skills",
+          "skill_names": [
+            "SQL",
+            "Excel",
+            "Power BI",
+            "Python",
+            "ServiceNow"
+          ],
+          "evidence_ids": [
+            "bank:ops2",
+            "bank:ops1",
+            "bank:rep1",
+            "bank:rep3",
+            "bank:desk2"
+          ],
+          "paragraphs": [
+            "SQL · Excel · Power BI · Python · ServiceNow"
+          ]
+        },
+        {
+          "section_id": "group:employment",
+          "heading": "Experience",
+          "evidence_ids": [],
+          "paragraphs": []
+        },
+        {
+          "section_id": "employment:rep",
+          "heading": "Reporting Analyst | Fernlea Home Stores",
+          "subheading": "2021 – Present",
+          "category": "employment",
+          "profile_ref": "rep",
+          "evidence_ids": [
+            "bank:rep1",
+            "bank:rep2",
+            "bank:rep3",
+            "bank:rep4"
+          ],
+          "section_evidence_ids": [
+            "bank:rep1",
+            "bank:rep2",
+            "bank:rep3",
+            "bank:rep4"
+          ],
+          "paragraphs": [
+            "Built Power BI dashboards tracking weekly sales across 42 stores.",
+            "Wrote SQL queries to reconcile till data with stock records each month.",
+            "Automated a manual stock-variance report with Python, saving about six hours a week. Answered ad hoc data requests from regional managers and explained the figures behind each answer."
+          ]
+        },
+        {
+          "section_id": "employment:ops",
+          "heading": "Service Reporting Officer | Northbrook Housing Trust",
+          "subheading": "2019 – 2021",
+          "category": "employment",
+          "profile_ref": "ops",
+          "evidence_ids": [
+            "bank:ops1",
+            "bank:ops2",
+            "bank:ops3"
+          ],
+          "section_evidence_ids": [
+            "bank:ops1",
+            "bank:ops2",
+            "bank:ops3"
+          ],
+          "paragraphs": [
+            "Produced weekly Excel reports on ticket volumes and resolution times for the IT manager.",
+            "Cleaned and merged incident exports from two helpdesk systems into a single SQL table.",
+            "Presented monthly service trends to the operations board."
+          ]
+        },
+        {
+          "section_id": "employment:desk",
+          "heading": "IT Service Desk Analyst | Northbrook Housing Trust",
+          "subheading": "2016 – 2019",
+          "category": "employment",
+          "profile_ref": "desk",
+          "evidence_ids": [
+            "bank:desk1",
+            "bank:desk2",
+            "bank:desk3",
+            "bank:desk4"
+          ],
+          "section_evidence_ids": [
+            "bank:desk1",
+            "bank:desk2",
+            "bank:desk3",
+            "bank:desk4"
+          ],
+          "paragraphs": [
+            "Resolved first-line hardware and software requests for 350 office staff by telephone and email.",
+            "Logged and prioritised incidents in ServiceNow within agreed response times.",
+            "Wrote step-by-step guides that reduced repeat password-reset requests by 30 per cent. Explained technical fixes to non-technical colleagues in plain language."
+          ]
+        },
+        {
+          "section_id": "group:projects",
+          "heading": "Selected projects",
+          "evidence_ids": [],
+          "paragraphs": []
+        },
+        {
+          "section_id": "projects:library",
+          "heading": "Library Visitor Dashboard",
+          "subheading": "Project work · 2023",
+          "category": "projects",
+          "profile_ref": "library",
+          "evidence_ids": [
+            "bank:lib1",
+            "bank:lib2"
+          ],
+          "section_evidence_ids": [
+            "bank:lib1",
+            "bank:lib2"
+          ],
+          "paragraphs": [
+            "Charted visitor numbers for a community library group using Power BI.",
+            "Trained two library volunteers to refresh the dashboard each month."
+          ]
+        },
+        {
+          "section_id": "education",
+          "heading": "Education",
+          "evidence_ids": [
+            "bank:ba",
+            "bank:cert"
+          ],
+          "paragraphs": [
+            "Hollowmere University — BA (Hons) Geography, Upper Second Class",
+            "Eastgate College — Certificate in Data Analysis"
+          ]
+        }
+      ],
+      "cv_text": "Robin Testcase\nProfessional profile\nExampleton\nrobin.testcase@example.test | 07700900101\n\nProfile\nCombines Python implementation, workflow automation and data analysis to solve practical problems. Automated a manual stock-variance report with Python, saving about six hours a week.\n\nSkills\nSQL · Excel · Power BI · Python · ServiceNow\n\nExperience\n\nReporting Analyst | Fernlea Home Stores\n2021 – Present\nBuilt Power BI dashboards tracking weekly sales across 42 stores.\nWrote SQL queries to reconcile till data with stock records each month.\nAutomated a manual stock-variance report with Python, saving about six hours a week. Answered ad hoc data requests from regional managers and explained the figures behind each answer.\n\nService Reporting Officer | Northbrook Housing Trust\n2019 – 2021\nProduced weekly Excel reports on ticket volumes and resolution times for the IT manager.\nCleaned and merged incident exports from two helpdesk systems into a single SQL table.\nPresented monthly service trends to the operations board.\n\nIT Service Desk Analyst | Northbrook Housing Trust\n2016 – 2019\nResolved first-line hardware and software requests for 350 office staff by telephone and email.\nLogged and prioritised incidents in ServiceNow within agreed response times.\nWrote step-by-step guides that reduced repeat password-reset requests by 30 per cent. Explained technical fixes to non-technical colleagues in plain language.\n\nSelected projects\n\nLibrary Visitor Dashboard\nProject work · 2023\nCharted visitor numbers for a community library group using Power BI.\nTrained two library volunteers to refresh the dashboard each month.\n\nEducation\nHollowmere University — BA (Hons) Geography, Upper Second Class\nEastgate College — Certificate in Data Analysis",
+      "proposal": {
+        "profile_statement_ids": [
+          "targeted",
+          "example:bank:rep3"
+        ],
+        "skill_names": [
+          "SQL",
+          "Excel",
+          "Power BI",
+          "Python",
+          "ServiceNow"
+        ],
+        "direction_reason": "Reference document: every admitted statement copied verbatim.",
+        "sections": [
+          {
+            "section_id": "employment:rep",
+            "claims": [
+              {
+                "text": "Built Power BI dashboards tracking weekly sales across 42 stores.",
+                "evidence_ids": [
+                  "bank:rep1"
+                ]
+              },
+              {
+                "text": "Wrote SQL queries to reconcile till data with stock records each month.",
+                "evidence_ids": [
+                  "bank:rep2"
+                ]
+              },
+              {
+                "text": "Automated a manual stock-variance report with Python, saving about six hours a week.",
+                "evidence_ids": [
+                  "bank:rep3"
+                ]
+              },
+              {
+                "text": "Answered ad hoc data requests from regional managers and explained the figures behind each answer.",
+                "evidence_ids": [
+                  "bank:rep4"
+                ]
+              }
+            ]
+          },
+          {
+            "section_id": "employment:ops",
+            "claims": [
+              {
+                "text": "Produced weekly Excel reports on ticket volumes and resolution times for the IT manager.",
+                "evidence_ids": [
+                  "bank:ops1"
+                ]
+              },
+              {
+                "text": "Cleaned and merged incident exports from two helpdesk systems into a single SQL table.",
+                "evidence_ids": [
+                  "bank:ops2"
+                ]
+              },
+              {
+                "text": "Presented monthly service trends to the operations board.",
+                "evidence_ids": [
+                  "bank:ops3"
+                ]
+              }
+            ]
+          },
+          {
+            "section_id": "employment:desk",
+            "claims": [
+              {
+                "text": "Resolved first-line hardware and software requests for 350 office staff by telephone and email.",
+                "evidence_ids": [
+                  "bank:desk1"
+                ]
+              },
+              {
+                "text": "Logged and prioritised incidents in ServiceNow within agreed response times.",
+                "evidence_ids": [
+                  "bank:desk2"
+                ]
+              },
+              {
+                "text": "Wrote step-by-step guides that reduced repeat password-reset requests by 30 per cent.",
+                "evidence_ids": [
+                  "bank:desk3"
+                ]
+              },
+              {
+                "text": "Explained technical fixes to non-technical colleagues in plain language.",
+                "evidence_ids": [
+                  "bank:desk4"
+                ]
+              }
+            ]
+          },
+          {
+            "section_id": "projects:library",
+            "claims": [
+              {
+                "text": "Charted visitor numbers for a community library group using Power BI.",
+                "evidence_ids": [
+                  "bank:lib1"
+                ]
+              },
+              {
+                "text": "Trained two library volunteers to refresh the dashboard each month.",
+                "evidence_ids": [
+                  "bank:lib2"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "material": {
+        "created_at": "2026-09-23T21:53:42.197226+00:00",
+        "document_schema": "coherent-cv-v2",
+        "provider": "evidence_controller",
+        "generation_method": "model_selected_evidence",
+        "name": "Robin Testcase",
+        "location": "Exampleton",
+        "contact_text": "robin.testcase@example.test | 07700900101",
+        "sections": [
+          {
+            "section_id": "profile",
+            "heading": "Profile",
+            "paragraphs": [
+              "Combines Python implementation, workflow automation and data analysis to solve practical problems. Automated a manual stock-variance report with Python, saving about six hours a week."
+            ],
+            "profile_statement_ids": [
+              "targeted",
+              "example:bank:rep3"
+            ],
+            "evidence_ids": [
+              "bank:rep3",
+              "bank:cert"
+            ]
+          },
+          {
+            "section_id": "skills",
+            "heading": "Skills",
+            "paragraphs": [
+              "SQL · Excel · Power BI · Python · ServiceNow"
+            ],
+            "skill_names": [
+              "SQL",
+              "Excel",
+              "Power BI",
+              "Python",
+              "ServiceNow"
+            ],
+            "evidence_ids": [
+              "bank:ops2",
+              "bank:ops1",
+              "bank:rep1",
+              "bank:rep3",
+              "bank:desk2"
+            ]
+          },
+          {
+            "section_id": "group:employment",
+            "heading": "Experience",
+            "paragraphs": [],
+            "evidence_ids": []
+          },
+          {
+            "section_id": "employment:rep",
+            "heading": "Reporting Analyst | Fernlea Home Stores",
+            "subheading": "2021 – Present",
+            "category": "employment",
+            "profile_ref": "rep",
+            "evidence_ids": [
+              "bank:rep1",
+              "bank:rep2",
+              "bank:rep3",
+              "bank:rep4"
+            ],
+            "paragraphs": [
+              "Built Power BI dashboards tracking weekly sales across 42 stores.",
+              "Wrote SQL queries to reconcile till data with stock records each month.",
+              "Automated a manual stock-variance report with Python, saving about six hours a week. Answered ad hoc data requests from regional managers and explained the figures behind each answer."
+            ]
+          },
+          {
+            "section_id": "employment:ops",
+            "heading": "Service Reporting Officer | Northbrook Housing Trust",
+            "subheading": "2019 – 2021",
+            "category": "employment",
+            "profile_ref": "ops",
+            "evidence_ids": [
+              "bank:ops1",
+              "bank:ops2",
+              "bank:ops3"
+            ],
+            "paragraphs": [
+              "Produced weekly Excel reports on ticket volumes and resolution times for the IT manager.",
+              "Cleaned and merged incident exports from two helpdesk systems into a single SQL table.",
+              "Presented monthly service trends to the operations board."
+            ]
+          },
+          {
+            "section_id": "employment:desk",
+            "heading": "IT Service Desk Analyst | Northbrook Housing Trust",
+            "subheading": "2016 – 2019",
+            "category": "employment",
+            "profile_ref": "desk",
+            "evidence_ids": [
+              "bank:desk1",
+              "bank:desk2",
+              "bank:desk3",
+              "bank:desk4"
+            ],
+            "paragraphs": [
+              "Resolved first-line hardware and software requests for 350 office staff by telephone and email.",
+              "Logged and prioritised incidents in ServiceNow within agreed response times.",
+              "Wrote step-by-step guides that reduced repeat password-reset requests by 30 per cent. Explained technical fixes to non-technical colleagues in plain language."
+            ]
+          },
+          {
+            "section_id": "group:projects",
+            "heading": "Selected projects",
+            "paragraphs": [],
+            "evidence_ids": []
+          },
+          {
+            "section_id": "projects:library",
+            "heading": "Library Visitor Dashboard",
+            "subheading": "Project work · 2023",
+            "category": "projects",
+            "profile_ref": "library",
+            "evidence_ids": [
+              "bank:lib1",
+              "bank:lib2"
+            ],
+            "paragraphs": [
+              "Charted visitor numbers for a community library group using Power BI.",
+              "Trained two library volunteers to refresh the dashboard each month."
+            ]
+          },
+          {
+            "heading": "Education",
+            "paragraphs": [
+              "Hollowmere University — BA (Hons) Geography, Upper Second Class",
+              "Eastgate College — Certificate in Data Analysis"
+            ],
+            "evidence_ids": [
+              "bank:ba",
+              "bank:cert"
+            ],
+            "section_id": "education"
+          }
+        ],
+        "direction": {
+          "emphasis": "balanced",
+          "instruction": "",
+          "positioning": "Professional profile",
+          "reason": "Balanced around this advert's evidenced requirements.",
+          "generator_reason": "Reference document: every admitted statement copied verbatim."
+        },
+        "positioning": "Professional profile",
+        "protected_profile_hash": "cc09517842b3ce5d473f5db9883ea877fa8155c87ce0a545d90007416b891d15",
+        "document_job": {
+          "title": "Data Analyst",
+          "company": "Example Utilities Co",
+          "description": "Essential skills:\nSQL and Power BI\nClear communication with non-technical stakeholders\nExperience cleaning and reconciling data\nDesirable:\nPython for report automation",
+          "requirements": []
+        },
+        "base_cv_version": null,
+        "base_cv_conflicts": [],
+        "blocked_proposals": [],
+        "requires_human_review": false,
+        "status": "needs_review",
+        "formats": [
+          "txt",
+          "docx",
+          "pdf"
+        ],
+        "warnings": [
+          "4 unresolved, unsupported or sensitive evidence records were excluded from this draft."
+        ],
+        "provenance": {
+          "bank:rep3": {
+            "text": "Automated a manual stock-variance report with Python, saving about six hours a week.",
+            "source": null
+          },
+          "bank:cert": {
+            "text": "Eastgate College — Certificate in Data Analysis",
+            "source": null
+          },
+          "bank:ops2": {
+            "text": "Cleaned and merged incident exports from two helpdesk systems into a single SQL table.",
+            "source": null
+          },
+          "bank:ops1": {
+            "text": "Produced weekly Excel reports on ticket volumes and resolution times for the IT manager.",
+            "source": null
+          },
+          "bank:rep1": {
+            "text": "Built Power BI dashboards tracking weekly sales across 42 stores.",
+            "source": null
+          },
+          "bank:desk2": {
+            "text": "Logged and prioritised incidents in ServiceNow within agreed response times.",
+            "source": null
+          },
+          "bank:rep2": {
+            "text": "Wrote SQL queries to reconcile till data with stock records each month.",
+            "source": null
+          },
+          "bank:rep4": {
+            "text": "Answered ad hoc data requests from regional managers and explained the figures behind each answer.",
+            "source": null
+          },
+          "bank:ops3": {
+            "text": "Presented monthly service trends to the operations board.",
+            "source": null
+          },
+          "bank:desk1": {
+            "text": "Resolved first-line hardware and software requests for 350 office staff by telephone and email.",
+            "source": null
+          },
+          "bank:desk3": {
+            "text": "Wrote step-by-step guides that reduced repeat password-reset requests by 30 per cent.",
+            "source": null
+          },
+          "bank:desk4": {
+            "text": "Explained technical fixes to non-technical colleagues in plain language.",
+            "source": null
+          },
+          "bank:lib1": {
+            "text": "Charted visitor numbers for a community library group using Power BI.",
+            "source": null
+          },
+          "bank:lib2": {
+            "text": "Trained two library volunteers to refresh the dashboard each month.",
+            "source": null
+          },
+          "bank:ba": {
+            "text": "Hollowmere University — BA (Hons) Geography, Upper Second Class",
+            "source": null
+          }
+        },
+        "cv_text": "Robin Testcase\nProfessional profile\nExampleton\nrobin.testcase@example.test | 07700900101\n\nProfile\nCombines Python implementation, workflow automation and data analysis to solve practical problems. Automated a manual stock-variance report with Python, saving about six hours a week.\n\nSkills\nSQL · Excel · Power BI · Python · ServiceNow\n\nExperience\n\nReporting Analyst | Fernlea Home Stores\n2021 – Present\nBuilt Power BI dashboards tracking weekly sales across 42 stores.\nWrote SQL queries to reconcile till data with stock records each month.\nAutomated a manual stock-variance report with Python, saving about six hours a week. Answered ad hoc data requests from regional managers and explained the figures behind each answer.\n\nService Reporting Officer | Northbrook Housing Trust\n2019 – 2021\nProduced weekly Excel reports on ticket volumes and resolution times for the IT manager.\nCleaned and merged incident exports from two helpdesk systems into a single SQL table.\nPresented monthly service trends to the operations board.\n\nIT Service Desk Analyst | Northbrook Housing Trust\n2016 – 2019\nResolved first-line hardware and software requests for 350 office staff by telephone and email.\nLogged and prioritised incidents in ServiceNow within agreed response times.\nWrote step-by-step guides that reduced repeat password-reset requests by 30 per cent. Explained technical fixes to non-technical colleagues in plain language.\n\nSelected projects\n\nLibrary Visitor Dashboard\nProject work · 2023\nCharted visitor numbers for a community library group using Power BI.\nTrained two library volunteers to refresh the dashboard each month.\n\nEducation\nHollowmere University — BA (Hons) Geography, Upper Second Class\nEastgate College — Certificate in Data Analysis",
+        "text": "Robin Testcase\nProfessional profile\nExampleton\nrobin.testcase@example.test | 07700900101\n\nProfile\nCombines Python implementation, workflow automation and data analysis to solve practical problems. Automated a manual stock-variance report with Python, saving about six hours a week.\n\nSkills\nSQL · Excel · Power BI · Python · ServiceNow\n\nExperience\n\nReporting Analyst | Fernlea Home Stores\n2021 – Present\nBuilt Power BI dashboards tracking weekly sales across 42 stores.\nWrote SQL queries to reconcile till data with stock records each month.\nAutomated a manual stock-variance report with Python, saving about six hours a week. Answered ad hoc data requests from regional managers and explained the figures behind each answer.\n\nService Reporting Officer | Northbrook Housing Trust\n2019 – 2021\nProduced weekly Excel reports on ticket volumes and resolution times for the IT manager.\nCleaned and merged incident exports from two helpdesk systems into a single SQL table.\nPresented monthly service trends to the operations board.\n\nIT Service Desk Analyst | Northbrook Housing Trust\n2016 – 2019\nResolved first-line hardware and software requests for 350 office staff by telephone and email.\nLogged and prioritised incidents in ServiceNow within agreed response times.\nWrote step-by-step guides that reduced repeat password-reset requests by 30 per cent. Explained technical fixes to non-technical colleagues in plain language.\n\nSelected projects\n\nLibrary Visitor Dashboard\nProject work · 2023\nCharted visitor numbers for a community library group using Power BI.\nTrained two library volunteers to refresh the dashboard each month.\n\nEducation\nHollowmere University — BA (Hons) Geography, Upper Second Class\nEastgate College — Certificate in Data Analysis",
+        "validation": {
+          "status": "passed",
+          "checked_at": "2026-09-23T21:53:42.201633+00:00",
+          "policy_version": "coherent-cv-v2",
+          "evidence_claims": 15,
+          "human_review_items": 0
+        },
+        "analysis": {
+          "rubric_version": "cv-evidence-review-v3",
+          "evidence_match": {
+            "score": null,
+            "status": "incomplete",
+            "rubric_version": "cv-evidence-review-v3",
+            "label": "Assessment incomplete — essential requirements need checking.",
+            "coverage": {
+              "assessed": 5,
+              "total": 10,
+              "unassessed_essential": 5,
+              "concepts_assessed": 5,
+              "concepts_total": 10,
+              "mandatory_conditions_assessed": 0,
+              "mandatory_conditions_total": 0
+            },
+            "advanced": {
+              "partial_score": 100.0,
+              "assessed_count": 5,
+              "total_count": 10,
+              "label": "Partial coverage of recognised concepts only; unassessed essentials prevent an overall score."
+            },
+            "eligibility_checks": {
+              "status": "not_recorded",
+              "pending_count": 0,
+              "conditions": [],
+              "method": "Mandatory conditions from the frozen job evaluation are checked separately; they never contribute points to skills fit. Descriptions are evaluation notes unless marked as a literal advert quote."
+            },
+            "unassessed_requirements": 5,
+            "assessed_concepts": 5,
+            "requirements": [
+              {
+                "requirement": "Python",
+                "advert_quote": "Python",
+                "support": 1,
+                "evidence_ids": [
+                  "bank:rep3"
+                ],
+                "status": "supported"
+              },
+              {
+                "requirement": "SQL",
+                "advert_quote": "SQL",
+                "support": 1,
+                "evidence_ids": [
+                  "bank:ops2",
+                  "bank:rep2"
+                ],
+                "status": "supported"
+              },
+              {
+                "requirement": "Power BI",
+                "advert_quote": "Power BI",
+                "support": 1,
+                "evidence_ids": [
+                  "bank:rep1",
+                  "bank:lib1"
+                ],
+                "status": "supported"
+              },
+              {
+                "requirement": "analysis",
+                "advert_quote": "Analyst",
+                "support": 1,
+                "evidence_ids": [
+                  "bank:cert"
+                ],
+                "status": "supported"
+              },
+              {
+                "requirement": "communication",
+                "advert_quote": "communication",
+                "support": 1,
+                "evidence_ids": [
+                  "bank:desk4",
+                  "bank:ops3",
+                  "bank:rep4"
+                ],
+                "status": "supported"
+              },
+              {
+                "requirement": "SQL and Power BI",
+                "advert_quote": "SQL and Power BI",
+                "source_reference": {
+                  "quote": "SQL and Power BI",
+                  "mandatory": true,
+                  "source": "https://example.test/jobs/data-analyst",
+                  "line": 2,
+                  "heading": "Essential skills:"
+                },
+                "support": null,
+                "evidence_ids": [],
+                "status": "unassessed",
+                "mandatory": true
+              },
+              {
+                "requirement": "Clear communication with non-technical stakeholders",
+                "advert_quote": "Clear communication with non-technical stakeholders",
+                "source_reference": {
+                  "quote": "Clear communication with non-technical stakeholders",
+                  "mandatory": true,
+                  "source": "https://example.test/jobs/data-analyst",
+                  "line": 3,
+                  "heading": "Essential skills:"
+                },
+                "support": null,
+                "evidence_ids": [],
+                "status": "unassessed",
+                "mandatory": true
+              },
+              {
+                "requirement": "Experience cleaning and reconciling data",
+                "advert_quote": "Experience cleaning and reconciling data",
+                "source_reference": {
+                  "quote": "Experience cleaning and reconciling data",
+                  "mandatory": true,
+                  "source": "https://example.test/jobs/data-analyst",
+                  "line": 4,
+                  "heading": "Essential skills:"
+                },
+                "support": null,
+                "evidence_ids": [],
+                "status": "unassessed",
+                "mandatory": true
+              },
+              {
+                "requirement": "Desirable:",
+                "advert_quote": "Desirable:",
+                "source_reference": {
+                  "quote": "Desirable:",
+                  "mandatory": true,
+                  "source": "https://example.test/jobs/data-analyst",
+                  "line": 5,
+                  "heading": "Essential skills:"
+                },
+                "support": null,
+                "evidence_ids": [],
+                "status": "unassessed",
+                "mandatory": true
+              },
+              {
+                "requirement": "Python for report automation",
+                "advert_quote": "Python for report automation",
+                "source_reference": {
+                  "quote": "Python for report automation",
+                  "mandatory": true,
+                  "source": "https://example.test/jobs/data-analyst",
+                  "line": 6,
+                  "heading": "Essential skills:"
+                },
+                "support": null,
+                "evidence_ids": [],
+                "status": "unassessed",
+                "mandatory": true
+              }
+            ],
+            "gaps": [
+              "Essential requirement needs checking before an overall evidence assessment is available: SQL and Power BI",
+              "Essential requirement needs checking before an overall evidence assessment is available: Clear communication with non-technical stakeholders",
+              "Essential requirement needs checking before an overall evidence assessment is available: Experience cleaning and reconciling data",
+              "Essential requirement needs checking before an overall evidence assessment is available: Desirable:",
+              "Essential requirement needs checking before an overall evidence assessment is available: Python for report automation"
+            ],
+            "method": "Equal-weight recognised skill and responsibility concepts in the advert, checked against approved evidence. Direct/verified=1; user/project=.9; transferable=.65; indirect=.4; absent=0. Pending mandatory conditions from the frozen job evaluation also prevent a complete assessment, but do not change the skills-fit calculation. Not a complete semantic assessment; seniority, qualifications and eligibility gaps remain explicit. CV wording never changes this score."
+          },
+          "evidence_presentation": {
+            "status": "pass",
+            "label": "Presentation of existing evidence",
+            "checks": [
+              {
+                "name": "Supported advert concepts presented",
+                "passed": true,
+                "detail": "5 of 5 evidence-supported concepts appear in the CV."
+              }
+            ]
+          },
+          "document_checks": {
+            "status": "pass",
+            "label": "Document structure checks",
+            "checks": [
+              {
+                "name": "Single-column structured document",
+                "passed": true,
+                "points": 20
+              },
+              {
+                "name": "Selectable text and supported document export",
+                "passed": true,
+                "points": 15
+              },
+              {
+                "name": "Recognisable education and skills/profile headings",
+                "passed": true,
+                "points": 15
+              },
+              {
+                "name": "Contact details supplied",
+                "passed": true,
+                "points": 10
+              },
+              {
+                "name": "No unresolved date placeholders",
+                "passed": true,
+                "points": 10
+              }
+            ]
+          },
+          "ats_compatibility": {
+            "score": 100.0,
+            "label": "Local document compatibility heuristic",
+            "checks": [
+              {
+                "name": "Single-column structured document",
+                "passed": true,
+                "points": 20
+              },
+              {
+                "name": "Selectable text and supported document export",
+                "passed": true,
+                "points": 15
+              },
+              {
+                "name": "Recognisable education and skills/profile headings",
+                "passed": true,
+                "points": 15
+              },
+              {
+                "name": "Contact details supplied",
+                "passed": true,
+                "points": 10
+              },
+              {
+                "name": "No unresolved date placeholders",
+                "passed": true,
+                "points": 10
+              },
+              {
+                "name": "Supported advert terminology present: 5/5",
+                "passed": true,
+                "points": 30.0,
+                "maximum": 30
+              }
+            ],
+            "method": "Local heuristic checklist: structure20, selectable document15, headings15, contact10, dates10, supported advert terminology30. No external ATS has been tested; this does not predict interviews."
+          }
+        }
+      }
+    },
+    {
+      "profile_id": "logistics_coordinator",
+      "job": {
+        "title": "Supply Chain Coordinator",
+        "company": "Example Grocers Ltd",
+        "url": "https://example.test/jobs/supply-chain-coordinator",
+        "description": "Essential:\nExperience coordinating inbound deliveries with suppliers and hauliers\nConfident with SAP and Excel\nKnowledge of import documentation and Incoterms\nDesirable:\nTransport planning experience",
+        "requirements": []
+      },
+      "protected_profile_hash": "92fa2cda1aff092a61877a45b276bcda12d2ce325f5a415b1cdf0115ff16ceab",
+      "admitted_evidence": [
+        {
+          "id": "bank:wh1",
+          "status": "DIRECT",
+          "text": "Picked and packed customer orders with handheld scanners at 99.5 per cent accuracy."
+        },
+        {
+          "id": "bank:wh2",
+          "status": "DIRECT",
+          "text": "Held a counterbalance forklift licence and loaded trailers to agreed schedules."
+        },
+        {
+          "id": "bank:wh3",
+          "status": "DIRECT",
+          "text": "Completed daily vehicle and equipment safety checks."
+        },
+        {
+          "id": "bank:tp1",
+          "status": "DIRECT",
+          "text": "Scheduled daily delivery routes for a fleet of 18 vans."
+        },
+        {
+          "id": "bank:tp2",
+          "status": "DIRECT",
+          "text": "Rebooked collections with customers by phone when vehicles broke down."
+        },
+        {
+          "id": "bank:tp3",
+          "status": "DIRECT",
+          "text": "Kept driver hours records compliant with tachograph rules."
+        },
+        {
+          "id": "bank:lc1",
+          "status": "DIRECT",
+          "text": "Coordinated inbound deliveries from 25 suppliers using SAP."
+        },
+        {
+          "id": "bank:lc2",
+          "status": "DIRECT",
+          "text": "Reduced late deliveries from 12 per cent to 5 per cent in one year by rescheduling supplier slots."
+        },
+        {
+          "id": "bank:lc3",
+          "status": "DIRECT",
+          "text": "Maintained an Excel tracker of import paperwork and Incoterms for each shipment."
+        },
+        {
+          "id": "bank:lc4",
+          "status": "DIRECT",
+          "text": "Chaired a weekly call with hauliers to resolve delivery problems."
+        },
+        {
+          "id": "bank:fb1",
+          "status": "USER_PROVIDED",
+          "text": "Organised a weekly van rota for a community food bank covering 40 collection points."
+        },
+        {
+          "id": "bank:fb2",
+          "status": "USER_PROVIDED",
+          "text": "Recruited and briefed six volunteer drivers for the food bank."
+        },
+        {
+          "id": "bank:diploma",
+          "status": "DIRECT",
+          "text": "Westvale College — Level 3 Diploma in Logistics Operations, Distinction"
+        },
+        {
+          "id": "bank:cpc",
+          "status": "DIRECT",
+          "text": "Examplar Transport Training — Certificate of Professional Competence in Road Haulage"
+        }
+      ],
+      "held_back_evidence": [
+        {
+          "id": "bank:lc5",
+          "status": "VERIFY",
+          "text": "Negotiated freight contracts worth two million pounds a year.",
+          "reason": "status VERIFY"
+        },
+        {
+          "id": "bank:note2",
+          "status": "DIRECT",
+          "text": "Private note held for the candidate only.",
+          "reason": "sensitive flag set"
+        },
+        {
+          "id": "bank:ref2",
+          "status": "DIRECT",
+          "text": "Nominated for a regional logistics award.",
+          "reason": "automatic_use_allowed is false"
+        }
+      ],
+      "skills_in_document": [
+        "Excel",
+        "SAP",
+        "Incoterms",
+        "Forklift"
+      ],
+      "listed_skills_not_in_document": [
+        "WMS"
+      ],
+      "sections": [
+        {
+          "section_id": "profile",
+          "heading": "Profile",
+          "profile_statement_ids": [
+            "example:bank:lc1",
+            "example:bank:lc3"
+          ],
+          "evidence_ids": [
+            "bank:lc1",
+            "bank:lc3"
+          ],
+          "paragraphs": [
+            "Coordinated inbound deliveries from 25 suppliers using SAP. Maintained an Excel tracker of import paperwork and Incoterms for each shipment."
+          ]
+        },
+        {
+          "section_id": "skills",
+          "heading": "Skills",
+          "skill_names": [
+            "Excel",
+            "SAP",
+            "Incoterms",
+            "Forklift"
+          ],
+          "evidence_ids": [
+            "bank:lc3",
+            "bank:lc1",
+            "bank:wh2"
+          ],
+          "paragraphs": [
+            "Excel · SAP · Incoterms · Forklift"
+          ]
+        },
+        {
+          "section_id": "group:employment",
+          "heading": "Experience",
+          "evidence_ids": [],
+          "paragraphs": []
+        },
+        {
+          "section_id": "employment:coordinator",
+          "heading": "Logistics Coordinator | Dunmore Distribution",
+          "subheading": "2020 – Present",
+          "category": "employment",
+          "profile_ref": "coordinator",
+          "evidence_ids": [
+            "bank:lc1",
+            "bank:lc2",
+            "bank:lc3",
+            "bank:lc4"
+          ],
+          "section_evidence_ids": [
+            "bank:lc1",
+            "bank:lc2",
+            "bank:lc3",
+            "bank:lc4"
+          ],
+          "paragraphs": [
+            "Coordinated inbound deliveries from 25 suppliers using SAP.",
+            "Reduced late deliveries from 12 per cent to 5 per cent in one year by rescheduling supplier slots.",
+            "Maintained an Excel tracker of import paperwork and Incoterms for each shipment. Chaired a weekly call with hauliers to resolve delivery problems."
+          ]
+        },
+        {
+          "section_id": "employment:transport",
+          "heading": "Transport Planner | Carrow Freight Ltd",
+          "subheading": "2016 – 2020",
+          "category": "employment",
+          "profile_ref": "transport",
+          "evidence_ids": [
+            "bank:tp1",
+            "bank:tp2",
+            "bank:tp3"
+          ],
+          "section_evidence_ids": [
+            "bank:tp1",
+            "bank:tp2",
+            "bank:tp3"
+          ],
+          "paragraphs": [
+            "Scheduled daily delivery routes for a fleet of 18 vans.",
+            "Rebooked collections with customers by phone when vehicles broke down.",
+            "Kept driver hours records compliant with tachograph rules."
+          ]
+        },
+        {
+          "section_id": "employment:warehouse",
+          "heading": "Warehouse Operative | Carrow Freight Ltd",
+          "subheading": "2013 – 2016",
+          "category": "employment",
+          "profile_ref": "warehouse",
+          "evidence_ids": [
+            "bank:wh1",
+            "bank:wh2",
+            "bank:wh3"
+          ],
+          "section_evidence_ids": [
+            "bank:wh1",
+            "bank:wh2",
+            "bank:wh3"
+          ],
+          "paragraphs": [
+            "Picked and packed customer orders with handheld scanners at 99.5 per cent accuracy.",
+            "Held a counterbalance forklift licence and loaded trailers to agreed schedules.",
+            "Completed daily vehicle and equipment safety checks."
+          ]
+        },
+        {
+          "section_id": "group:projects",
+          "heading": "Selected projects",
+          "evidence_ids": [],
+          "paragraphs": []
+        },
+        {
+          "section_id": "projects:foodbank",
+          "heading": "Community Food Bank Van Rota",
+          "subheading": "Project work · 2022",
+          "category": "projects",
+          "profile_ref": "foodbank",
+          "evidence_ids": [
+            "bank:fb1",
+            "bank:fb2"
+          ],
+          "section_evidence_ids": [
+            "bank:fb1",
+            "bank:fb2"
+          ],
+          "paragraphs": [
+            "Organised a weekly van rota for a community food bank covering 40 collection points.",
+            "Recruited and briefed six volunteer drivers for the food bank."
+          ]
+        },
+        {
+          "section_id": "education",
+          "heading": "Education",
+          "evidence_ids": [
+            "bank:diploma",
+            "bank:cpc"
+          ],
+          "paragraphs": [
+            "Westvale College — Level 3 Diploma in Logistics Operations, Distinction",
+            "Examplar Transport Training — Certificate of Professional Competence in Road Haulage"
+          ]
+        }
+      ],
+      "cv_text": "Morgan Specimen\nProfessional profile\nSampleford\nmorgan.specimen@example.test | 07700900202\n\nProfile\nCoordinated inbound deliveries from 25 suppliers using SAP. Maintained an Excel tracker of import paperwork and Incoterms for each shipment.\n\nSkills\nExcel · SAP · Incoterms · Forklift\n\nExperience\n\nLogistics Coordinator | Dunmore Distribution\n2020 – Present\nCoordinated inbound deliveries from 25 suppliers using SAP.\nReduced late deliveries from 12 per cent to 5 per cent in one year by rescheduling supplier slots.\nMaintained an Excel tracker of import paperwork and Incoterms for each shipment. Chaired a weekly call with hauliers to resolve delivery problems.\n\nTransport Planner | Carrow Freight Ltd\n2016 – 2020\nScheduled daily delivery routes for a fleet of 18 vans.\nRebooked collections with customers by phone when vehicles broke down.\nKept driver hours records compliant with tachograph rules.\n\nWarehouse Operative | Carrow Freight Ltd\n2013 – 2016\nPicked and packed customer orders with handheld scanners at 99.5 per cent accuracy.\nHeld a counterbalance forklift licence and loaded trailers to agreed schedules.\nCompleted daily vehicle and equipment safety checks.\n\nSelected projects\n\nCommunity Food Bank Van Rota\nProject work · 2022\nOrganised a weekly van rota for a community food bank covering 40 collection points.\nRecruited and briefed six volunteer drivers for the food bank.\n\nEducation\nWestvale College — Level 3 Diploma in Logistics Operations, Distinction\nExamplar Transport Training — Certificate of Professional Competence in Road Haulage",
+      "proposal": {
+        "profile_statement_ids": [
+          "example:bank:lc1",
+          "example:bank:lc3"
+        ],
+        "skill_names": [
+          "Excel",
+          "SAP",
+          "Incoterms",
+          "Forklift"
+        ],
+        "direction_reason": "Reference document: every admitted statement copied verbatim.",
+        "sections": [
+          {
+            "section_id": "employment:coordinator",
+            "claims": [
+              {
+                "text": "Coordinated inbound deliveries from 25 suppliers using SAP.",
+                "evidence_ids": [
+                  "bank:lc1"
+                ]
+              },
+              {
+                "text": "Reduced late deliveries from 12 per cent to 5 per cent in one year by rescheduling supplier slots.",
+                "evidence_ids": [
+                  "bank:lc2"
+                ]
+              },
+              {
+                "text": "Maintained an Excel tracker of import paperwork and Incoterms for each shipment.",
+                "evidence_ids": [
+                  "bank:lc3"
+                ]
+              },
+              {
+                "text": "Chaired a weekly call with hauliers to resolve delivery problems.",
+                "evidence_ids": [
+                  "bank:lc4"
+                ]
+              }
+            ]
+          },
+          {
+            "section_id": "employment:transport",
+            "claims": [
+              {
+                "text": "Scheduled daily delivery routes for a fleet of 18 vans.",
+                "evidence_ids": [
+                  "bank:tp1"
+                ]
+              },
+              {
+                "text": "Rebooked collections with customers by phone when vehicles broke down.",
+                "evidence_ids": [
+                  "bank:tp2"
+                ]
+              },
+              {
+                "text": "Kept driver hours records compliant with tachograph rules.",
+                "evidence_ids": [
+                  "bank:tp3"
+                ]
+              }
+            ]
+          },
+          {
+            "section_id": "employment:warehouse",
+            "claims": [
+              {
+                "text": "Picked and packed customer orders with handheld scanners at 99.5 per cent accuracy.",
+                "evidence_ids": [
+                  "bank:wh1"
+                ]
+              },
+              {
+                "text": "Held a counterbalance forklift licence and loaded trailers to agreed schedules.",
+                "evidence_ids": [
+                  "bank:wh2"
+                ]
+              },
+              {
+                "text": "Completed daily vehicle and equipment safety checks.",
+                "evidence_ids": [
+                  "bank:wh3"
+                ]
+              }
+            ]
+          },
+          {
+            "section_id": "projects:foodbank",
+            "claims": [
+              {
+                "text": "Organised a weekly van rota for a community food bank covering 40 collection points.",
+                "evidence_ids": [
+                  "bank:fb1"
+                ]
+              },
+              {
+                "text": "Recruited and briefed six volunteer drivers for the food bank.",
+                "evidence_ids": [
+                  "bank:fb2"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "material": {
+        "created_at": "2026-09-23T21:53:42.214173+00:00",
+        "document_schema": "coherent-cv-v2",
+        "provider": "evidence_controller",
+        "generation_method": "model_selected_evidence",
+        "name": "Morgan Specimen",
+        "location": "Sampleford",
+        "contact_text": "morgan.specimen@example.test | 07700900202",
+        "sections": [
+          {
+            "section_id": "profile",
+            "heading": "Profile",
+            "paragraphs": [
+              "Coordinated inbound deliveries from 25 suppliers using SAP. Maintained an Excel tracker of import paperwork and Incoterms for each shipment."
+            ],
+            "profile_statement_ids": [
+              "example:bank:lc1",
+              "example:bank:lc3"
+            ],
+            "evidence_ids": [
+              "bank:lc1",
+              "bank:lc3"
+            ]
+          },
+          {
+            "section_id": "skills",
+            "heading": "Skills",
+            "paragraphs": [
+              "Excel · SAP · Incoterms · Forklift"
+            ],
+            "skill_names": [
+              "Excel",
+              "SAP",
+              "Incoterms",
+              "Forklift"
+            ],
+            "evidence_ids": [
+              "bank:lc3",
+              "bank:lc1",
+              "bank:wh2"
+            ]
+          },
+          {
+            "section_id": "group:employment",
+            "heading": "Experience",
+            "paragraphs": [],
+            "evidence_ids": []
+          },
+          {
+            "section_id": "employment:coordinator",
+            "heading": "Logistics Coordinator | Dunmore Distribution",
+            "subheading": "2020 – Present",
+            "category": "employment",
+            "profile_ref": "coordinator",
+            "evidence_ids": [
+              "bank:lc1",
+              "bank:lc2",
+              "bank:lc3",
+              "bank:lc4"
+            ],
+            "paragraphs": [
+              "Coordinated inbound deliveries from 25 suppliers using SAP.",
+              "Reduced late deliveries from 12 per cent to 5 per cent in one year by rescheduling supplier slots.",
+              "Maintained an Excel tracker of import paperwork and Incoterms for each shipment. Chaired a weekly call with hauliers to resolve delivery problems."
+            ]
+          },
+          {
+            "section_id": "employment:transport",
+            "heading": "Transport Planner | Carrow Freight Ltd",
+            "subheading": "2016 – 2020",
+            "category": "employment",
+            "profile_ref": "transport",
+            "evidence_ids": [
+              "bank:tp1",
+              "bank:tp2",
+              "bank:tp3"
+            ],
+            "paragraphs": [
+              "Scheduled daily delivery routes for a fleet of 18 vans.",
+              "Rebooked collections with customers by phone when vehicles broke down.",
+              "Kept driver hours records compliant with tachograph rules."
+            ]
+          },
+          {
+            "section_id": "employment:warehouse",
+            "heading": "Warehouse Operative | Carrow Freight Ltd",
+            "subheading": "2013 – 2016",
+            "category": "employment",
+            "profile_ref": "warehouse",
+            "evidence_ids": [
+              "bank:wh1",
+              "bank:wh2",
+              "bank:wh3"
+            ],
+            "paragraphs": [
+              "Picked and packed customer orders with handheld scanners at 99.5 per cent accuracy.",
+              "Held a counterbalance forklift licence and loaded trailers to agreed schedules.",
+              "Completed daily vehicle and equipment safety checks."
+            ]
+          },
+          {
+            "section_id": "group:projects",
+            "heading": "Selected projects",
+            "paragraphs": [],
+            "evidence_ids": []
+          },
+          {
+            "section_id": "projects:foodbank",
+            "heading": "Community Food Bank Van Rota",
+            "subheading": "Project work · 2022",
+            "category": "projects",
+            "profile_ref": "foodbank",
+            "evidence_ids": [
+              "bank:fb1",
+              "bank:fb2"
+            ],
+            "paragraphs": [
+              "Organised a weekly van rota for a community food bank covering 40 collection points.",
+              "Recruited and briefed six volunteer drivers for the food bank."
+            ]
+          },
+          {
+            "heading": "Education",
+            "paragraphs": [
+              "Westvale College — Level 3 Diploma in Logistics Operations, Distinction",
+              "Examplar Transport Training — Certificate of Professional Competence in Road Haulage"
+            ],
+            "evidence_ids": [
+              "bank:diploma",
+              "bank:cpc"
+            ],
+            "section_id": "education"
+          }
+        ],
+        "direction": {
+          "emphasis": "balanced",
+          "instruction": "",
+          "positioning": "Professional profile",
+          "reason": "Balanced around this advert's evidenced requirements.",
+          "generator_reason": "Reference document: every admitted statement copied verbatim."
+        },
+        "positioning": "Professional profile",
+        "protected_profile_hash": "92fa2cda1aff092a61877a45b276bcda12d2ce325f5a415b1cdf0115ff16ceab",
+        "document_job": {
+          "title": "Supply Chain Coordinator",
+          "company": "Example Grocers Ltd",
+          "description": "Essential:\nExperience coordinating inbound deliveries with suppliers and hauliers\nConfident with SAP and Excel\nKnowledge of import documentation and Incoterms\nDesirable:\nTransport planning experience",
+          "requirements": []
+        },
+        "base_cv_version": null,
+        "base_cv_conflicts": [],
+        "blocked_proposals": [],
+        "requires_human_review": false,
+        "status": "needs_review",
+        "formats": [
+          "txt",
+          "docx",
+          "pdf"
+        ],
+        "warnings": [
+          "3 unresolved, unsupported or sensitive evidence records were excluded from this draft."
+        ],
+        "provenance": {
+          "bank:lc1": {
+            "text": "Coordinated inbound deliveries from 25 suppliers using SAP.",
+            "source": null
+          },
+          "bank:lc3": {
+            "text": "Maintained an Excel tracker of import paperwork and Incoterms for each shipment.",
+            "source": null
+          },
+          "bank:wh2": {
+            "text": "Held a counterbalance forklift licence and loaded trailers to agreed schedules.",
+            "source": null
+          },
+          "bank:lc2": {
+            "text": "Reduced late deliveries from 12 per cent to 5 per cent in one year by rescheduling supplier slots.",
+            "source": null
+          },
+          "bank:lc4": {
+            "text": "Chaired a weekly call with hauliers to resolve delivery problems.",
+            "source": null
+          },
+          "bank:tp1": {
+            "text": "Scheduled daily delivery routes for a fleet of 18 vans.",
+            "source": null
+          },
+          "bank:tp2": {
+            "text": "Rebooked collections with customers by phone when vehicles broke down.",
+            "source": null
+          },
+          "bank:tp3": {
+            "text": "Kept driver hours records compliant with tachograph rules.",
+            "source": null
+          },
+          "bank:wh1": {
+            "text": "Picked and packed customer orders with handheld scanners at 99.5 per cent accuracy.",
+            "source": null
+          },
+          "bank:wh3": {
+            "text": "Completed daily vehicle and equipment safety checks.",
+            "source": null
+          },
+          "bank:fb1": {
+            "text": "Organised a weekly van rota for a community food bank covering 40 collection points.",
+            "source": null
+          },
+          "bank:fb2": {
+            "text": "Recruited and briefed six volunteer drivers for the food bank.",
+            "source": null
+          },
+          "bank:diploma": {
+            "text": "Westvale College — Level 3 Diploma in Logistics Operations, Distinction",
+            "source": null
+          },
+          "bank:cpc": {
+            "text": "Examplar Transport Training — Certificate of Professional Competence in Road Haulage",
+            "source": null
+          }
+        },
+        "cv_text": "Morgan Specimen\nProfessional profile\nSampleford\nmorgan.specimen@example.test | 07700900202\n\nProfile\nCoordinated inbound deliveries from 25 suppliers using SAP. Maintained an Excel tracker of import paperwork and Incoterms for each shipment.\n\nSkills\nExcel · SAP · Incoterms · Forklift\n\nExperience\n\nLogistics Coordinator | Dunmore Distribution\n2020 – Present\nCoordinated inbound deliveries from 25 suppliers using SAP.\nReduced late deliveries from 12 per cent to 5 per cent in one year by rescheduling supplier slots.\nMaintained an Excel tracker of import paperwork and Incoterms for each shipment. Chaired a weekly call with hauliers to resolve delivery problems.\n\nTransport Planner | Carrow Freight Ltd\n2016 – 2020\nScheduled daily delivery routes for a fleet of 18 vans.\nRebooked collections with customers by phone when vehicles broke down.\nKept driver hours records compliant with tachograph rules.\n\nWarehouse Operative | Carrow Freight Ltd\n2013 – 2016\nPicked and packed customer orders with handheld scanners at 99.5 per cent accuracy.\nHeld a counterbalance forklift licence and loaded trailers to agreed schedules.\nCompleted daily vehicle and equipment safety checks.\n\nSelected projects\n\nCommunity Food Bank Van Rota\nProject work · 2022\nOrganised a weekly van rota for a community food bank covering 40 collection points.\nRecruited and briefed six volunteer drivers for the food bank.\n\nEducation\nWestvale College — Level 3 Diploma in Logistics Operations, Distinction\nExamplar Transport Training — Certificate of Professional Competence in Road Haulage",
+        "text": "Morgan Specimen\nProfessional profile\nSampleford\nmorgan.specimen@example.test | 07700900202\n\nProfile\nCoordinated inbound deliveries from 25 suppliers using SAP. Maintained an Excel tracker of import paperwork and Incoterms for each shipment.\n\nSkills\nExcel · SAP · Incoterms · Forklift\n\nExperience\n\nLogistics Coordinator | Dunmore Distribution\n2020 – Present\nCoordinated inbound deliveries from 25 suppliers using SAP.\nReduced late deliveries from 12 per cent to 5 per cent in one year by rescheduling supplier slots.\nMaintained an Excel tracker of import paperwork and Incoterms for each shipment. Chaired a weekly call with hauliers to resolve delivery problems.\n\nTransport Planner | Carrow Freight Ltd\n2016 – 2020\nScheduled daily delivery routes for a fleet of 18 vans.\nRebooked collections with customers by phone when vehicles broke down.\nKept driver hours records compliant with tachograph rules.\n\nWarehouse Operative | Carrow Freight Ltd\n2013 – 2016\nPicked and packed customer orders with handheld scanners at 99.5 per cent accuracy.\nHeld a counterbalance forklift licence and loaded trailers to agreed schedules.\nCompleted daily vehicle and equipment safety checks.\n\nSelected projects\n\nCommunity Food Bank Van Rota\nProject work · 2022\nOrganised a weekly van rota for a community food bank covering 40 collection points.\nRecruited and briefed six volunteer drivers for the food bank.\n\nEducation\nWestvale College — Level 3 Diploma in Logistics Operations, Distinction\nExamplar Transport Training — Certificate of Professional Competence in Road Haulage",
+        "validation": {
+          "status": "passed",
+          "checked_at": "2026-09-23T21:53:42.217730+00:00",
+          "policy_version": "coherent-cv-v2",
+          "evidence_claims": 14,
+          "human_review_items": 0
+        },
+        "analysis": {
+          "rubric_version": "cv-evidence-review-v3",
+          "evidence_match": {
+            "score": null,
+            "status": "incomplete",
+            "rubric_version": "cv-evidence-review-v3",
+            "label": "Assessment incomplete — essential requirements need checking.",
+            "coverage": {
+              "assessed": 1,
+              "total": 2,
+              "unassessed_essential": 1,
+              "concepts_assessed": 1,
+              "concepts_total": 2,
+              "mandatory_conditions_assessed": 0,
+              "mandatory_conditions_total": 0
+            },
+            "advanced": {
+              "partial_score": 100.0,
+              "assessed_count": 1,
+              "total_count": 2,
+              "label": "Partial coverage of recognised concepts only; unassessed essentials prevent an overall score."
+            },
+            "eligibility_checks": {
+              "status": "not_recorded",
+              "pending_count": 0,
+              "conditions": [],
+              "method": "Mandatory conditions from the frozen job evaluation are checked separately; they never contribute points to skills fit. Descriptions are evaluation notes unless marked as a literal advert quote."
+            },
+            "unassessed_requirements": 1,
+            "assessed_concepts": 1,
+            "requirements": [
+              {
+                "requirement": "Excel",
+                "advert_quote": "Excel",
+                "support": 1,
+                "evidence_ids": [
+                  "bank:lc3"
+                ],
+                "status": "supported"
+              },
+              {
+                "requirement": "Essential:",
+                "advert_quote": "Essential:",
+                "source_reference": {
+                  "quote": "Essential:",
+                  "mandatory": true,
+                  "source": "https://example.test/jobs/supply-chain-coordinator",
+                  "line": 1,
+                  "heading": ""
+                },
+                "support": null,
+                "evidence_ids": [],
+                "status": "unassessed",
+                "mandatory": true
+              }
+            ],
+            "gaps": [
+              "Essential requirement needs checking before an overall evidence assessment is available: Essential:"
+            ],
+            "method": "Equal-weight recognised skill and responsibility concepts in the advert, checked against approved evidence. Direct/verified=1; user/project=.9; transferable=.65; indirect=.4; absent=0. Pending mandatory conditions from the frozen job evaluation also prevent a complete assessment, but do not change the skills-fit calculation. Not a complete semantic assessment; seniority, qualifications and eligibility gaps remain explicit. CV wording never changes this score."
+          },
+          "evidence_presentation": {
+            "status": "pass",
+            "label": "Presentation of existing evidence",
+            "checks": [
+              {
+                "name": "Supported advert concepts presented",
+                "passed": true,
+                "detail": "1 of 1 evidence-supported concepts appear in the CV."
+              }
+            ]
+          },
+          "document_checks": {
+            "status": "pass",
+            "label": "Document structure checks",
+            "checks": [
+              {
+                "name": "Single-column structured document",
+                "passed": true,
+                "points": 20
+              },
+              {
+                "name": "Selectable text and supported document export",
+                "passed": true,
+                "points": 15
+              },
+              {
+                "name": "Recognisable education and skills/profile headings",
+                "passed": true,
+                "points": 15
+              },
+              {
+                "name": "Contact details supplied",
+                "passed": true,
+                "points": 10
+              },
+              {
+                "name": "No unresolved date placeholders",
+                "passed": true,
+                "points": 10
+              }
+            ]
+          },
+          "ats_compatibility": {
+            "score": 100.0,
+            "label": "Local document compatibility heuristic",
+            "checks": [
+              {
+                "name": "Single-column structured document",
+                "passed": true,
+                "points": 20
+              },
+              {
+                "name": "Selectable text and supported document export",
+                "passed": true,
+                "points": 15
+              },
+              {
+                "name": "Recognisable education and skills/profile headings",
+                "passed": true,
+                "points": 15
+              },
+              {
+                "name": "Contact details supplied",
+                "passed": true,
+                "points": 10
+              },
+              {
+                "name": "No unresolved date placeholders",
+                "passed": true,
+                "points": 10
+              },
+              {
+                "name": "Supported advert terminology present: 1/1",
+                "passed": true,
+                "points": 30.0,
+                "maximum": 30
+              }
+            ],
+            "method": "Local heuristic checklist: structure20, selectable document15, headings15, contact10, dates10, supported advert terminology30. No external ATS has been tested; this does not predict interviews."
+          }
+        }
+      }
+    },
+    {
+      "profile_id": "junior_developer",
+      "job": {
+        "title": "Graduate Software Engineer",
+        "company": "Example Health Software Ltd",
+        "url": "https://example.test/jobs/graduate-software-engineer",
+        "description": "Essential:\nPython and a web framework such as Django\nWriting automated tests\nWorking with relational databases\nDesirable:\nDocker and Git\nClear written communication",
+        "requirements": []
+      },
+      "protected_profile_hash": "9c89b1beb3cb2844bffe994ecc533a35a6e32afba042b4a6674d1cbe2dc3bff6",
+      "admitted_evidence": [
+        {
+          "id": "bank:shop1",
+          "status": "DIRECT",
+          "text": "Served customers at the till and handled special orders."
+        },
+        {
+          "id": "bank:shop2",
+          "status": "DIRECT",
+          "text": "Reorganised the stockroom so deliveries were shelved within one day."
+        },
+        {
+          "id": "bank:dev1",
+          "status": "DIRECT",
+          "text": "Fixed bugs in a Django web application used by 60 dental practices."
+        },
+        {
+          "id": "bank:dev2",
+          "status": "DIRECT",
+          "text": "Wrote unit tests in Python that raised coverage of the billing module from 55 to 80 per cent."
+        },
+        {
+          "id": "bank:dev3",
+          "status": "DIRECT",
+          "text": "Added PostgreSQL indexes that cut a slow report query from 40 seconds to 4 seconds."
+        },
+        {
+          "id": "bank:dev4",
+          "status": "DIRECT",
+          "text": "Reviewed pull requests from two other junior developers using Git."
+        },
+        {
+          "id": "bank:dev5",
+          "status": "DIRECT",
+          "text": "Built a REST API endpoint for appointment reminders under supervision from a senior developer."
+        },
+        {
+          "id": "bank:al1",
+          "status": "CURRENT_PROJECT",
+          "text": "Built a small Django app that lets members of an allotment society book shared tools."
+        },
+        {
+          "id": "bank:al2",
+          "status": "CURRENT_PROJECT",
+          "text": "Packaged the app with Docker so another volunteer could run it on a spare laptop."
+        },
+        {
+          "id": "bank:tt1",
+          "status": "CURRENT_PROJECT",
+          "text": "Wrote the JavaScript that drew a bus timetable grid in a four-person course team; teammates built the data import."
+        },
+        {
+          "id": "bank:bsc",
+          "status": "DIRECT",
+          "text": "Ravensholt University — BSc Computing, Second Class Honours (Upper Division)"
+        },
+        {
+          "id": "bank:bootcamp",
+          "status": "DIRECT",
+          "text": "Northgate Coding School — Certificate in Web Development"
+        }
+      ],
+      "held_back_evidence": [
+        {
+          "id": "bank:dev6",
+          "status": "VERIFY",
+          "text": "Designed the company cloud architecture on AWS.",
+          "reason": "status VERIFY"
+        },
+        {
+          "id": "bank:note3",
+          "status": "DIRECT",
+          "text": "Private note held for the candidate only.",
+          "reason": "sensitive flag set"
+        },
+        {
+          "id": "bank:ref3",
+          "status": "DIRECT",
+          "text": "Mentioned by name in a customer thank-you letter.",
+          "reason": "automatic_use_allowed is false"
+        }
+      ],
+      "skills_in_document": [
+        "Python",
+        "Django",
+        "JavaScript",
+        "PostgreSQL",
+        "Git",
+        "Docker",
+        "REST"
+      ],
+      "listed_skills_not_in_document": [
+        "React"
+      ],
+      "sections": [
+        {
+          "section_id": "profile",
+          "heading": "Profile",
+          "profile_statement_ids": [
+            "targeted",
+            "example:bank:dev2"
+          ],
+          "evidence_ids": [
+            "bank:dev2"
+          ],
+          "paragraphs": [
+            "Combines Python implementation and testing and validation to solve practical problems. Wrote unit tests in Python that raised coverage of the billing module from 55 to 80 per cent."
+          ]
+        },
+        {
+          "section_id": "skills",
+          "heading": "Skills",
+          "skill_names": [
+            "Python",
+            "Django",
+            "JavaScript",
+            "PostgreSQL",
+            "Git",
+            "Docker",
+            "REST"
+          ],
+          "evidence_ids": [
+            "bank:dev2",
+            "bank:dev1",
+            "bank:tt1",
+            "bank:dev3",
+            "bank:dev4",
+            "bank:al2",
+            "bank:dev5"
+          ],
+          "paragraphs": [
+            "Python · Django · JavaScript · PostgreSQL · Git · Docker · REST"
+          ]
+        },
+        {
+          "section_id": "group:employment",
+          "heading": "Experience",
+          "evidence_ids": [],
+          "paragraphs": []
+        },
+        {
+          "section_id": "employment:junior_dev",
+          "heading": "Junior Software Developer | Quillon Software Ltd",
+          "subheading": "2022 – Present",
+          "category": "employment",
+          "profile_ref": "junior_dev",
+          "evidence_ids": [
+            "bank:dev1",
+            "bank:dev2",
+            "bank:dev3",
+            "bank:dev4",
+            "bank:dev5"
+          ],
+          "section_evidence_ids": [
+            "bank:dev1",
+            "bank:dev2",
+            "bank:dev3",
+            "bank:dev4",
+            "bank:dev5"
+          ],
+          "paragraphs": [
+            "Fixed bugs in a Django web application used by 60 dental practices.",
+            "Wrote unit tests in Python that raised coverage of the billing module from 55 to 80 per cent. Added PostgreSQL indexes that cut a slow report query from 40 seconds to 4 seconds.",
+            "Reviewed pull requests from two other junior developers using Git. Built a REST API endpoint for appointment reminders under supervision from a senior developer."
+          ]
+        },
+        {
+          "section_id": "employment:bookshop",
+          "heading": "Bookshop Assistant | Brightwell Books",
+          "subheading": "2018 – 2021",
+          "category": "employment",
+          "profile_ref": "bookshop",
+          "evidence_ids": [
+            "bank:shop1",
+            "bank:shop2"
+          ],
+          "section_evidence_ids": [
+            "bank:shop1",
+            "bank:shop2"
+          ],
+          "paragraphs": [
+            "Served customers at the till and handled special orders.",
+            "Reorganised the stockroom so deliveries were shelved within one day."
+          ]
+        },
+        {
+          "section_id": "group:projects",
+          "heading": "Selected projects",
+          "evidence_ids": [],
+          "paragraphs": []
+        },
+        {
+          "section_id": "projects:allotment",
+          "heading": "Allotment Tool Booking App",
+          "subheading": "Project work · 2023",
+          "category": "projects",
+          "profile_ref": "allotment",
+          "evidence_ids": [
+            "bank:al1",
+            "bank:al2"
+          ],
+          "section_evidence_ids": [
+            "bank:al1",
+            "bank:al2"
+          ],
+          "paragraphs": [
+            "Built a small Django app that lets members of an allotment society book shared tools.",
+            "Packaged the app with Docker so another volunteer could run it on a spare laptop."
+          ]
+        },
+        {
+          "section_id": "projects:timetable",
+          "heading": "Open Timetable Viewer",
+          "subheading": "Team project · 2022",
+          "category": "projects",
+          "profile_ref": "timetable",
+          "evidence_ids": [
+            "bank:tt1"
+          ],
+          "section_evidence_ids": [
+            "bank:tt1"
+          ],
+          "paragraphs": [
+            "Wrote the JavaScript that drew a bus timetable grid in a four-person course team; teammates built the data import."
+          ]
+        },
+        {
+          "section_id": "education",
+          "heading": "Education",
+          "evidence_ids": [
+            "bank:bsc",
+            "bank:bootcamp"
+          ],
+          "paragraphs": [
+            "Ravensholt University — BSc Computing, Second Class Honours (Upper Division) — Awarded 15 July 2021",
+            "Northgate Coding School — Certificate in Web Development"
+          ]
+        }
+      ],
+      "cv_text": "Casey Placeholder\nProfessional profile\nFictionbury\ncasey.placeholder@example.test | 07700900303\n\nProfile\nCombines Python implementation and testing and validation to solve practical problems. Wrote unit tests in Python that raised coverage of the billing module from 55 to 80 per cent.\n\nSkills\nPython · Django · JavaScript · PostgreSQL · Git · Docker · REST\n\nExperience\n\nJunior Software Developer | Quillon Software Ltd\n2022 – Present\nFixed bugs in a Django web application used by 60 dental practices.\nWrote unit tests in Python that raised coverage of the billing module from 55 to 80 per cent. Added PostgreSQL indexes that cut a slow report query from 40 seconds to 4 seconds.\nReviewed pull requests from two other junior developers using Git. Built a REST API endpoint for appointment reminders under supervision from a senior developer.\n\nBookshop Assistant | Brightwell Books\n2018 – 2021\nServed customers at the till and handled special orders.\nReorganised the stockroom so deliveries were shelved within one day.\n\nSelected projects\n\nAllotment Tool Booking App\nProject work · 2023\nBuilt a small Django app that lets members of an allotment society book shared tools.\nPackaged the app with Docker so another volunteer could run it on a spare laptop.\n\nOpen Timetable Viewer\nTeam project · 2022\nWrote the JavaScript that drew a bus timetable grid in a four-person course team; teammates built the data import.\n\nEducation\nRavensholt University — BSc Computing, Second Class Honours (Upper Division) — Awarded 15 July 2021\nNorthgate Coding School — Certificate in Web Development",
+      "proposal": {
+        "profile_statement_ids": [
+          "targeted",
+          "example:bank:dev2"
+        ],
+        "skill_names": [
+          "Python",
+          "Django",
+          "JavaScript",
+          "PostgreSQL",
+          "Git",
+          "Docker",
+          "REST"
+        ],
+        "direction_reason": "Reference document: every admitted statement copied verbatim.",
+        "sections": [
+          {
+            "section_id": "employment:junior_dev",
+            "claims": [
+              {
+                "text": "Fixed bugs in a Django web application used by 60 dental practices.",
+                "evidence_ids": [
+                  "bank:dev1"
+                ]
+              },
+              {
+                "text": "Wrote unit tests in Python that raised coverage of the billing module from 55 to 80 per cent.",
+                "evidence_ids": [
+                  "bank:dev2"
+                ]
+              },
+              {
+                "text": "Added PostgreSQL indexes that cut a slow report query from 40 seconds to 4 seconds.",
+                "evidence_ids": [
+                  "bank:dev3"
+                ]
+              },
+              {
+                "text": "Reviewed pull requests from two other junior developers using Git.",
+                "evidence_ids": [
+                  "bank:dev4"
+                ]
+              },
+              {
+                "text": "Built a REST API endpoint for appointment reminders under supervision from a senior developer.",
+                "evidence_ids": [
+                  "bank:dev5"
+                ]
+              }
+            ]
+          },
+          {
+            "section_id": "employment:bookshop",
+            "claims": [
+              {
+                "text": "Served customers at the till and handled special orders.",
+                "evidence_ids": [
+                  "bank:shop1"
+                ]
+              },
+              {
+                "text": "Reorganised the stockroom so deliveries were shelved within one day.",
+                "evidence_ids": [
+                  "bank:shop2"
+                ]
+              }
+            ]
+          },
+          {
+            "section_id": "projects:allotment",
+            "claims": [
+              {
+                "text": "Built a small Django app that lets members of an allotment society book shared tools.",
+                "evidence_ids": [
+                  "bank:al1"
+                ]
+              },
+              {
+                "text": "Packaged the app with Docker so another volunteer could run it on a spare laptop.",
+                "evidence_ids": [
+                  "bank:al2"
+                ]
+              }
+            ]
+          },
+          {
+            "section_id": "projects:timetable",
+            "claims": [
+              {
+                "text": "Wrote the JavaScript that drew a bus timetable grid in a four-person course team; teammates built the data import.",
+                "evidence_ids": [
+                  "bank:tt1"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "material": {
+        "created_at": "2026-09-23T21:53:42.227558+00:00",
+        "document_schema": "coherent-cv-v2",
+        "provider": "evidence_controller",
+        "generation_method": "model_selected_evidence",
+        "name": "Casey Placeholder",
+        "location": "Fictionbury",
+        "contact_text": "casey.placeholder@example.test | 07700900303",
+        "sections": [
+          {
+            "section_id": "profile",
+            "heading": "Profile",
+            "paragraphs": [
+              "Combines Python implementation and testing and validation to solve practical problems. Wrote unit tests in Python that raised coverage of the billing module from 55 to 80 per cent."
+            ],
+            "profile_statement_ids": [
+              "targeted",
+              "example:bank:dev2"
+            ],
+            "evidence_ids": [
+              "bank:dev2"
+            ]
+          },
+          {
+            "section_id": "skills",
+            "heading": "Skills",
+            "paragraphs": [
+              "Python · Django · JavaScript · PostgreSQL · Git · Docker · REST"
+            ],
+            "skill_names": [
+              "Python",
+              "Django",
+              "JavaScript",
+              "PostgreSQL",
+              "Git",
+              "Docker",
+              "REST"
+            ],
+            "evidence_ids": [
+              "bank:dev2",
+              "bank:dev1",
+              "bank:tt1",
+              "bank:dev3",
+              "bank:dev4",
+              "bank:al2",
+              "bank:dev5"
+            ]
+          },
+          {
+            "section_id": "group:employment",
+            "heading": "Experience",
+            "paragraphs": [],
+            "evidence_ids": []
+          },
+          {
+            "section_id": "employment:junior_dev",
+            "heading": "Junior Software Developer | Quillon Software Ltd",
+            "subheading": "2022 – Present",
+            "category": "employment",
+            "profile_ref": "junior_dev",
+            "evidence_ids": [
+              "bank:dev1",
+              "bank:dev2",
+              "bank:dev3",
+              "bank:dev4",
+              "bank:dev5"
+            ],
+            "paragraphs": [
+              "Fixed bugs in a Django web application used by 60 dental practices.",
+              "Wrote unit tests in Python that raised coverage of the billing module from 55 to 80 per cent. Added PostgreSQL indexes that cut a slow report query from 40 seconds to 4 seconds.",
+              "Reviewed pull requests from two other junior developers using Git. Built a REST API endpoint for appointment reminders under supervision from a senior developer."
+            ]
+          },
+          {
+            "section_id": "employment:bookshop",
+            "heading": "Bookshop Assistant | Brightwell Books",
+            "subheading": "2018 – 2021",
+            "category": "employment",
+            "profile_ref": "bookshop",
+            "evidence_ids": [
+              "bank:shop1",
+              "bank:shop2"
+            ],
+            "paragraphs": [
+              "Served customers at the till and handled special orders.",
+              "Reorganised the stockroom so deliveries were shelved within one day."
+            ]
+          },
+          {
+            "section_id": "group:projects",
+            "heading": "Selected projects",
+            "paragraphs": [],
+            "evidence_ids": []
+          },
+          {
+            "section_id": "projects:allotment",
+            "heading": "Allotment Tool Booking App",
+            "subheading": "Project work · 2023",
+            "category": "projects",
+            "profile_ref": "allotment",
+            "evidence_ids": [
+              "bank:al1",
+              "bank:al2"
+            ],
+            "paragraphs": [
+              "Built a small Django app that lets members of an allotment society book shared tools.",
+              "Packaged the app with Docker so another volunteer could run it on a spare laptop."
+            ]
+          },
+          {
+            "section_id": "projects:timetable",
+            "heading": "Open Timetable Viewer",
+            "subheading": "Team project · 2022",
+            "category": "projects",
+            "profile_ref": "timetable",
+            "evidence_ids": [
+              "bank:tt1"
+            ],
+            "paragraphs": [
+              "Wrote the JavaScript that drew a bus timetable grid in a four-person course team; teammates built the data import."
+            ]
+          },
+          {
+            "heading": "Education",
+            "paragraphs": [
+              "Ravensholt University — BSc Computing, Second Class Honours (Upper Division) — Awarded 15 July 2021",
+              "Northgate Coding School — Certificate in Web Development"
+            ],
+            "evidence_ids": [
+              "bank:bsc",
+              "bank:bootcamp"
+            ],
+            "section_id": "education"
+          }
+        ],
+        "direction": {
+          "emphasis": "balanced",
+          "instruction": "",
+          "positioning": "Professional profile",
+          "reason": "Balanced around this advert's evidenced requirements.",
+          "generator_reason": "Reference document: every admitted statement copied verbatim."
+        },
+        "positioning": "Professional profile",
+        "protected_profile_hash": "9c89b1beb3cb2844bffe994ecc533a35a6e32afba042b4a6674d1cbe2dc3bff6",
+        "document_job": {
+          "title": "Graduate Software Engineer",
+          "company": "Example Health Software Ltd",
+          "description": "Essential:\nPython and a web framework such as Django\nWriting automated tests\nWorking with relational databases\nDesirable:\nDocker and Git\nClear written communication",
+          "requirements": []
+        },
+        "base_cv_version": null,
+        "base_cv_conflicts": [],
+        "blocked_proposals": [],
+        "requires_human_review": false,
+        "status": "needs_review",
+        "formats": [
+          "txt",
+          "docx",
+          "pdf"
+        ],
+        "warnings": [
+          "3 unresolved, unsupported or sensitive evidence records were excluded from this draft."
+        ],
+        "provenance": {
+          "bank:dev2": {
+            "text": "Wrote unit tests in Python that raised coverage of the billing module from 55 to 80 per cent.",
+            "source": null
+          },
+          "bank:dev1": {
+            "text": "Fixed bugs in a Django web application used by 60 dental practices.",
+            "source": null
+          },
+          "bank:tt1": {
+            "text": "Wrote the JavaScript that drew a bus timetable grid in a four-person course team; teammates built the data import.",
+            "source": null
+          },
+          "bank:dev3": {
+            "text": "Added PostgreSQL indexes that cut a slow report query from 40 seconds to 4 seconds.",
+            "source": null
+          },
+          "bank:dev4": {
+            "text": "Reviewed pull requests from two other junior developers using Git.",
+            "source": null
+          },
+          "bank:al2": {
+            "text": "Packaged the app with Docker so another volunteer could run it on a spare laptop.",
+            "source": null
+          },
+          "bank:dev5": {
+            "text": "Built a REST API endpoint for appointment reminders under supervision from a senior developer.",
+            "source": null
+          },
+          "bank:shop1": {
+            "text": "Served customers at the till and handled special orders.",
+            "source": null
+          },
+          "bank:shop2": {
+            "text": "Reorganised the stockroom so deliveries were shelved within one day.",
+            "source": null
+          },
+          "bank:al1": {
+            "text": "Built a small Django app that lets members of an allotment society book shared tools.",
+            "source": null
+          },
+          "bank:bsc": {
+            "text": "Ravensholt University — BSc Computing, Second Class Honours (Upper Division)",
+            "source": null
+          },
+          "bank:bootcamp": {
+            "text": "Northgate Coding School — Certificate in Web Development",
+            "source": null
+          }
+        },
+        "cv_text": "Casey Placeholder\nProfessional profile\nFictionbury\ncasey.placeholder@example.test | 07700900303\n\nProfile\nCombines Python implementation and testing and validation to solve practical problems. Wrote unit tests in Python that raised coverage of the billing module from 55 to 80 per cent.\n\nSkills\nPython · Django · JavaScript · PostgreSQL · Git · Docker · REST\n\nExperience\n\nJunior Software Developer | Quillon Software Ltd\n2022 – Present\nFixed bugs in a Django web application used by 60 dental practices.\nWrote unit tests in Python that raised coverage of the billing module from 55 to 80 per cent. Added PostgreSQL indexes that cut a slow report query from 40 seconds to 4 seconds.\nReviewed pull requests from two other junior developers using Git. Built a REST API endpoint for appointment reminders under supervision from a senior developer.\n\nBookshop Assistant | Brightwell Books\n2018 – 2021\nServed customers at the till and handled special orders.\nReorganised the stockroom so deliveries were shelved within one day.\n\nSelected projects\n\nAllotment Tool Booking App\nProject work · 2023\nBuilt a small Django app that lets members of an allotment society book shared tools.\nPackaged the app with Docker so another volunteer could run it on a spare laptop.\n\nOpen Timetable Viewer\nTeam project · 2022\nWrote the JavaScript that drew a bus timetable grid in a four-person course team; teammates built the data import.\n\nEducation\nRavensholt University — BSc Computing, Second Class Honours (Upper Division) — Awarded 15 July 2021\nNorthgate Coding School — Certificate in Web Development",
+        "text": "Casey Placeholder\nProfessional profile\nFictionbury\ncasey.placeholder@example.test | 07700900303\n\nProfile\nCombines Python implementation and testing and validation to solve practical problems. Wrote unit tests in Python that raised coverage of the billing module from 55 to 80 per cent.\n\nSkills\nPython · Django · JavaScript · PostgreSQL · Git · Docker · REST\n\nExperience\n\nJunior Software Developer | Quillon Software Ltd\n2022 – Present\nFixed bugs in a Django web application used by 60 dental practices.\nWrote unit tests in Python that raised coverage of the billing module from 55 to 80 per cent. Added PostgreSQL indexes that cut a slow report query from 40 seconds to 4 seconds.\nReviewed pull requests from two other junior developers using Git. Built a REST API endpoint for appointment reminders under supervision from a senior developer.\n\nBookshop Assistant | Brightwell Books\n2018 – 2021\nServed customers at the till and handled special orders.\nReorganised the stockroom so deliveries were shelved within one day.\n\nSelected projects\n\nAllotment Tool Booking App\nProject work · 2023\nBuilt a small Django app that lets members of an allotment society book shared tools.\nPackaged the app with Docker so another volunteer could run it on a spare laptop.\n\nOpen Timetable Viewer\nTeam project · 2022\nWrote the JavaScript that drew a bus timetable grid in a four-person course team; teammates built the data import.\n\nEducation\nRavensholt University — BSc Computing, Second Class Honours (Upper Division) — Awarded 15 July 2021\nNorthgate Coding School — Certificate in Web Development",
+        "validation": {
+          "status": "passed",
+          "checked_at": "2026-09-23T21:53:42.231160+00:00",
+          "policy_version": "coherent-cv-v2",
+          "evidence_claims": 12,
+          "human_review_items": 0
+        },
+        "analysis": {
+          "rubric_version": "cv-evidence-review-v3",
+          "evidence_match": {
+            "score": null,
+            "status": "incomplete",
+            "rubric_version": "cv-evidence-review-v3",
+            "label": "Assessment incomplete — essential requirements need checking.",
+            "coverage": {
+              "assessed": 3,
+              "total": 4,
+              "unassessed_essential": 1,
+              "concepts_assessed": 3,
+              "concepts_total": 4,
+              "mandatory_conditions_assessed": 0,
+              "mandatory_conditions_total": 0
+            },
+            "advanced": {
+              "partial_score": 66.7,
+              "assessed_count": 3,
+              "total_count": 4,
+              "label": "Partial coverage of recognised concepts only; unassessed essentials prevent an overall score."
+            },
+            "eligibility_checks": {
+              "status": "not_recorded",
+              "pending_count": 0,
+              "conditions": [],
+              "method": "Mandatory conditions from the frozen job evaluation are checked separately; they never contribute points to skills fit. Descriptions are evaluation notes unless marked as a literal advert quote."
+            },
+            "unassessed_requirements": 1,
+            "assessed_concepts": 3,
+            "requirements": [
+              {
+                "requirement": "Python",
+                "advert_quote": "Python",
+                "support": 1,
+                "evidence_ids": [
+                  "bank:dev2"
+                ],
+                "status": "supported"
+              },
+              {
+                "requirement": "SQL databases",
+                "advert_quote": "relational database",
+                "support": 1,
+                "evidence_ids": [
+                  "bank:dev3"
+                ],
+                "status": "supported"
+              },
+              {
+                "requirement": "communication",
+                "advert_quote": "communication",
+                "support": 0,
+                "evidence_ids": [],
+                "status": "gap"
+              },
+              {
+                "requirement": "Essential:",
+                "advert_quote": "Essential:",
+                "source_reference": {
+                  "quote": "Essential:",
+                  "mandatory": true,
+                  "source": "https://example.test/jobs/graduate-software-engineer",
+                  "line": 1,
+                  "heading": ""
+                },
+                "support": null,
+                "evidence_ids": [],
+                "status": "unassessed",
+                "mandatory": true
+              }
+            ],
+            "gaps": [
+              "communication remains a genuine evidence gap; rewriting cannot increase its evidence match.",
+              "Essential requirement needs checking before an overall evidence assessment is available: Essential:"
+            ],
+            "method": "Equal-weight recognised skill and responsibility concepts in the advert, checked against approved evidence. Direct/verified=1; user/project=.9; transferable=.65; indirect=.4; absent=0. Pending mandatory conditions from the frozen job evaluation also prevent a complete assessment, but do not change the skills-fit calculation. Not a complete semantic assessment; seniority, qualifications and eligibility gaps remain explicit. CV wording never changes this score."
+          },
+          "evidence_presentation": {
+            "status": "pass",
+            "label": "Presentation of existing evidence",
+            "checks": [
+              {
+                "name": "Supported advert concepts presented",
+                "passed": true,
+                "detail": "2 of 2 evidence-supported concepts appear in the CV."
+              }
+            ]
+          },
+          "document_checks": {
+            "status": "pass",
+            "label": "Document structure checks",
+            "checks": [
+              {
+                "name": "Single-column structured document",
+                "passed": true,
+                "points": 20
+              },
+              {
+                "name": "Selectable text and supported document export",
+                "passed": true,
+                "points": 15
+              },
+              {
+                "name": "Recognisable education and skills/profile headings",
+                "passed": true,
+                "points": 15
+              },
+              {
+                "name": "Contact details supplied",
+                "passed": true,
+                "points": 10
+              },
+              {
+                "name": "No unresolved date placeholders",
+                "passed": true,
+                "points": 10
+              }
+            ]
+          },
+          "ats_compatibility": {
+            "score": 100.0,
+            "label": "Local document compatibility heuristic",
+            "checks": [
+              {
+                "name": "Single-column structured document",
+                "passed": true,
+                "points": 20
+              },
+              {
+                "name": "Selectable text and supported document export",
+                "passed": true,
+                "points": 15
+              },
+              {
+                "name": "Recognisable education and skills/profile headings",
+                "passed": true,
+                "points": 15
+              },
+              {
+                "name": "Contact details supplied",
+                "passed": true,
+                "points": 10
+              },
+              {
+                "name": "No unresolved date placeholders",
+                "passed": true,
+                "points": 10
+              },
+              {
+                "name": "Supported advert terminology present: 2/2",
+                "passed": true,
+                "points": 30.0,
+                "maximum": 30
+              }
+            ],
+            "method": "Local heuristic checklist: structure20, selectable document15, headings15, contact10, dates10, supported advert terminology30. No external ATS has been tested; this does not predict interviews."
+          }
+        }
+      }
+    }
+  ]
+}

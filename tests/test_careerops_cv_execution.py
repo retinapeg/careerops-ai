@@ -345,3 +345,21 @@ def test_unmentioned_factual_conflicts_and_eligibility_gaps_stay_visible(system)
     assert result['status'] == 'needs_answer'
     assert 'Work permission needs checking.' in result['needs_attention']
     assert 'Base CV conflict: Degree title differs.' in result['needs_attention']
+
+
+def test_run_queued_before_the_document_rules_changed_reports_the_clear_message(system):
+    # A review queued under earlier rules reaches the evidence check after the
+    # upgrade; the run shows the remedy, not a wrapped processing error.
+    runner, store, calls, helpers, _ = system
+    # The fixture replaces cv_document; the engine keeps the real version check.
+    helpers.validate_document = lambda material, *args: engine.check_document_version(material)
+    material = store.save_material(1, 'queued-earlier', {'cv_text': 'Prior CV', 'direction': {}, 'blocked_proposals': []})
+    run = runner.start(1, {'action': 'review_again', 'material_id': material['id']})
+    queued = runner._read(run['id'])
+    queued['snapshot']['source_material']['document_schema'] = 'coherent-cv-v1'
+    runner._write(queued)
+    runner._run(run['id'])
+    failed = runner.get(run['id'])
+    assert failed['status'] == 'failed' and not calls
+    assert failed['error'].startswith('This CV was built under earlier CV rules (coherent-cv-v1)')
+    assert 'Create a new version of this CV' in failed['error']

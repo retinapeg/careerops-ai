@@ -48,10 +48,10 @@ def test_upload_reuse_and_replacement_preserve_profile_and_original(tmp_path):
 
 
 def test_section_text_and_middle_names_are_not_false_conflicts():
-    text = 'Candidate Middle Example\nEducation\nPostgraduate Certificate in Statistics within the MSc programme\nExperience\nSupported scientific research with Python.'
-    structured, conflicts = base_cv.reconcile(text, {'name': 'Candidate Example', 'education': [{'qualification': 'Postgraduate Certificate in Statistics'}]})
+    text = 'Candidate Middle Example\nEducation\nGraduate Diploma in Economics within the Master of Arts programme\nExperience\nSupported scientific research with Python.'
+    structured, conflicts = base_cv.reconcile(text, {'name': 'Candidate Example', 'education': [{'qualification': 'Graduate Diploma in Economics'}]})
     assert not conflicts
-    assert structured['sections']['education'] == ['Postgraduate Certificate in Statistics within the MSc programme']
+    assert structured['sections']['education'] == ['Graduate Diploma in Economics within the Master of Arts programme']
     assert base_cv._date_range('Sep 2023 – November 2024') == ('2023-09', '2024-11')
     assert base_cv._date_range('12 Jan 2026 – 26 Jun 2026') == ('2026-01-12', '2026-06-26')
     profile = {'employment': [{'title': 'Data Scientist', 'employer': 'Example Ltd', 'start': 'Late 2020', 'end': '2021-02'}]}
@@ -67,6 +67,18 @@ def test_needs_checking_keeps_low_fit_unknown_roles():
     result = query_inventory(jobs, default_settings(), {'view': 'needs_checking', 'region': 'all'})
     assert result['all_matching_ids'] == [1]
     assert result['per_page'] == 50
+
+
+def test_location_presets_are_generic_and_countries_use_the_country_filter():
+    from careerops.inventory import query_inventory
+    from careerops.policy import default_settings
+    base = {'title': 'Data analyst', 'evaluation': {'eligibility': 'needs_checking', 'fit': 2}, 'last_verified': '2026-09-11'}
+    jobs = [dict(base, id=1, location='London, UK', country='GB', work_pattern='hybrid'),
+            dict(base, id=2, location='Athens, Greece', country='GR', work_pattern='remote')]
+    ids = lambda location: query_inventory(jobs, default_settings(), {'view': 'needs_checking', 'region': 'all', 'location': location})['all_matching_ids']
+    assert ids('') == [1, 2] and ids('london') == [1] and ids('remote') == [2]
+    with pytest.raises(ValueError, match='Unsupported location preset'):
+        ids('greece')
 
 
 def test_readable_titles_and_literal_language_requirements():

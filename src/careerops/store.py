@@ -70,6 +70,13 @@ def validate_settings(settings):
     for name, amount in settings.get("london", {}).items():
         if not isinstance(amount, (int, float)) or isinstance(amount, bool) or not 0 <= amount <= 10000000:
             raise ValueError(f"London setting {name} must be a non-negative number.")
+    exceptional = settings.get("exceptional", {})
+    if "base_gbp" in exceptional:
+        # Scoring compares every known salary with this trigger, so a blank
+        # value would break rescoring on every later start.
+        amount = exceptional["base_gbp"]
+        if not isinstance(amount, (int, float)) or isinstance(amount, bool) or not 0 <= amount <= 10000000:
+            raise ValueError("Verified annual base trigger must be a non-negative number.")
     for section in settings.get("weights", {}).values():
         if not isinstance(section, dict) or any(not isinstance(x, (int, float)) or x < 0 or x > 1 for x in section.values()) or abs(sum(section.values()) - 1) > .001:
             raise ValueError("Each scoring weight group must contain fractions that sum to 1.")
@@ -162,6 +169,7 @@ class Store:
                 self.update_preparation_batch(batch["id"], batch)
         self.migrate_source_metadata()
         self.migrate_tracker()
+        self.repair_exceptional_trigger()
         from careerops import policy
         upgrade = getattr(policy, "upgrade_professional_settings", None)
         if upgrade:
@@ -176,6 +184,21 @@ class Store:
             self.put_meta('inventory_policy_version', 'overseas-volume-v1', version=True)
         if self.meta('evaluation_policy_version') != POLICY_VERSION:
             self.put_meta('evaluation_policy_version', POLICY_VERSION, version=True)
+
+    def repair_exceptional_trigger(self):
+        # Earlier releases could save a blank "Verified annual base trigger".
+        # Rescoring on open compares salaries with it, so an invalid stored
+        # value is removed and the default applies again.
+        stored = self.meta("settings", {})
+        exceptional = stored.get("exceptional") if isinstance(stored, dict) else None
+        if not isinstance(exceptional, dict) or "base_gbp" not in exceptional:
+            return
+        amount = exceptional["base_gbp"]
+        if isinstance(amount, (int, float)) and not isinstance(amount, bool) and math.isfinite(amount) and amount >= 0:
+            return
+        repaired = copy.deepcopy(stored)
+        del repaired["exceptional"]["base_gbp"]
+        self.put_meta("settings", repaired, version=True)
 
     def connect(self):
         db = sqlite3.connect(self.path, timeout=15)

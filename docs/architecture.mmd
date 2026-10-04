@@ -1,6 +1,6 @@
-%% Architecture of careerops-ai at commit 6503840ab32fb3728767ef28be904a5e4c05975c
-%% Sources: src/careerops/__main__.py, src/careerops/server.py, src/careerops/static/app.js, src/careerops/store.py, src/careerops/discovery.py, src/careerops/registry.py, src/careerops/policy.py, src/careerops/providers.py, src/careerops/cv_execution.py, src/careerops/cv_document.py, src/careerops/application_pack.py, src/careerops/model_connections.py, src/careerops/materials.py, src/careerops/base_cv.py, tests/test_careerops_cv_execution.py
-%% Render: npx @mermaid-js/mermaid-cli -i docs/architecture.mmd -o docs/images/architecture.svg -b white
+%% Architecture of careerops-ai at commit 20306ad53287546c62413e73975a6cd4ca8d4b3f
+%% Sources: src/careerops/__main__.py, src/careerops/server.py, src/careerops/static/app.js, src/careerops/store.py, src/careerops/discovery.py, src/careerops/registry.py, src/careerops/policy.py, src/careerops/providers.py, src/careerops/cv_execution.py, src/careerops/cv_document.py, src/careerops/application_pack.py, src/careerops/model_connections.py, src/careerops/materials.py, src/careerops/base_cv.py, src/careerops/cv_review.py, src/careerops/demo.py, evals/evidence_gates.py, tests/test_careerops_cv_execution.py, tests/test_offline_demo.py, tests/test_evidence_gate_eval.py
+%% Render: npx @mermaid-js/mermaid-cli -c docs/mermaid-config.json -i docs/architecture.mmd -o docs/images/architecture.svg -b white
 flowchart TD
     you["You<br/>profile, CV, answers<br/>apply to employers yourself"]
     ui["Browser UI<br/>static/app.js"]
@@ -8,11 +8,13 @@ flowchart TD
     db[("SQLite store<br/>jobs, runs, CV versions")]
     disc["Job discovery + rules scoring<br/>discovery.py, policy.py"]
     ats["Public ATS feeds<br/>Greenhouse, Lever, Ashby"]
-    paid["Optional, off by default:<br/>paid LLM review, web search<br/>providers.py, discovery.py"]
-    cvg["CV workflow graph<br/>cv_execution.py<br/>checks: cv_document.py"]
+    paid["Optional, off by default:<br/>paid LLM review (providers.py)<br/>paid job search (discovery.py)"]
+    cvg["CV workflow graph<br/>cv_execution.py<br/>gates: cv_document, cv_review,<br/>application_pack"]
     llm["LLM via Codex/Claude CLI<br/>generator, red, blue, purple<br/>model_connections.py"]
     docs["CV + cover letter export<br/>PDF needs LibreOffice<br/>materials, application_pack"]
     tests["pytest + smoke checks<br/>synthetic data,<br/>mocked models"]
+    demo["Offline demo<br/>careerops/demo.py<br/>scripted replies, synthetic data"]
+    evals["Evidence-gate eval<br/>evals/evidence_gates.py<br/>frozen synthetic cases"]
 
     you -->|"uses"| ui
     ui <-->|"JSON API + token"| srv
@@ -20,7 +22,8 @@ flowchart TD
     srv -->|"Prepare application"| cvg
     srv <-->|"read / write"| db
     disc -->|"HTTPS GET"| ats
-    disc -.->|"if enabled"| paid
+    disc -.->|"if enabled: search"| paid
+    srv -.->|"if enabled: review"| paid
     disc -->|"upsert + score"| db
     cvg -->|"frozen packet"| llm
     llm -->|"JSON reply"| cvg
@@ -28,13 +31,16 @@ flowchart TD
     cvg -->|"export check"| docs
     srv -->|"download"| docs
     tests -.->|"checks"| cvg
+    demo -.->|"scripted replies, no model"| cvg
+    evals -.->|"measures gates"| cvg
 
     class you human;
     class ui,srv,disc,cvg,docs det;
     class db store;
     class ats,paid ext;
     class llm ai;
-    class tests eval;
+    class tests,evals eval;
+    class demo mock;
 
     classDef ai fill:#efe7fb,stroke:#6a4c93,stroke-width:2px,color:#2b1d45;
     classDef det fill:#eef3f8,stroke:#2f5d8a,stroke-width:1.5px,color:#172c37;
