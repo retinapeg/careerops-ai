@@ -14,7 +14,7 @@ Architecture at a glance:
 - **Bounded proposals:** four model roles (generator, red, blue, purple) each receive a frozen JSON packet and must return schema-constrained JSON, validated inside the CLI and again by strict pydantic models.
 - **Independent review:** red and blue get copies of the same frozen packet, run sequentially, and never see each other's output. Red checks unsupported claims and requirement gaps; blue looks for stronger truthful positioning; purple reconciles.
 - **Evidence-bound output:** Python builds the CV and cover letter from approved evidence. The cover letter body is copied source sentences, not free generation.
-- **Provenance:** saved versions are insert-only and carry the hashes of the frozen advert, profile and evidence they were built from.
+- **Provenance:** saved versions are insert-only and carry the hashes of the frozen advert and of the profile (which holds the approved evidence) they were built from, plus the run snapshot hash.
 - **Human control:** you supply the facts, answer open questions and send applications yourself.
 
 Limits a reader should know: the revision loop applies the reviewers' findings deterministically rather than regenerating; the model-substitution guard checks exact Claude IDs (not aliases) and, for Codex, only what the CLI reports; and a tool-call attempt, timeout or substitution stops the whole run, with no automatic retry or fallback provider.
@@ -67,7 +67,8 @@ stores receipts and CV versions before continuing. Diagram source:
   A tool-call attempt, timeout or detected model substitution stops the run;
   there is no automatic retry or fallback provider. The substitution check compares
   exact Claude model IDs (aliases such as `opus` are not checked) and, for Codex,
-  whatever model the CLI reports.
+  whatever model the CLI reports; if the CLI reports no model, the requested ID is recorded
+  and no substitution check is possible.
 - **Deterministic and human-controlled:** discovery, fit scoring, shortlisting, the
   revision limit, document export and application tracking are ordinary code. You
   supply the facts, answer open questions and send applications yourself.
