@@ -1,14 +1,23 @@
 # CareerOps AI
 
-A local job-search workspace: discover vacancies, save promising roles and prepare
-an application. Evidence-bound CV generation, independent red and blue reviews,
-and purple-team synthesis produce versioned CVs and source-backed cover letters.
+A local job-search workspace whose CV preparation runs as a durable, graph-controlled workflow: Python owns the state and transitions, models return bounded structured proposals, independent red and blue reviews feed a bounded revision loop, and every document keeps its provenance.
 
-CV preparation is **graph-engineered**: each application runs through an explicit,
-persisted workflow graph (freeze inputs → select evidence → build CV → red and blue
-review → bounded revision → purple synthesis → cover letter → human review) that
-Python controls, rather than a free-running agent. See
-[Graph-engineered workflow](#graph-engineered-workflow) below.
+**What it is:** a loopback web app (Python server, SQLite, plain JavaScript) that discovers vacancies from public employer boards with deterministic scoring, and prepares applications through an explicit persisted workflow: freeze inputs → select evidence → build CV → red and blue review → at most two revision rounds → purple synthesis → cover letter → human review. No step submits an application.
+
+**Why it is built this way:** The interesting engineering is reliability, not the job search. Each model call is a one-shot subprocess with tools, MCP servers, web search and hooks disabled and API keys stripped; its reply must validate against a strict schema; a claim not anchored in the advert, the CV text and approved evidence becomes a question for the user instead of a fact; and progress is recorded stage by stage so a run survives navigation and restarts. Model agreement is advisory and never certifies a fact.
+
+**Status:** Working prototype, version 0.1.0. The test suite (240 pytest cases, model calls mocked) checks the workflow and its guards; there is no benchmark of CV quality or hiring outcomes, and a mocked test is never recorded as a live model call.
+
+Architecture at a glance:
+
+- **State ownership:** the workflow graph is ordinary Python in `cv_execution.py`; each completed stage writes its result to SQLite before execution continues.
+- **Bounded proposals:** four model roles (generator, red, blue, purple) each receive a frozen JSON packet and must return schema-constrained JSON, validated inside the CLI and again by strict pydantic models.
+- **Independent review:** red and blue get copies of the same frozen packet, run sequentially, and never see each other's output. Red checks unsupported claims and requirement gaps; blue looks for stronger truthful positioning; purple reconciles.
+- **Evidence-bound output:** Python builds the CV and cover letter from approved evidence. The cover letter body is copied source sentences, not free generation.
+- **Provenance:** saved versions are insert-only and carry the hashes of the frozen advert, profile and evidence they were built from.
+- **Human control:** you supply the facts, answer open questions and send applications yourself.
+
+Limits a reader should know: the revision loop applies the reviewers' findings deterministically rather than regenerating; the model-substitution guard checks exact Claude IDs (not aliases) and, for Codex, only what the CLI reports; and a tool-call attempt, timeout or substitution stops the whole run, with no retry or fallback provider.
 
 ![CareerOps AI dashboard design concept: swipe-style job discovery on the left, the red/blue/purple application graph on the right](docs/dashboard-concept.png)
 
@@ -30,7 +39,7 @@ belong in the ignored `local_data/` directory.
 
 ![System architecture: browser UI, loopback Python server, SQLite store, discovery from public ATS feeds, the CV workflow graph and its CLI model roles](docs/images/architecture.svg)
 
-*Purple: model call · blue: deterministic code · green: human · amber: evaluation · grey: storage · dashed: external, optional, mocked or planned*
+*Purple: model call · blue: deterministic code · green: human · amber: evaluation · grey: storage · dashed: external, optional or mocked*
 
 The browser UI talks only to a Python server bound to 127.0.0.1, which keeps its
 records in a local SQLite file. **Find jobs** starts a bounded background worker
@@ -55,8 +64,10 @@ stores receipts and CV versions before continuing. Diagram source:
   becomes a question for you. See [Graph-engineered workflow](#graph-engineered-workflow).
 - **Tools and permissions:** each call is a one-shot subprocess with tools, MCP
   servers, web search and hooks disabled and API keys removed from its environment.
-  A tool-call attempt, timeout or detected model substitution stops the stage; there
-  is no automatic retry or fallback provider.
+  A tool-call attempt, timeout or detected model substitution stops the run;
+  there is no automatic retry or fallback provider. The substitution check compares
+  exact Claude model IDs (aliases such as `opus` are not checked) and, for Codex,
+  whatever model the CLI reports.
 - **Deterministic and human-controlled:** discovery, fit scoring, shortlisting, the
   revision limit, document export and application tracking are ordinary code. You
   supply the facts, answer open questions and send applications yourself.
@@ -87,7 +98,7 @@ flowchart TD
     R --> F[Validate and combine findings]
     U --> F
     F --> G{Supported revision available?}
-    G -->|Yes, within two revision rounds| D
+    G -->|Yes, within two revision rounds: apply findings deterministically| D
     G -->|No, or revision limit reached| P[Purple synthesis of both reviews]
     P --> L[Select approved evidence for this version's cover letter]
     L --> H[Check document exports]
@@ -112,7 +123,9 @@ The graph makes several engineering decisions explicit:
 - **State ownership:** progress survives browser navigation; each completed stage
   records its result before execution continues.
 - **Bounded iteration:** at most two automatic revision rounds follow the initial
-  version. Unsupported factual changes stay blocked or require a human answer.
+  version, each applying the validated findings in code rather than regenerating,
+  and the loop exits early if a round changes nothing. Unsupported factual changes
+  stay blocked or require a human answer.
 - **Recovery:** duplicate requests are deduplicated, completed calls can be reused,
   and uncertain provider dispatches require an explicit retry decision.
 - **Provenance:** saved versions retain their frozen advert, profile and source
