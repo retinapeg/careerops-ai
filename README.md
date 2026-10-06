@@ -17,7 +17,7 @@ Architecture at a glance:
 - **Provenance:** saved versions are insert-only and carry the hashes of the frozen advert, profile and evidence they were built from.
 - **Human control:** you supply the facts, answer open questions and send applications yourself.
 
-Limits a reader should know: the revision loop applies the reviewers' findings deterministically rather than regenerating; the model-substitution guard checks exact Claude IDs (not aliases) and, for Codex, only what the CLI reports; and a tool-call attempt, timeout or substitution stops the whole run, with no retry or fallback provider.
+Limits a reader should know: the revision loop applies the reviewers' findings deterministically rather than regenerating; the model-substitution guard checks exact Claude IDs (not aliases) and, for Codex, only what the CLI reports; and a tool-call attempt, timeout or substitution stops the whole run, with no automatic retry or fallback provider.
 
 ![CareerOps AI dashboard design concept: swipe-style job discovery on the left, the red/blue/purple application graph on the right](docs/dashboard-concept.png)
 
